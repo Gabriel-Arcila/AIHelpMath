@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Distribución y build
+dist/
+build/
+*.egg-info/
+
+# Tests
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Docker
+.docker/

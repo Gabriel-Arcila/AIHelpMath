@@ -1,0 +1,31 @@
+version: "3.8"
+
+services:
+  app:
+    build: .
+    container_name: iahelpmath_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE_URL=postgresql://user:password@db:5432/iahelpmath
+      - PYTHONPATH=/app
+    depends_on:
+      - db
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  db:
+    image: postgres:15-alpine
+    container_name: iahelpmath_db
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=iahelpmath
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
