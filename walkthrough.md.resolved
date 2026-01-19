@@ -1,0 +1,37 @@
+# Walkthrough: Creación de Estructura Backend IAHelpMath
+
+Se ha completado la generación de la estructura de archivos solicitada para el backend de **IAHelpMath**.
+
+## Estructura Generada
+
+La arquitectura sigue un diseño modular y escalable basado en FastAPI:
+
+- **Configuración Base**: [pyproject.toml](file:///c:/Users/gabri/OneDrive/Documentos/Proyecto/IAHelpMath/pyproject.toml) (dependencias), [Dockerfile](file:///c:/Users/gabri/OneDrive/Documentos/Proyecto/IAHelpMath/Dockerfile), [docker-compose.yml](file:///c:/Users/gabri/OneDrive/Documentos/Proyecto/IAHelpMath/docker-compose.yml).
+- **`app/core/`**: Configuración (`config.py`) y seguridad (`security.py`).
+- **`app/db/`**: Gestión de base de datos (`session.py`) y modelos (`base.py`).
+- **`app/models/`**: Definición de tablas con SQLModel (`user.py`).
+- **`app/schemas/`**: Pydantic models para validación (`explanation.py`).
+- **`app/services/`**: Lógica de negocio agnóstica (`ai_tutor.py`).
+- **`app/api/`**: Endpoints versionados (`v1/endpoints/explanation.py`).
+- **`tests/`**: Estructura lista para TDD con `pytest`.
+
+## Cómo Ejecutar
+
+### Con Docker (Recomendado)
+
+```bash
+docker-compose up --build
+```
+Esto levantará la API en puerto 8000 y una base de datos PostgreSQL.
+
+### Localmente
+
+1. Crear entorno virtual: `python -m venv .venv`
+2. Instalar dependencias: `pip install -e .`
+3. Ejecutar: `uvicorn app.main:app --reload`
+
+## Siguientes Pasos
+
+1. Configurar la conexión real a la base de datos en `.env`.
+2. Implementar la lógica real de `ai_tutor.py` con LangChain.
+3. Ampliar los modelos y esquemas según los requerimientos.
