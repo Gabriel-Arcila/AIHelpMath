@@ -2,22 +2,31 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Variables de entorno para Python
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
+# Variables de entorno
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    # Configuración de Poetry
+    POETRY_VERSION=1.7.1 \
+    POETRY_HOME="/opt/poetry" \
+    POETRY_VIRTUALENVS_CREATE=false \
+    # Esto asegura que poetry esté en el PATH
+    PATH="$POETRY_HOME/bin:$PATH"
 
 # Instalar dependencias del sistema mínimas necesarias
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     libpq-dev \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiar archivos de dependencias
-COPY pyproject.toml README.md ./
+# Instalar Poetry
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
-# Instalar dependencias
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir .
+# Copiar archivos de definición de dependencias
+COPY pyproject.toml poetry.lock ./
+
+# Instalar dependencias (SIN instalar el proyecto raíz aún, para aprovechar caché)
+RUN poetry install --no-root --no-interaction --no-ansi
 
 # Copiar el resto del código
 COPY . .
