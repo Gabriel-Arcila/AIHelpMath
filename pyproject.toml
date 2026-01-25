@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "iahelpmath"
+name = "aihelpmath"
 version = "0.1.0"
 description = "Backend impulsado por IA para educación personalizada"
 authors = ["Gabriel Arcila <caraballogabriel1122@gmail.com>"]

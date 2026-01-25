@@ -8,9 +8,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     # Configuración de Poetry
     POETRY_VERSION=1.7.1 \
     POETRY_HOME="/opt/poetry" \
-    POETRY_VIRTUALENVS_CREATE=false \
-    # Esto asegura que poetry esté en el PATH
-    PATH="$POETRY_HOME/bin:$PATH"
+    POETRY_VIRTUALENVS_CREATE=false
+
+# Esto asegura que poetry esté en el PATH
+ENV PATH="$POETRY_HOME/bin:$PATH"
 
 # Instalar dependencias del sistema mínimas necesarias
 RUN apt-get update && apt-get install -y --no-install-recommends \
