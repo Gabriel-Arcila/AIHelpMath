@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Backend impulsado por IA para educación personalizada"
 authors = ["Gabriel Arcila <caraballogabriel1122@gmail.com>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.10"
