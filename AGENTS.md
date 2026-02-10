@@ -1,31 +1,15 @@
 # AGENTS.md
 
-Esta sera las intrucciones para el agente de IA.
+Estas son las intrucciones para el agente de IA.
 
 ## Intruccion de comportamiento
 
 - Habla siempre en español.
+- Utiliza PEP 8 como guia estricta para codificar. 
 
 ## Contexto
 
-graph TD
-
-    User[Estudiante (Frontend)] -->|JSON Request| API[FastAPI Gateway]
-    
-    subgraph "Backend (Python)"
-        API -->|Validación| Pydantic[Modelos Pydantic]
-        API -->|Lógica de Negocio| Service[Servicio Educativo]
-        
-        Service -->|Consulta Contexto| DB[(PostgreSQL)]
-        Service -->|Prompt + Contexto| AI_Orchestrator[LangChain]
-    end
-    
-    AI_Orchestrator -->|Llamada Externa| LLM[OpenAI / Anthropic]
-    LLM -->|Respuesta Explicada| AI_Orchestrator
-    AI_Orchestrator -->|Respuesta Final| API
-    API -->|JSON Response| User
-
-├── app/
+<!-- ├── app/
 │   ├── __init__.py
 │   ├── main.py              # 🚀 El punto de entrada (Lanza la app)
 │   ├── api/                 # 🌐 Capa de Interface (Rutas/Endpoints)
@@ -53,4 +37,4 @@ graph TD
 ├── docker-compose.yml       # 🐳 Infraestructura Efímera (DB local)
 ├── Dockerfile               # Para despliegue
 ├── pyproject.toml           # 📦 Dependencias (Moderno: reemplaza requirements.txt)
-└── README.md                # Documentación para otros devs
+└── README.md                # Documentación para otros devs -->
