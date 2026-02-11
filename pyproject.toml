@@ -23,11 +23,14 @@ langchain = "^0.1.0"
 langchain-openai = "^0.0.5"  # O la integración que elijamos
 python-dotenv = "^1.0.0"
 
+
 [tool.poetry.group.dev.dependencies]
 # Testing
 pytest = "^8.0.0"
 pytest-asyncio = "^0.23.0"   # Vital para probar FastAPI
 httpx = "^0.26.0"
+typeguard = "^4.4.4"
+pydantic = "^2.12.5"
 
 # Calidad de Código (Linter & Formatter)
 ruff = "^0.1.14"

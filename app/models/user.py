@@ -11,11 +11,12 @@ class User(SQLModel, table=True):
     full_name: Optional[str] = None
 
 
-class TipUser():
-    def __init__(self,id:int, name:str,users:list[User] = []):
+class TipUser:
+    def __init__(self, id: int, name: str, users: list[User] = []):
         self.__id = id
         self.__name = name
         self.__users = users
+
     def __str__(self):
         return f"TipUser(id={self.__id}, name={self.__name}, users={self.__users})"
 
@@ -28,7 +29,7 @@ class TipUser():
         return self.__name
 
     @name.setter
-    def name(self, name_new:str):
+    def name(self, name_new: str):
         if name_new is not None and isinstance(name_new, str) and len(name_new) > 0:
             self.__name = name_new
             return "Saved"
