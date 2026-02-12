@@ -5,7 +5,8 @@ Estas son las intrucciones para el agente de IA.
 ## Intruccion de comportamiento
 
 - Habla siempre en español.
-- Utiliza PEP 8 como guia estricta para codificar. 
+- Utiliza PEP 8 como guia estricta para codificar.
+- Utiliza PEP 257 como guia estricta para documentar el codigo.
 
 ## Contexto
 
