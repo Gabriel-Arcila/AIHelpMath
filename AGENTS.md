@@ -7,6 +7,7 @@ Estas son las intrucciones para el agente de IA.
 - Habla siempre en español.
 - Utiliza PEP 8 como guia estricta para codificar.
 - Utiliza PEP 257 como guia estricta para documentar el codigo.
+- Utiliza las reglas de API REST para el proyecto
 
 ## Contexto
 
