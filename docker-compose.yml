@@ -9,6 +9,7 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+      - /app/.venv
     environment:
       - DATABASE_URL=postgresql://user:password@db:5432/iahelpmath
       - PYTHONPATH=/app

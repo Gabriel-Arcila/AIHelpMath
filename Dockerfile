@@ -6,37 +6,27 @@ WORKDIR /app
 
 # Variables de entorno
 # PYTHONDONTWRITEBYTECODE: Evita que Python genere archivos .pyc, manteniendo el contenedor limpio
-#PYTHONUNBUFFERED: Asegura que los logs de tu aplicación se muestren en tiempo real en la consola, sin retrasos
-#POETRY_VERSION: Fija la versión de Poetry en 1.7.1 para consistencia
-#POETRY_HOME: Define la ruta base para Poetry
-#POETRY_VIRTUALENVS_CREATE: Deshabilita la creación de entornos virtuales
+# PYTHONUNBUFFERED: Asegura que los logs de tu aplicación se muestren en tiempo real
+# UV_PROJECT_ENVIRONMENT: Ubicación del entorno virtual para evitar que choque con montajes locales de Windows
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    POETRY_VERSION=1.8.3 \
-    POETRY_HOME="/opt/poetry" \
-    POETRY_VIRTUALENVS_CREATE=false
-
-# Esto asegura que poetry esté en el PATH
-ENV PATH="$POETRY_HOME/bin:$PATH"
+    PATH="/app/.venv/bin:$PATH"
 
 # Instalar dependencias del sistema mínimas necesarias
-# gcc: Compilador de C, necesario para algunas librerías de Python avanzadas.
-# libpq-dev: Librería de desarrollo de PostgreSQL (necesaria si usas psycopg2).
-# curl: Herramienta para descargar cosas (la usamos para bajar Poetry luego).
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     libpq-dev \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# Instalar Poetry
-RUN curl -sSL https://install.python-poetry.org | python3 -
+# Instalar uv de manera compatible con cualquier arquitectura
+RUN pip install uv
 
 # Copiar archivos de definición de dependencias
-COPY pyproject.toml poetry.lock ./
+COPY pyproject.toml uv.lock* ./
 
-# Instalar dependencias (SIN instalar el proyecto raíz aún, para aprovechar caché)
-RUN poetry install --no-root --no-interaction --no-ansi
+# Instalar dependencias (SIN instalar el proyecto raíz aún, para aprovechar caché de Docker)
+RUN uv sync --no-dev --no-install-project
 
 # Copiar el resto del código
 COPY . .

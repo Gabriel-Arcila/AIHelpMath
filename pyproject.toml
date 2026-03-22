@@ -1,43 +1,43 @@
-[tool.poetry]
+[project]
 name = "aihelpmath"
 version = "0.1.0"
 description = "Backend impulsado por IA para educación personalizada"
-authors = ["Gabriel Arcila <caraballogabriel1122@gmail.com>"]
+authors = [
+    { name = "Gabriel Arcila", email = "caraballogabriel1122@gmail.com" }
+]
 readme = "README.md"
-package-mode = false
+requires-python = ">=3.10"
+dependencies = [
+    # Core Framework
+    "fastapi>=0.109.0",
+    "uvicorn[standard]>=0.27.0",
+    "pydantic-settings>=2.1.0", # Gestión de configuración (.env)
 
-[tool.poetry.dependencies]
-python = "^3.10"
+    # Datos (ORM & DB)
+    "sqlmodel>=0.0.14",
+    "asyncpg>=0.29.0",          # Driver asíncrono para PostgreSQL
 
-# Core Framework
-fastapi = "^0.109.0"
-uvicorn = {extras = ["standard"], version = "^0.27.0"}
-pydantic-settings = "^2.1.0" # Gestión de configuración (.env)
+    # Inteligencia Artificial
+    "langchain>=0.1.0",
+    "langchain-openai>=0.0.5",  # O la integración que elijamos
+    "python-dotenv>=1.0.0",
+]
 
-# Datos (ORM & DB)
-sqlmodel = "^0.0.14"
-asyncpg = "^0.29.0"          # Driver asíncrono para PostgreSQL
+[dependency-groups]
+dev = [
+    # Testing
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",   # Vital para probar FastAPI
+    "httpx>=0.26.0",
+    "typeguard>=4.4.4",
+    "pydantic>=2.12.5",
 
-# Inteligencia Artificial
-langchain = "^0.1.0"
-langchain-openai = "^0.0.5"  # O la integración que elijamos
-python-dotenv = "^1.0.0"
+    # Calidad de Código (Linter & Formatter)
+    "ruff>=0.1.14",
+]
 
-
-[tool.poetry.group.dev.dependencies]
-# Testing
-pytest = "^8.0.0"
-pytest-asyncio = "^0.23.0"   # Vital para probar FastAPI
-httpx = "^0.26.0"
-typeguard = "^4.4.4"
-pydantic = "^2.12.5"
-
-# Calidad de Código (Linter & Formatter)
-ruff = "^0.1.14"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.uv]
+package = false
 
 # --- Configuraciones de Herramientas ---
 
