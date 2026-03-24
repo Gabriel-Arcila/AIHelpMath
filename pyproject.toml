@@ -6,7 +6,11 @@ authors = [
     { name = "Gabriel Arcila", email = "caraballogabriel1122@gmail.com" }
 ]
 readme = "README.md"
+
+# Versión de Python
 requires-python = ">=3.10"
+
+# Dependencias de Produccion
 dependencies = [
     # Core Framework
     "fastapi>=0.109.0",
@@ -23,12 +27,15 @@ dependencies = [
     "python-dotenv>=1.0.0",
 ]
 
+# Dependencias de Desarrollo
 [dependency-groups]
 dev = [
     # Testing
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",   # Vital para probar FastAPI
     "httpx>=0.26.0",
+
+    # Revision de los tipos de datos
     "typeguard>=4.4.4",
     "pydantic>=2.12.5",
 
@@ -36,16 +43,18 @@ dev = [
     "ruff>=0.1.14",
 ]
 
+# Configuración de UV para indicar que no es un paquete
 [tool.uv]
 package = false
 
 # --- Configuraciones de Herramientas ---
 
+# Configuración del Linter para que sea estricto pero justo
 [tool.ruff]
-# Configuración del Linter para que sea estricto pero just
 line-length = 88
 select = ["E", "F", "W", "I"] # Errores, Pyflakes, Warning, Import Sort
 ignore = []
 
+# Configuración de Pytest para modo asincrono
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
