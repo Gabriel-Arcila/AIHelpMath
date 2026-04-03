@@ -1,18 +1,44 @@
 # IAHelpMath
 
-Este es el backend para la aplicación IAHelpMath, construido con una arquitectura moderna y escalable.
+
 
 ## Estructura del Proyecto
 
-- **app/**: Código fuente de la aplicación.
-  - **api/**: Endpoints y rutas de la API.
-  - **core/**: Configuración global y seguridad.
-  - **db/**: Configuración de base de datos.
-  - **models/**: Modelos de base de datos (SQLModel).
-  - **schemas/**: Esquemas Pydantic para validación de datos.
-  - **services/**: Lógica de negocio e integración con IA.
-- **tests/**: Pruebas automatizadas.
-- **docker-compose.yml**: Orquestación de servicios para desarrollo local.
+  - 📁 **app/** *(Código fuente principal de la API)*
+    - 📄 `__init__.py`
+    - 📄 `main.py` *(Punto de entrada y configuración de la instancia FastAPI)*
+    - 📁 **api/** *(Enrutadores y Endpoints)*
+      - 📄 `dependencies.py` *(Dependencias inyectables, ej. get_db_session)*
+      - 📁 **v1/** *(Versionado de la API)*
+          - 📄 `file.py`
+    - 📁 **core/** *(Configuraciones globales)*
+      - 📄 `config.py` *(Carga de variables de entorno con pydantic-settings)*
+      - 📄 `security.py` *(Lógica de hashing y tokens JWT)*
+    - 📁 **crud/** *(Operaciones de Base de Datos - Create, Read, Update, Delete)*
+      - 📄 `file.py`
+    - 📁 **db/** *(Configuración del motor de Base de Datos)*
+      - 📄 `file.py` *(Conexión SQLAlchemy)*
+    - 📁 **models/** *(Modelos ORM - Tablas de la base de datos)*
+      - 📄 `file.py` *(Clases de SQLAlchemy)*
+    - 📁 **schemas/** *(Modelos Pydantic - Validación de entrada/salida)*
+      - 📄 `file.py`
+    - 📁 **services/** *(lgica de servicios)*
+       - 📄 `file.py`
+  - 📁 **tests/** *(Directorio exclusivo para pruebas con pytest)*
+    - 📄 `__init__.py`
+    - 📄 `conftest.py` *(Fixtures de Pytest, cliente de prueba, BD de prueba)*
+    - 📁 **api/** *(Pruebas e2e de los endpoints)*
+      - 📄 `files.py`
+    - 📁 **crud/** *(Pruebas de integración para las funciones CRUD)*
+      - 📄 `files.py`
+  - ⚙️ `pyproject.toml` *(Gestión de dependencias)*
+  - ⚙️ `.dockerignore`
+  - ⚙️ `.gitignore`
+  - ⚙️ `docker-compose.yml`
+  - ⚙️ `Dockerfile`
+  - ⚙️ `uv.lock`
+  - 📄 `AGENTS.md`
+  - 📄 `README.md`
 
 ## Configuración y Ejecución
 
@@ -20,14 +46,6 @@ Este es el backend para la aplicación IAHelpMath, construido con una arquitectu
 
 - Docker y Docker Compose
 - Python 3.10+ (si se ejecuta localmente sin Docker)
-
-### Ejecutar con Docker
-
-```bash
-docker-compose up --build
-```
-
-La API estará disponible en `http://localhost:8000`.
 
 ### Desarrollo Local
 
