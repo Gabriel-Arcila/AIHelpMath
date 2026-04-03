@@ -6,8 +6,9 @@ Estas son las intrucciones para el agente de IA.
 
 - Habla siempre en español.
 - Utiliza PEP 8 como guia estricta para codificar.
-- Utiliza PEP 257 como guia estricta para documentar el codigo.
-- Utiliza las reglas de API REST para el proyecto
+- Utiliza PEP 257 como guia estricta para documentar el codigo y realiza esta accion aunque no se te pida.
+- Utiliza las reglas de API REST para el proyecto.
+- Realiza pruebas unitarias en la carpeta "tests"con pytest, siempre que se te pida realizar codigo que tenga que ser probado.
 
 ## Contexto
 
