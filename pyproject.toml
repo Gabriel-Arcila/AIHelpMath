@@ -16,11 +16,9 @@ dependencies = [
     "fastapi>=0.109.0",
     "uvicorn[standard]>=0.27.0",
     "pydantic-settings>=2.1.0", # Gestión de configuración (.env)
-
     # Datos (ORM & DB)
     "sqlmodel>=0.0.14",
     "asyncpg>=0.29.0",          # Driver asíncrono para PostgreSQL
-
     # Inteligencia Artificial
     "langchain>=0.1.0",
     "langchain-openai>=0.0.5",  # O la integración que elijamos
@@ -41,6 +39,7 @@ dev = [
 
     # Calidad de Código (Linter & Formatter)
     "ruff>=0.1.14",
+    "mypy>=1.20.0",
 ]
 
 # Configuración de UV para indicar que no es un paquete
