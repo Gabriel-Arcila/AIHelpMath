@@ -1,99 +1,141 @@
-from typing import Optional
+"""
+Módulo que define los modelos de base de datos para el usuario y su perfil de IA.
+"""
 
-from sqlmodel import Field, SQLModel
-from pydantic import BaseModel
+import uuid
 
-
-# class User(SQLModel, table=True):
-#     id: Optional[int] = Field(default=None, primary_key=True)
-#     email: str = Field(index=True, unique=True)
-#     hashed_password: str
-#     is_active: bool = Field(default=True)s
-#     full_name: Optional[str] = None
+from sqlmodel import Field, Relationship, SQLModel, UniqueConstraint
 
 
-class User(BaseModel):
-    id: int
-    email: str
-    hashed_password: str
-    is_active: bool
-    full_name: str | None
+class UserNivel(SQLModel, table=True):
+    """
+    Modelo de base de datos para los niveles de conocimiento (ej. Principiante,
+    Intermedio).
 
-    def __init__(
-        self,
-        id: int,
-        email: str,
-        hashed_password: str,
-        is_active: bool,
-        full_name: str | None,
-    ):
-        self.id = id
-        self.email = email
-        self.hashed_password = hashed_password
-        self.is_active = is_active
-        self.full_name = full_name
+    Atributos:
+        id (int | None): Identificador único del nivel.
+        nombre (str): Nombre del nivel (ej. 'PRINCIPIANTE' o 'INTERMEDIO').
+        cuantificador (int): Cuantificador del nivel (ej. 0, 1, 2, 3).
+        descripcion (str | None): Descripción opcional del nivel.
+        user_perfiles_ia (list[UserPerfilIA]): Lista de perfiles de IA que poseen este
+        nivel.
+    """
 
-    def __str__(self):
-        return f"User(id={self.id}, email={self.email},is_active={self.is_active}"
+    __tablename__ = "user_nivel"
 
-    @property
-    def id(self):
-        return self.id
+    id: int | None = Field(default=None, primary_key=True)
 
-    @property
-    def email(self):
-        return self.email
+    nombre: str = Field(unique=True, index=True, nullable=False)
+    cuantificador: int = Field(unique=True, nullable=False)
+    descripcion: str | None = Field(default=None)
 
-    @property
-    def hashed_password(self):
-        return self.hashed_password
-
-    @property
-    def is_active(self):
-        return self.is_active
-
-    @property
-    def full_name(self):
-        return self.full_name
-
-    @full_name.setter
-    def full_name(self, full_name_new: str):
-        if (
-            full_name_new is not None
-            and isinstance(full_name_new, str)
-            and len(full_name_new) > 0
-        ):
-            self.full_name = full_name_new
-            return "Saved"
-        else:
-            return "Error"
+    user_perfiles_ia: list["UserPerfilIA"] = Relationship(back_populates="user_nivel")
 
 
-class TipUser:
-    def __init__(self, id: int, name: str, users: list[User] = []):
-        self.__id = id
-        self.__name = name
-        self.__users = users
+class UserTemaInteres(SQLModel, table=True):
+    """
+    Modelo de base de datos para los temas de interés o favoritos.
 
-    def __str__(self):
-        return f"TipUser(id={self.__id}, name={self.__name}, users={self.__users})"
+    Atributos:
+        id (int | None): Identificador único del tema.
+        nombre (str): Nombre del tema (ej. 'ÁLGEBRA' o 'CÁLCULO').
+        descripcion (str | None): Descripción opcional del tema.
+        user_perfiles_ia (list[UserPerfilIA]): Lista de perfiles de IA que poseen este
+        tema.
+    """
 
-    @property
-    def id(self):
-        return self.__id
+    __tablename__ = "user_tema_interes"
 
-    @property
-    def name(self):
-        return self.__name
+    id: int | None = Field(default=None, primary_key=True)
 
-    @name.setter
-    def name(self, name_new: str):
-        if name_new is not None and isinstance(name_new, str) and len(name_new) > 0:
-            self.__name = name_new
-            return "Saved"
-        else:
-            return "Error"
+    nombre: str = Field(unique=True, index=True, nullable=False)
+    descripcion: str | None = Field(default=None)
 
-    @property
-    def users(self):
-        return self.__users
+    user_perfiles_ia: list["UserPerfilIA"] = Relationship(
+        back_populates="user_tema_interes"
+    )
+
+
+class UserPerfilIA(SQLModel, table=True):
+    """
+    Modelo de base de datos para el perfil de inteligencia artificial del usuario.
+
+    Atributos:
+        id (int | None): Identificador único del perfil de IA.
+        id_user (str): Identificador del usuario al cual pertenece el perfil.
+        id_user_nivel (int): Identificador del nivel de conocimiento.
+        id_user_tema_interes (int): Identificador del tema de interés.
+        descripcion (str | None): Descripción opcional del perfil de IA.
+        user (User | None): Relación con el modelo User principal.
+        user_nivel (UserNivel | None): Relación con el modelo UserNivel.
+        user_tema_interes (UserTemaInteres | None): Relación con el modelo
+        UserTemaInteres.
+    """
+
+    __tablename__ = "user_perfil_ia"
+    __table_args__ = (
+        UniqueConstraint("id_user", "id_user_tema_interes", name="unique_user_tema"),
+    )
+
+    id: int | None = Field(default=None, primary_key=True)
+    id_user: str = Field(foreign_key="user.id", nullable=False)
+    id_user_nivel: int = Field(foreign_key="user_nivel.id", nullable=False)
+    id_user_tema_interes: int = Field(
+        foreign_key="user_tema_interes.id", nullable=False
+    )
+
+    descripcion: str | None = Field(default=None)
+
+    user: "User" = Relationship(back_populates="user_perfiles_ia")
+    user_nivel: "UserNivel" = Relationship(back_populates="user_perfiles_ia")
+    user_tema_interes: "UserTemaInteres" = Relationship(
+        back_populates="user_perfiles_ia"
+    )
+
+
+class UserRol(SQLModel, table=True):
+    """
+    Modelo de base de datos para los roles del sistema.
+
+    Atributos:
+        id (int | None): Identificador único del rol.
+        nombre (str): Nombre del rol (ej. 'ESTUDIANTE' o 'ADMIN').
+        descripcion (str | None): Descripción opcional de los permisos del rol.
+        usuarios (list[User]): Lista de usuarios que poseen este rol.
+    """
+
+    __tablename__ = "user_rol"
+
+    id: int | None = Field(default=None, primary_key=True)
+
+    nombre: str = Field(unique=True, index=True, nullable=False)
+    descripcion: str | None = Field(default=None)
+
+    usuarios: list["User"] = Relationship(back_populates="user_rol")
+
+
+class User(SQLModel, table=True):
+    """
+    Modelo de base de datos para el usuario.
+
+    Atributos:
+        id (str): Identificador único del usuario (ej: 'user-123').
+        id_rol (int): Identificador del rol asignado.
+        nombre (str): Nombre del usuario.
+        apellido (str): Apellido del usuario.
+        email (str): Correo electrónico del usuario.
+        user_rol (UserRol | None): Relación con el modelo UserRol.
+        user_perfiles_ia (list[UserPerfilIA] | None): Relación con el modelo
+        UserPerfilIA.
+    """
+
+    __tablename__ = "user"
+
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()), primary_key=True)
+    id_rol: int = Field(foreign_key="user_rol.id", nullable=False)
+    nombre: str = Field(nullable=False)
+    apellido: str = Field(nullable=False)
+    email: str = Field(unique=True, index=True, nullable=False)
+
+    user_rol: UserRol = Relationship(back_populates="usuarios")
+    user_perfiles_ia: list[UserPerfilIA] = Relationship(back_populates="user")
