@@ -73,6 +73,8 @@ Estas son las intrucciones para el agente de IA.
 - Reglas de FastAPI:
   - Estructura de Proyecto Modular (Usa APIRouter).
   - Separa los Esquemas (Pydantic) de los Modelos (Base de Datos).
+    - Usa una arquitectura simplificada de 3 fases estricta (Create, Update, Response) nominada como SchemaEntidadCreate, SchemaEntidadUpdate, SchemaEntidadResponse.
+    - Response hereda obligatoriamente de Create para minimizar las clases. Todas las validaciones obligatorias deben ir siempre en la clase Create.
   - Usa response_model por Seguridad.
   - Domina la Inyección de Dependencias (Depends).
   - Asincronía Consciente:
