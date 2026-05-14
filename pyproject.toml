@@ -40,6 +40,9 @@ dev = [
     # Calidad de Código (Linter & Formatter)
     "ruff>=0.1.14",
     "mypy>=1.20.0",
+
+    # Base de Datos (Migrations)
+    "alembic>=1.18.4",
 ]
 
 # Configuración de UV para indicar que no es un paquete
