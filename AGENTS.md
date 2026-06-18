@@ -1,86 +1,40 @@
-# AGENTS.md
+# AGENTS
 
-Estas son las intrucciones para el agente de IA.
+Este documento define el contexto principal y las instrucciones para el agente de IA que trabaja en este proyecto. 
+**Contexto para el Agente:** Al leer este archivo, asume estas directrices como tu base de conocimiento y reglas de comportamiento. Además de las reglas aquí descritas, ten presente que cuentas con **Servidores MCP (Model Context Protocol)** y **Skills** especializadas; utilízalas siempre que sean relevantes para optimizar la resolución de tareas.
 
-## Intruccion de comportamiento
+## Intruccion basicas de comportamiento
 
-- Habla siempre en español.
-- Utiliza PEP 8 como guia estricta para codificar:
-  - Indentation: 4 espacios.
-  - Longitud de línea: 79 caracteres.
-  - Nombres:
-    - snake_case para variables y funciones.
-    - PascalCase para clases.
-    - UPPER_CASE para constantes.
-  - Espacios en blanco: Evita espacios innecesarios dentro de paréntesis o antes de una coma.
-- Utiliza PEP 20:
-  - Bello es mejor que feo.
-  - Explícito es mejor que implícito.
-  - Lo simple es mejor que lo complejo.
-  - La legibilidad cuenta.
-- Utiliza PEP 257 como guia estricta para documentar el codigo y realiza esta accion aunque no se te pida:
-  - Ejemplo:
+- Responda siempre en español a menos que se indique explícitamente lo contrario.
+- Siempre dame respuestas objetivas y tecnicas. No seas adulador ni excesivamente cortés.
 
-            """
-            <descripcion de la funcion>
-            
-            Args:
-                <nombre_variable> (<tipo>): <descripcion>
+## Skills
 
-            Returns:
-                <tipo>: <descripcion>
-            """
-- Utiliza PEP 484, PEP 585 y PEP 604 para anotar las funciones y variables.
-- Utiliza PEP 498 para la interpolación literal de cadenas (f-strings).
-- Utiliza PEP 343 para la declaración "with" (gestores de contexto).    
-- No utilizar PEP 572 para las expresiones de asignación (El operador morsa :=).
-- Utiliza las reglas de API REST para el proyecto:
-  - Usa sustantivos en plural, nunca verbos, para las URIs.
-  - Aplica correctamente los verbos HTTP.
-    - GET: Obtener recursos.
-    - POST: Crear recursos.
-    - PUT: Actualizar recursos.
-    - DELETE: Eliminar recursos.
-    - PATCH: Actualizar recursos parcialmente.
-  - Utiliza los códigos de estado HTTP adecuados:
-    - 200 OK: Solicitud exitosa.
-    - 201 Created: Recurso creado exitosamente.
-    - 204 No Content: Solicitud exitosa pero sin contenido.
-    - 400 Bad Request: Solicitud inválida.
-    - 401 Unauthorized: Solicitud no autorizada.
-    - 403 Forbidden: Solicitud prohibida.
-    - 404 Not Found: Recurso no encontrado.
-    - 405 Method Not Allowed: Método no permitido.
-    - 409 Conflict: Conflicto con el recurso.
-    - 500 Internal Server Error: Error interno del servidor.
-    - etc...
-  - Versiona tu API desde el día uno.
-  - Usa Paginación, Filtrado y Ordenamiento.
-  - Mantén la anidación a un máximo de un nivel.
-- Realiza pruebas unitarias en la carpeta "tests"con pytest:
-  - Convenciones de Nomenclatura Obligatorias:
-    - Archivos: Deben comenzar por "test_".
-    - Funciones y Métodos: Deben comenzar siempre con el prefijo "test_".
-    - Clases: Deben comenzar siempre con el prefijo "Test".
-  - El Patrón AAA:
-    - Arrange: Configura el estado inicial, inicializa variables o crea los objetos necesarios.
-    - Act: Ejecución de la función o método a probar.
-    - Assert: Verificación de que el resultado es el esperado.
-  - Usa Fixtures en lugar de setup/teardown.
-  - Parametrización (Evita repetir código) (Utiliza @pytest.mark.parametrize).
-  - Prueba las Excepciones Explícitamente (Utiliza pytest.raises).
-  - deben tener dependencia absoluta.
-- Reglas de FastAPI:
-  - Estructura de Proyecto Modular (Usa APIRouter).
-  - Separa los Esquemas (Pydantic) de los Modelos (Base de Datos).
-    - Usa una arquitectura simplificada de 3 fases estricta (Create, Update, Response) nominada como SchemaEntidadCreate, SchemaEntidadUpdate, SchemaEntidadResponse.
-    - Response hereda obligatoriamente de Create para minimizar las clases. Todas las validaciones obligatorias deben ir siempre en la clase Create.
-  - Usa response_model por Seguridad.
-  - Domina la Inyección de Dependencias (Depends).
-  - Asincronía Consciente:
-    - Usa async def solo si estás utilizando librerías asíncronas dentro de tu función.
-    - Usa def normal si estás usando librerías bloqueantes o síncronas.
-  - Utiliza los manejadores de excepciones globales de FastAPI (@app.exception_handler).
-  - Usa pydantic-settings: Crea una clase Settings que herede de BaseSettings.
-  - Tareas en Segundo Plano (Background Tasks) si es necesario.
-  - Tipado Estricto de Errores con RFC 7807 (Problem Details).
+| Skill | Propósito | Cuándo usarlo | Ubicación |
+|---|---|---|---|
+| `notion-md-to-page` | Convertir archivos Markdown a páginas de Notion (vía MCP). Maneja el parseo y la segmentación (chunking). | Para exportar documentación, subir notas o migrar archivos `.md` a Notion. | `.agents/skills/notion-md-to-page/SKILL.md` |
+| `skill-creator` | Crear nuevas skills, modificar y mejorar skills existentes, y medir su rendimiento. | Para crear una skill desde cero, editar o optimizar una existente, o ejecutar evaluaciones y pruebas. | `.agents/skills/skill-creator/SKILL.md` |
+| `fastapi-app-creator` | Guía completa para crear aplicaciones FastAPI con mejores prácticas: arquitectura limpia, Pydantic V2, SQLAlchemy async, testing, seguridad y despliegue. | Para crear, estructurar o desarrollar aplicaciones FastAPI, configurar APIs REST con Python, o aplicar patrones de producción. | `.agents/skills/fastapi-app-creator/SKILL.md` |
+| `pytest-best-practices` | Guía completa de mejores prácticas para pytest: patrón AAA, fixtures, parametrización, mocking, testing asíncrono, cobertura y CI/CD. | Para escribir pruebas unitarias o de integración, configurar pytest, crear fixtures, hacer mocking, testear código async, o integrar pytest en pipelines CI/CD. | `.agents/skills/pytest-best-practices/SKILL.md` |
+| `python-best-practices` | Guía estricta de mejores prácticas y estándares de codificación en Python basados en PEP 8, PEP 20, PEP 257 y tipado moderno. | Para escribir, refactorizar o revisar código Python, asegurando el cumplimiento de estándares de calidad, convenciones y tipado. | `.agents/skills/python-best-practices/SKILL.md` |
+
+> [!TIP]
+> **Instrucción para el Agente:** Antes de utilizar un skill, usa la herramienta de lectura de archivos para revisar su `SKILL.md` y seguir sus instrucciones al pie de la letra.
+
+## Servidores MCP Disponibles
+
+| Servidor MCP | Propósito | Cuándo usarlo | Integración |
+|---|---|---|---|
+| `notion-mcp-server` | Integración directa con la API de Notion. Permite recuperar usuarios, leer/escribir bloques, páginas, bases de datos y realizar búsquedas de forma nativa. | Para realizar operaciones directas sobre el espacio de trabajo de Notion sin necesidad de crear scripts manuales. | `~/.gemini/antigravity/mcp/notion-mcp-server` |
+
+## Directrices para Planes de Implementación
+
+Cada vez que se solicite crear un plan de implementación para una nueva funcionalidad, componente o página, el plan debe generarse siguiendo estrictamente estas características y estructura:
+
+1. **Ubicación del Archivo:** Los planes deben guardarse siempre como archivos Markdown (`.md`) dentro de una carpeta específica bajo el directorio `docsAI/` (por ejemplo, `docsAI/<nombre_implementacion>/nombre_implementacion_plan_de_implementacion.md`).
+2. **Fases Estructuradas:** El plan debe dividirse en Fases lógicas y progresivas. Cada fase debe tener un objetivo claro.
+3. **Checklist de Tareas:** Cada fase debe contar con un checklist accionable (`- [ ]`) de tareas muy específicas y granulares que permitan hacer seguimiento visual del progreso.
+4. **Fase Obligatoria de Validación (QA y Accesibilidad):** Todo plan debe incluir como última fase la validación integral.
+5. **Criterios de Aceptación:** Una lista al final de las fases definiendo qué condiciones exactas deben cumplirse para dar por exitosa la implementación.
+6. **Referencias Técnicas:** Una tabla enlazando los archivos base necesarios.
+7. **Resumen de Archivos:** Una tabla detallando qué archivos nuevos se crearán (`🆕 Crear`), cuáles se modificarán (`✏️ Modificar`) y cuáles solo se revisarán (`🔍 Revisar`).
