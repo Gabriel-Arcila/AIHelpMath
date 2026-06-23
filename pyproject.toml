@@ -22,7 +22,10 @@ dependencies = [
     # Inteligencia Artificial
     "langchain>=0.1.0",
     "langchain-openai>=0.0.5",  # O la integración que elijamos
+    # Manejo de variables de entorno (.env)
     "python-dotenv>=1.0.0",
+    # Validación de correos electrónicos
+    "email-validator>=2.3.0",
 ]
 
 # Dependencias de Desarrollo
@@ -54,9 +57,24 @@ package = false
 # Configuración del Linter para que sea estricto pero justo
 [tool.ruff]
 line-length = 88
-select = ["E", "F", "W", "I"] # Errores, Pyflakes, Warning, Import Sort
-ignore = []
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "D", "N", "UP", "ANN", "B"]
+ignore = ["B008", "D107", "N818", "D100", "D104", "D205"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*" = ["ANN"]
+"tests/*" = ["ANN"]
 
 # Configuración de Pytest para modo asincrono
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+
+# Configuración estricta de Mypy
+[tool.mypy]
+strict = true
+plugins = ["pydantic.mypy"]
+

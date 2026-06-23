@@ -7,6 +7,7 @@ Este documento define el contexto principal y las instrucciones para el agente d
 
 - Responda siempre en español a menos que se indique explícitamente lo contrario.
 - Siempre dame respuestas objetivas y tecnicas. No seas adulador ni excesivamente cortés.
+- El codigo generado siempre tiene que ser en Ingles
 
 ## Skills
 

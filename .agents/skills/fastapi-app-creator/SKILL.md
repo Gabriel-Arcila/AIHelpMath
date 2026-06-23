@@ -229,13 +229,13 @@ app.include_router(
 ## 5. Esquemas Pydantic V2
 
 Arquitectura simplificada de 3 fases: **Create**, **Update**,
-**Response**. Response hereda de Create para minimizar la duplicación.
+**Response**, se puede colocar una cuarta fase de **Detailed** si es necesario para mostrar información adicional. Response hereda de Create para minimizar la duplicación.
 
 ```python
 from pydantic import BaseModel, ConfigDict, field_validator
 
 
-class SchemaUserCreate(BaseModel):
+class UserCreate(BaseModel):
     """
     Esquema para la creación de un usuario.
 
@@ -264,7 +264,7 @@ class SchemaUserCreate(BaseModel):
         return value.lower()
 
 
-class SchemaUserUpdate(BaseModel):
+class UserUpdate(BaseModel):
     """
     Esquema para la actualización parcial de un usuario.
 
@@ -277,7 +277,7 @@ class SchemaUserUpdate(BaseModel):
     email: str | None = None
 
 
-class SchemaUserResponse(SchemaUserCreate):
+class UserResponse(UserCreate):
     """
     Esquema de respuesta para un usuario.
 
@@ -288,6 +288,18 @@ class SchemaUserResponse(SchemaUserCreate):
     id: int
 
     model_config = ConfigDict(from_attributes=True)
+
+class UserDetailed(UserResponse):
+    """
+    Esquema de respuesta detallada para un usuario.
+
+    Args:
+        user_rol (UserRolResponse): Rol del usuario.
+        user_perfiles_ia (list[UserPerfilIADetailed]): Perfiles de IA del usuario.
+    """
+
+    user_rol: UserRolResponse
+    user_perfiles_ia: list[UserPerfilIADetailed] = []
 ```
 
 ### Reglas de Pydantic V2

@@ -45,4 +45,4 @@ EXPOSE 8000
 # buscando el objeto app dentro del archivo app/main.py
 # --host 0.0.0.0: CRUCIAL. Le dice al servidor que acepte conexiones desde fuera del contenedor
 # --port 8000: Puerto en el que escucha el servidor
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]

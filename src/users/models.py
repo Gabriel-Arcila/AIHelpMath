@@ -1,6 +1,4 @@
-"""
-Módulo que define los modelos de base de datos para el usuario y su perfil de IA.
-"""
+"""Módulo que define los modelos de base de datos para el usuario y su perfil de IA."""
 
 import uuid
 
@@ -8,8 +6,7 @@ from sqlmodel import Field, Relationship, SQLModel, UniqueConstraint
 
 
 class UserNivel(SQLModel, table=True):
-    """
-    Modelo de base de datos para los niveles de conocimiento (ej. Principiante,
+    """Modelo de base de datos para los niveles de conocimiento (ej. Principiante,
     Intermedio).
 
     Atributos:
@@ -33,8 +30,7 @@ class UserNivel(SQLModel, table=True):
 
 
 class UserTemaInteres(SQLModel, table=True):
-    """
-    Modelo de base de datos para los temas de interés o favoritos.
+    """Modelo de base de datos para los temas de interés o favoritos.
 
     Atributos:
         id (int | None): Identificador único del tema.
@@ -57,8 +53,7 @@ class UserTemaInteres(SQLModel, table=True):
 
 
 class UserPerfilIA(SQLModel, table=True):
-    """
-    Modelo de base de datos para el perfil de inteligencia artificial del usuario.
+    """Modelo de base de datos para el perfil de inteligencia artificial del usuario.
 
     Atributos:
         id (int | None): Identificador único del perfil de IA.
@@ -94,8 +89,7 @@ class UserPerfilIA(SQLModel, table=True):
 
 
 class UserRol(SQLModel, table=True):
-    """
-    Modelo de base de datos para los roles del sistema.
+    """Modelo de base de datos para los roles del sistema.
 
     Atributos:
         id (int | None): Identificador único del rol.
@@ -115,8 +109,7 @@ class UserRol(SQLModel, table=True):
 
 
 class User(SQLModel, table=True):
-    """
-    Modelo de base de datos para el usuario.
+    """Modelo de base de datos para el usuario.
 
     Atributos:
         id (str): Identificador único del usuario (ej: 'user-123').
