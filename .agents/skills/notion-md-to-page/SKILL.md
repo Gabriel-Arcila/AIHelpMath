@@ -278,44 +278,42 @@ This is a **bold** word and an *italic* word.
 
 ---
 
-### Step 4 — Insert Content into the Page
+### Step 4 — Insert Content into the Page (Auto-Upload)
 
-Read each `chunk_N.json` file and send its contents to Notion via `API-patch-block-children`.
+> **⚠️ IMPORTANT LIMITATION:** Because `chunk_N.json` files can be extremely large (up to 70+ KB) and exceed LLM output token limits, you MUST NOT try to manually pass their contents to `API-patch-block-children` via `call_mcp_tool`.
 
-```
-Tool:   call_mcp_tool
-Server: notion-mcp-server
-Tool:   API-patch-block-children
-```
+Instead, use the included `push_chunks.js` script to directly upload all chunks and automatically fix any invalid local URLs.
 
-```json
-{
-  "block_id": "<PAGE_ID>",
-  "children": <CONTENTS_OF_CHUNK_FILE>
-}
+```bash
+node <SKILL_DIR>/scripts/push_chunks.js "<PAGE_ID>" "<output-directory>"
 ```
 
-**For multi-chunk documents**, send them **sequentially** (chunk_0 first, then chunk_1, etc.):
-
-```
-Call 1: API-patch-block-children → chunk_0.json content
-Call 2: API-patch-block-children → chunk_1.json content
-Call 3: API-patch-block-children → chunk_2.json content
-...
+**Example:**
+```bash
+node .agents/skills/notion-md-to-page/scripts/push_chunks.js "3886caf8-da64-8144-967f-f09010aba983" "docs/notion-output"
 ```
 
-Each call appends blocks to the end of the page. Use the same `block_id` (page ID) for all calls.
-
-> **⚠️ RATE LIMIT**: Notion allows ~3 requests/second per integration. When inserting multiple chunks, allow a brief pause between calls.
+The script will automatically:
+1. Extract the Notion API token from your MCP configuration (`~/.gemini/config/mcp_config.json`).
+2. Read the JSON chunks in order.
+3. Automatically fix invalid local URLs (replacing them with placeholders to prevent Notion validation errors).
+4. Subdivide blocks further if necessary and upload them respecting rate limits.
+5. Clean up the output directory automatically.
 
 ---
 
-### Step 5 — Clean Up Temporary Files
+### Step 5 — Verify Clean Up
 
-After successful insertion, delete the generated chunk files to avoid leaving artifacts in the project:
+Although `push_chunks.js` automatically attempts to delete the chunk files and the output directory upon successful upload, you should verify that the temporary files were removed to avoid leaving artifacts in the project:
 
 ```bash
-# Delete the entire output directory
+# Verify the output directory no longer exists
+ls "<output-directory>"
+```
+
+If the directory still exists, remove it manually:
+
+```bash
 rm -rf "<output-directory>"
 ```
 
@@ -417,10 +415,10 @@ Verify that the block count and structure match what you expected.
 │  4. Convert .md → JSON chunks (node md-to-notion.js)            │
 │           │  → Generates chunk_0.json, chunk_1.json, ...        │
 │           ▼                                                     │
-│  5. Insert chunks (API-patch-block-children × N)                │
-│           │  → Send each chunk sequentially                     │
+│  5. Upload chunks automatically (node push_chunks.js)           │
+│           │  → Fixes links, uploads, and auto-cleans directory  │
 │           ▼                                                     │
-│  6. Clean up chunk files (delete output directory)              │
+│  6. Verify Clean Up (check and delete output directory)         │
 │           │                                                     │
 │           ▼                                                     │
 │  7. Update properties (API-patch-page) [optional]               │
