@@ -3,6 +3,25 @@
 Este documento define el contexto principal y las instrucciones para el agente de IA que trabaja en este proyecto. 
 **Contexto para el Agente:** Al leer este archivo, asume estas directrices como tu base de conocimiento y reglas de comportamiento. Además de las reglas aquí descritas, ten presente que cuentas con **Servidores MCP (Model Context Protocol)** y **Skills** especializadas; utilízalas siempre que sean relevantes para optimizar la resolución de tareas.
 
+## Contexto General de la Aplicación (IAHelpMath)
+
+**IAHelpMath** es un backend construido con **FastAPI** diseñado para proveer un **Tutor de Inteligencia Artificial especializado en Matemáticas**. Toda contribución debe respetar la identidad del proyecto y sus reglas de negocio.
+
+**Directrices Arquitectónicas y de Dominio:**
+1. **Domain-Driven Design (DDD):** El código está estructurado por dominios funcionales bajo el directorio `src/` (ej. `src/users`, `src/core`, `src/shared`), no por tipo de archivo. Cada módulo es autocontenido y debe incluir sus propias rutas, servicios, repositorios, esquemas, modelos y dependencias.
+2. **Stack Tecnológico Core:**
+   - **Framework:** FastAPI.
+   - **Base de Datos & ORM:** PostgreSQL con operaciones asíncronas (`asyncpg`), usando SQLAlchemy y SQLModel.
+   - **Validación:** Pydantic V2.
+3. **Patrones de Diseño y Estándares:** 
+   - Uso obligatorio de inyección de dependencias en servicios y enrutadores. No se permiten instancias globales de servicios.
+   - Manejo de excepciones centralizado siguiendo el estándar RFC 7807 (Problem Details for HTTP APIs).
+   - Límite de línea a 88 caracteres (Ruff/Black).
+   - Todas las consultas a la base de datos deben ser asíncronas (`AsyncSession`).
+4. **Módulos Principales:**
+   - **`users`**: Administración de cuentas, perfiles y autenticación.
+   - **`core`**: Configuraciones generales, bases de datos (`get_db`), seguridad y manejo global de excepciones.
+
 ## Intruccion basicas de comportamiento
 
 - Responda siempre en español a menos que se indique explícitamente lo contrario.

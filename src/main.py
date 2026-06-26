@@ -9,7 +9,6 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, status
 
-from src.ai_tutor.router import router as ai_tutor_router
 from src.core.config import settings
 from src.core.exceptions import register_exception_handlers
 from src.users.router import router as users_router
@@ -40,7 +39,6 @@ register_exception_handlers(app)
 
 # Inclusión de routers de dominio
 app.include_router(users_router, prefix="/v1/users", tags=["users"])
-app.include_router(ai_tutor_router, prefix="/v1/ai-tutor", tags=["ai_tutor"])
 
 
 @app.get("/health", status_code=status.HTTP_200_OK, tags=["health"])
