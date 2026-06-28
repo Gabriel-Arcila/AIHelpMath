@@ -17,7 +17,6 @@ Esta skill define el estándar de codificación obligatorio para cualquier desar
 ## 2. Estructura y Estilo del Código (PEP 8)
 
 - **Indentación:** Utiliza estrictamente **4 espacios** por cada nivel de anidación lógica. Prohibido mezclar espacios y tabulaciones.
-- **Longitud de línea:** Máximo **79 caracteres** para código y **72 caracteres** para bloques de texto/comentarios.
 - **Convenciones de Nomenclatura:**
   - `snake_case`: Para variables, funciones y métodos.
   - `PascalCase`: Para nombres de clases.
