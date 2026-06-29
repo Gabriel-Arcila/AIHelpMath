@@ -123,6 +123,10 @@ tipo(ámbito): descripción corta en imperativo
 |---|---|---|---|
 | `notion-mcp-server` | Integración directa con la API de Notion. Permite recuperar usuarios, leer/escribir bloques, páginas, bases de datos y realizar búsquedas de forma nativa. | Para realizar operaciones directas sobre el espacio de trabajo de Notion sin necesidad de crear scripts manuales. | `~/.gemini/antigravity/mcp/notion-mcp-server` |
 
+## Documentación
+
+TODO: Pendiente
+
 ## Directrices para Planes de Implementación
 
 Cada vez que se solicite crear un plan de implementación para una nueva funcionalidad, componente o página, el plan debe generarse siguiendo estrictamente estas características y estructura:
