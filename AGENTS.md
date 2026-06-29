@@ -35,6 +35,7 @@
 ## Patrones de Diseño y Estándares:
 
 - Domain-Driven Design (DDD): El código está estructurado por dominios funcionales bajo el directorio `src/` (ej. `src/users`, `src/core`, `src/shared`), no por tipo de archivo. Cada módulo es autocontenido y debe incluir sus propias rutas, servicios, repositorios, esquemas, modelos y dependencias.
+- Sub-módulos dentro de un dominio: Cuando un dominio agrupa múltiples entidades con lógica CRUD independiente, se permite crear sub-módulos anidados (ej. `src/users/users/`, `src/users/usernivel/`). Cada sub-módulo contiene su propio `router.py`, `service.py`, `dependencies.py` y `repository.py`. Los archivos compartidos del dominio (`models.py` y `schemas.py`) permanecen en la raíz del módulo padre.
 - Arquitectura en capas por dominio: Cada módulo sigue la cadena `Router → Service → Repository`. El **Router** maneja HTTP, el **Service** coordina lógica de negocio y transacciones (`commit`/`rollback`), y el **Repository** encapsula las consultas sin gestionar transacciones.
 - Esquemas Pydantic separados por operación: Cada entidad define `Create` (inserción), `Update` (parcial con campos opcionales) y `Response` (lectura con `from_attributes=True`).
 - Uso obligatorio de inyección de dependencias en servicios y enrutadores. No se permiten instancias globales de servicios.

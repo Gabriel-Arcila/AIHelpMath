@@ -1,0 +1,1 @@
+"""Paquete del módulo de usuarios."""

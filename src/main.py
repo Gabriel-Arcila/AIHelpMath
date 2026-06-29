@@ -11,7 +11,7 @@ from fastapi import FastAPI, status
 
 from src.core.config import settings
 from src.core.exceptions import register_exception_handlers
-from src.users.router import router as users_router
+from src.users.users.router import router as users_router
 
 
 @asynccontextmanager

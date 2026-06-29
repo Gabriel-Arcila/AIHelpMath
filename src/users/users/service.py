@@ -6,7 +6,7 @@ Coordina la lógica de negocio y las transacciones para la entidad User.
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.users.models import User
-from src.users.repository import UserRepository
+from src.users.users.repository import UserRepository
 from src.users.schemas import UserCreate, UserUpdate
 
 
