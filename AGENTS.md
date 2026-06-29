@@ -53,7 +53,69 @@ revise.
 
 ## Estructura del Proyecto
 
-TODO: Pendiente primero hay que depurar la estructura del proyecto
+```text
+IAHelpMath/
+├── .agents/                          # Configuración de agentes
+│   └── skills/                       # Skills personalizadas
+│       ├── fastapi-app-creator/
+│       ├── notion-md-to-page/
+│       ├── pytest-best-practices/
+│       ├── python-best-practices/
+│       └── skill-creator/
+├── .vscode/                          # Configuración del editor
+├── docs/                             # Documentación generada por IA
+│   └── reestructuracion/
+│       ├── reestructuracion_plan_de_implementacion.md
+│       └── informe_validacion_qa_fase6.md
+├── migrations/                       # Migraciones de Alembic
+│   ├── env.py
+│   ├── script.py.mako
+│   └── versions/
+│       └── f850706adbdc_initial_migration.py
+├── src/                              # Código fuente principal
+│   ├── __init__.py
+│   ├── main.py                       # Punto de entrada FastAPI
+│   ├── core/                         # Módulo transversal de infraestructura
+│   │   ├── __init__.py
+│   │   ├── config.py                 # Settings (pydantic-settings)
+│   │   ├── database.py               # Engine y SessionLocal async
+│   │   ├── dependencies.py           # Dependencias compartidas (get_session)
+│   │   ├── exceptions.py             # Excepciones centralizadas (RFC 7807)
+│   │   └── security.py               # Utilidades de seguridad
+│   ├── shared/                       # Módulo de utilidades compartidas
+│   │   ├── __init__.py
+│   │   └── pagination.py             # Lógica de paginación
+│   └── users/                        # Dominio: Usuarios
+│       ├── __init__.py               # Router agregador del dominio
+│       ├── models.py                 # Modelos SQLModel del dominio
+│       ├── schemas.py                # Schemas Pydantic del dominio
+│       ├── users/                    # Sub-módulo: CRUD de usuarios
+│       │   ├── __init__.py
+│       │   ├── dependencies.py       # Inyección de dependencias
+│       │   ├── repository.py         # Capa de acceso a datos
+│       │   ├── router.py             # Endpoints HTTP
+│       │   └── service.py            # Lógica de negocio
+│       └── usernivel/                # Sub-módulo: Niveles de usuario
+│           └── __init__.py           # (en desarrollo)
+├── tests/                            # Suite de pruebas
+│   ├── __init__.py
+│   ├── conftest.py                   # Fixtures globales de pytest
+│   ├── api/                          # Tests de integración (endpoints)
+│   │   └── __init__.py
+│   └── crud/                         # Tests unitarios (repositorios)
+│       └── __init__.py
+├── .dockerignore
+├── .env                              # Variables de entorno (no versionado)
+├── .env.example                      # Plantilla de variables de entorno
+├── .gitignore
+├── AGENTS.md                         # Reglas y contexto para agentes IA
+├── Dockerfile                        # Imagen Docker de producción
+├── README.md
+├── alembic.ini                       # Configuración de Alembic
+├── docker-compose.yml                # Orquestación local (app + PostgreSQL)
+├── pyproject.toml                    # Metadatos, dependencias y config de tools
+└── uv.lock                           # Lockfile de dependencias (uv)
+```
 
 ## Testing y Pruebas
 
