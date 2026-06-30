@@ -1,6 +1,34 @@
 # IAHelpMath
 
-**IAHelpMath** es un backend construido con **FastAPI** diseñado para proveer un **Tutor de Inteligencia Artificial especializado en Matemáticas**. Toda contribución debe respetar la identidad del proyecto y sus reglas de negocio.
+## Misión
+
+_Define la razón de ser del proyecto. Es la referencia que decide si una feature "encaja" o no._
+
+### Qué construimos
+
+**MathIA** es una plataforma web educativa impulsada por inteligencia artificial que ayuda a estudiantes a comprender, practicar y dominar las ciencias matemáticas (álgebra, cálculo, geometría) de forma personalizada e interactiva, reemplazando las explicaciones estáticas por retroalimentación dinámica y paso a paso.
+
+_Las piezas principales del producto:_
+
+1. **Backend API (FastAPI)** — API REST asíncrona que gestiona usuarios, autenticación, sesiones de chat con IA (LangChain + OpenAI), progreso de aprendizaje y ejercicios interactivos. Sigue una arquitectura DDD por capas (Router → Service → Repository) con PostgreSQL async.
+2. **Tutor IA (LangChain)** — Motor de inteligencia artificial que genera explicaciones matemáticas adaptadas al nivel del estudiante, resolviendo dudas paso a paso con analogías y retroalimentación en tiempo real.
+
+### Para quién
+
+- **Estudiantes de bachillerato y universidad** que buscan un tutor matemático disponible 24/7 que se adapte a su ritmo y explique con claridad, no solo dé respuestas.
+- **Estudiantes con dificultades en matemáticas** que necesitan explicaciones alternativas, pistas graduales y práctica interactiva sin la presión de una clase presencial.
+
+### Principios
+
+- **Entender, no memorizar** — La IA genera explicaciones paso a paso con analogías y pistas graduales en lugar de respuestas directas. El objetivo es comprensión profunda.
+- **Arquitectura limpia y mantenible** — DDD con capas bien separadas (Router → Service → Repository), inyección de dependencias obligatoria, código async-first y estándares estrictos (Ruff, Mypy strict, RFC 9457).
+
+### Qué no es
+
+- No es un repositorio de respuestas ni un solucionario automático de tareas. La IA guía, no resuelve por el estudiante.
+- No es una plataforma de cursos con videos pregrabados ni contenido estático tipo wiki.
+- No es un sistema de gestión académica (LMS) ni reemplaza la relación profesor-alumno.
+- No pretende cubrir todas las materias: se limita exclusivamente a ciencias matemáticas (álgebra, cálculo, geometría, estadística).
 
 ## Stack Tecnológico
 
