@@ -3,8 +3,8 @@
 from fastapi import APIRouter, Depends, Response, status
 
 from src.core.exceptions import NotFoundException
-from src.users.users.dependencies import get_user_service
 from src.users.schemas import UserCreate, UserResponse, UserUpdate
+from src.users.users.dependencies import get_user_service
 from src.users.users.service import UserService
 
 router = APIRouter()

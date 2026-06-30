@@ -563,10 +563,10 @@ class CorrelationIdMiddleware:
 
 ---
 
-## 11. Manejo global de excepciones (RFC 7807)
+## 11. Manejo global de excepciones (RFC 9457)
 
 Centralizar las excepciones con `@app.exception_handler()` emitiendo
-JSON normalizado según RFC 7807 (Problem Details).
+JSON normalizado según RFC 9457 (Problem Details).
 
 ```python
 from fastapi import FastAPI, Request, status

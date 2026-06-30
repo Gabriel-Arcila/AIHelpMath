@@ -1,5 +1,5 @@
 """Definición de excepciones personalizadas y manejadores globales para la aplicación.
-Sigue el estándar RFC 7807 (Problem Details para APIs HTTP).
+Sigue el estándar RFC 9457 (Problem Details para APIs HTTP).
 """
 
 from fastapi import FastAPI, Request, status
@@ -70,14 +70,14 @@ def register_exception_handlers(app: FastAPI) -> None:
     ) -> JSONResponse:
         """Captura y maneja las excepciones del tipo AppException.
 
-        Sigue el estándar RFC 7807.
+        Sigue el estándar RFC 9457.
 
         Args:
             request (Request): La solicitud HTTP que provocó el error.
             exc (AppException): La excepción capturada.
 
         Returns:
-            JSONResponse: Respuesta JSON con el detalle del problema según RFC 7807.
+            JSONResponse: Respuesta JSON con el detalle del problema según RFC 9457.
         """
         return JSONResponse(
             status_code=exc.status_code,

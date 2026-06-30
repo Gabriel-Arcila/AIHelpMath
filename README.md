@@ -71,11 +71,11 @@ IAHelpMath/
 │       ├── skill-creator/
 │       └── (mas skills)/...
 ├── .vscode/                          # Configuración del editor
-├── docs/                             # Documentación generada por IA
+├── spec/                             # Documentación generada por IA
 │   ├── reestructuracion/
 │   │   ├── reestructuracion_plan_de_implementacion.md
 │   │   └── informe_validacion_qa_fase6.md
-│   └── (mas docs)/...
+│   └── (mas spec)/...
 ├── migrations/                       # Migraciones de Alembic
 │   ├── env.py
 │   ├── script.py.mako
@@ -90,7 +90,7 @@ IAHelpMath/
 │   │   ├── config.py                 # Settings (pydantic-settings)
 │   │   ├── database.py               # Engine y SessionLocal async
 │   │   ├── dependencies.py           # Dependencias compartidas (get_session)
-│   │   ├── exceptions.py             # Excepciones centralizadas (RFC 7807)
+│   │   ├── exceptions.py             # Excepciones centralizadas (RFC 9457)
 │   │   └── security.py               # Utilidades de seguridad
 │   ├── shared/                       # Módulo de utilidades compartidas
 │   │   ├── __init__.py
@@ -136,6 +136,6 @@ IAHelpMath/
 - Arquitectura en capas por dominio: Cada módulo sigue la cadena `Router → Service → Repository`. El **Router** maneja HTTP, el **Service** coordina lógica de negocio y transacciones (`commit`/`rollback`), y el **Repository** encapsula las consultas sin gestionar transacciones.
 - Esquemas Pydantic separados por operación: Cada entidad define `Create` (inserción), `Update` (parcial con campos opcionales) y `Response` (lectura con `from_attributes=True`).
 - Uso obligatorio de inyección de dependencias en servicios y enrutadores. No se permiten instancias globales de servicios.
-- Manejo de excepciones centralizado siguiendo el estándar RFC 7807 (Problem Details for HTTP APIs).
+- Manejo de excepciones centralizado siguiendo el estándar RFC 9457 (Problem Details for HTTP APIs).
 - Límite de línea a 88 caracteres (Ruff/Black).
 - Todas las consultas a la base de datos deben ser asíncronas (`AsyncSession`).

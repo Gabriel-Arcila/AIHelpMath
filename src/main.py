@@ -34,7 +34,7 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# Registro de manejadores de excepciones globales (RFC 7807)
+# Registro de manejadores de excepciones globales (RFC 9457)
 register_exception_handlers(app)
 
 # Inclusión de routers de dominio

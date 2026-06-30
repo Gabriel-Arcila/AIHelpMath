@@ -413,7 +413,7 @@ def register_exception_handlers(app: FastAPI) -> None:
     Registra los manejadores de excepciones globales.
 
     Centraliza la captura de errores y normaliza las
-    respuestas JSON según RFC 7807.
+    respuestas JSON según RFC 9457.
 
     Args:
         app (FastAPI): Instancia de la aplicación.

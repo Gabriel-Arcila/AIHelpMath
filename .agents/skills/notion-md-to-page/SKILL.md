@@ -160,12 +160,12 @@ This will create one or more `chunk_N.json` files in the output directory. Each 
 
 **Example:**
 ```bash
-node .agents/skills/notion-md-to-page/scripts/md-to-notion.js "docs/my-document.md" "docs/notion-output"
+node .agents/skills/notion-md-to-page/scripts/md-to-notion.js "spec/my-document.md" "spec/notion-output"
 ```
 
 Output:
 ```
-✅ Done — 247 blocks → 3 chunk(s) written to docs/notion-output
+✅ Done — 247 blocks → 3 chunk(s) written to spec/notion-output
 ```
 
 #### Parser features
@@ -290,7 +290,7 @@ node <SKILL_DIR>/scripts/push_chunks.js "<PAGE_ID>" "<output-directory>"
 
 **Example:**
 ```bash
-node .agents/skills/notion-md-to-page/scripts/push_chunks.js "3886caf8-da64-8144-967f-f09010aba983" "docs/notion-output"
+node .agents/skills/notion-md-to-page/scripts/push_chunks.js "3886caf8-da64-8144-967f-f09010aba983" "spec/notion-output"
 ```
 
 The script will automatically:

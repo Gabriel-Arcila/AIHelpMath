@@ -133,7 +133,7 @@ tipo(ámbito): descripción corta en imperativo
 
 Cada vez que se solicite crear un plan de implementación para una nueva funcionalidad, componente o página, el plan debe generarse siguiendo estrictamente estas características y estructura:
 
-1. **Ubicación del Archivo:** Los planes deben guardarse siempre como archivos Markdown (`.md`) dentro de una carpeta específica bajo el directorio `docs/` (por ejemplo, `docs/<nombre_implementacion>/plan_<nombre_implementacion>_YYYYMMDD.md`).
+1. **Ubicación del Archivo:** Los planes deben guardarse siempre como archivos Markdown (`.md`) dentro de una carpeta específica bajo el directorio `spec/` (por ejemplo, `spec/<nombre_implementacion>_YYYYMMDD/plan_<nombre_implementacion>_YYYYMMDD.md`).
 2. **Fases Estructuradas:** El plan debe dividirse en Fases lógicas y progresivas. Cada fase debe tener un objetivo claro.
 3. **Checklist de Tareas:** Cada fase debe contar con un checklist accionable (`- [ ]`) de tareas muy específicas y granulares que permitan hacer seguimiento visual del progreso.
 4. **Fase Obligatoria de Validación (QA y Accesibilidad):** Todo plan debe incluir como última fase la validación integral.
