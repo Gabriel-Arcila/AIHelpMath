@@ -1,125 +1,87 @@
 # AGENTS.md
 
-## Contexto
-
 **IAHelpMath** es un backend construido con **FastAPI** diseñado para proveer un **Tutor de Inteligencia Artificial especializado en Matemáticas**. Toda contribución debe respetar la identidad del proyecto y sus reglas de negocio.
-
-## Stack Tecnológico
-
-### Producción
-
-- **Framework:** FastAPI.
-- **Servidor ASGI:** Uvicorn (`uvicorn[standard]`).
-- **Base de Datos & ORM:** PostgreSQL con operaciones asíncronas (`asyncpg`), usando SQLAlchemy y SQLModel.
-- **Migraciones:** Alembic (directorio `migrations/`, configuración en `alembic.ini`).
-- **Validación:** Pydantic V2.
-- **Configuración:** `pydantic-settings` (carga de `.env` vía `BaseSettings`).
-- **Variables de Entorno:** `python-dotenv`.
-- **Validación de Emails:** `email-validator`.
-- **Inteligencia Artificial:** LangChain + `langchain-openai`.
-
-### Desarrollo y Calidad
-
-- **Gestor de Dependencias:** `uv` (lockfile: `uv.lock`).
-- **Testing:** pytest, pytest-asyncio, httpx (cliente HTTP asíncrono para tests de integración).
-- **Verificación de Tipos en Runtime:** `typeguard`.
-- **Linter & Formatter:** Ruff (línea a 88 caracteres, convención Google docstrings).
-- **Análisis Estático de Tipos:** Mypy (modo `strict`, plugin `pydantic.mypy`).
-
-### Infraestructura
-
-- **Contenerización:** Docker + Docker Compose.
-- **Imagen Base:** `python:3.11-slim`.
-- **Base de Datos (contenedor):** `postgres:15-alpine`.
-
-## Patrones de Diseño y Estándares:
-
-- Domain-Driven Design (DDD): El código está estructurado por dominios funcionales bajo el directorio `src/` (ej. `src/users`, `src/core`, `src/shared`), no por tipo de archivo. Cada módulo es autocontenido y debe incluir sus propias rutas, servicios, repositorios, esquemas, modelos y dependencias.
-- Sub-módulos dentro de un dominio: Cuando un dominio agrupa múltiples entidades con lógica CRUD independiente, se permite crear sub-módulos anidados (ej. `src/users/users/`, `src/users/usernivel/`). Cada sub-módulo contiene su propio `router.py`, `service.py`, `dependencies.py` y `repository.py`. Los archivos compartidos del dominio (`models.py` y `schemas.py`) permanecen en la raíz del módulo padre.
-- Arquitectura en capas por dominio: Cada módulo sigue la cadena `Router → Service → Repository`. El **Router** maneja HTTP, el **Service** coordina lógica de negocio y transacciones (`commit`/`rollback`), y el **Repository** encapsula las consultas sin gestionar transacciones.
-- Esquemas Pydantic separados por operación: Cada entidad define `Create` (inserción), `Update` (parcial con campos opcionales) y `Response` (lectura con `from_attributes=True`).
-- Uso obligatorio de inyección de dependencias en servicios y enrutadores. No se permiten instancias globales de servicios.
-- Manejo de excepciones centralizado siguiendo el estándar RFC 7807 (Problem Details for HTTP APIs).
-- Límite de línea a 88 caracteres (Ruff/Black).
-- Todas las consultas a la base de datos deben ser asíncronas (`AsyncSession`).
 
 ## Intruccion basicas de comportamiento
 
-- Responda siempre en español a menos que se indique explícitamente lo contrario.
+- Responda siempre en **Español** a menos que se indique explícitamente lo contrario.
 - Siempre dame respuestas objetivas y tecnicas. No seas adulador ni excesivamente cortés.
-- El codigo generado siempre tiene que ser en Ingles.
-- Al terminar, dime qué cambiaste para que lo
-revise.
-
-## Estructura del Proyecto
-
-```text
-IAHelpMath/
-├── .agents/                          # Configuración de agentes
-│   └── skills/                       # Skills personalizadas
-│       ├── fastapi-app-creator/
-│       ├── notion-md-to-page/
-│       ├── pytest-best-practices/
-│       ├── python-best-practices/
-│       └── skill-creator/
-├── .vscode/                          # Configuración del editor
-├── docs/                             # Documentación generada por IA
-│   └── reestructuracion/
-│       ├── reestructuracion_plan_de_implementacion.md
-│       └── informe_validacion_qa_fase6.md
-├── migrations/                       # Migraciones de Alembic
-│   ├── env.py
-│   ├── script.py.mako
-│   └── versions/
-│       └── f850706adbdc_initial_migration.py
-├── src/                              # Código fuente principal
-│   ├── __init__.py
-│   ├── main.py                       # Punto de entrada FastAPI
-│   ├── core/                         # Módulo transversal de infraestructura
-│   │   ├── __init__.py
-│   │   ├── config.py                 # Settings (pydantic-settings)
-│   │   ├── database.py               # Engine y SessionLocal async
-│   │   ├── dependencies.py           # Dependencias compartidas (get_session)
-│   │   ├── exceptions.py             # Excepciones centralizadas (RFC 7807)
-│   │   └── security.py               # Utilidades de seguridad
-│   ├── shared/                       # Módulo de utilidades compartidas
-│   │   ├── __init__.py
-│   │   └── pagination.py             # Lógica de paginación
-│   └── users/                        # Dominio: Usuarios
-│       ├── __init__.py               # Router agregador del dominio
-│       ├── models.py                 # Modelos SQLModel del dominio
-│       ├── schemas.py                # Schemas Pydantic del dominio
-│       ├── users/                    # Sub-módulo: CRUD de usuarios
-│       │   ├── __init__.py
-│       │   ├── dependencies.py       # Inyección de dependencias
-│       │   ├── repository.py         # Capa de acceso a datos
-│       │   ├── router.py             # Endpoints HTTP
-│       │   └── service.py            # Lógica de negocio
-│       └── usernivel/                # Sub-módulo: Niveles de usuario
-│           └── __init__.py           # (en desarrollo)
-├── tests/                            # Suite de pruebas
-│   ├── __init__.py
-│   ├── conftest.py                   # Fixtures globales de pytest
-│   ├── api/                          # Tests de integración (endpoints)
-│   │   └── __init__.py
-│   └── crud/                         # Tests unitarios (repositorios)
-│       └── __init__.py
-├── .dockerignore
-├── .env                              # Variables de entorno (no versionado)
-├── .env.example                      # Plantilla de variables de entorno
-├── .gitignore
-├── AGENTS.md                         # Reglas y contexto para agentes IA
-├── Dockerfile                        # Imagen Docker de producción
-├── README.md
-├── alembic.ini                       # Configuración de Alembic
-├── docker-compose.yml                # Orquestación local (app + PostgreSQL)
-├── pyproject.toml                    # Metadatos, dependencias y config de tools
-└── uv.lock                           # Lockfile de dependencias (uv)
-```
+- El codigo generado siempre tiene que ser en **Ingles**.
+- Al terminar, dime qué cambiaste para que lo revise.
+- Lee el archivo `README.md` antes de hacer cualquier cambio para tener el contexto de la aplicacion. 
 
 ## Testing y Pruebas
 
-TODO: Pendiente
+| Herramienta | Propósito | Cuándo usarla |
+|---|---|---|
+| `pytest` | Framework de testing | Siempre que se ejecuten pruebas. |
+| `pytest-asyncio` | Soporte para tests `async/await` | Todo test que invoque código asíncrono (servicios, repositorios, endpoints). |
+| `httpx` (`AsyncClient`) | Cliente HTTP asíncrono para tests | Tests de integración contra endpoints FastAPI (sin levantar servidor). |
+| `typeguard` | Verificación de tipos en runtime | Para validar anotaciones de tipo durante la ejecución de tests. |
+| `ruff` | Linter y formatter | Antes de cada commit para garantizar estilo y detectar errores estáticos. |
+| `mypy` | Análisis estático de tipos | Para verificar la correctitud de las anotaciones de tipo en `src/`. |
+| `Docker Compose` | Orquestación de contenedores | Para levantar PostgreSQL (obligatorio para tests) y la app en producción. |
+| `Alembic` | Migraciones de base de datos | Al crear/modificar modelos SQLModel para sincronizar el schema de la DB. |
+
+### Comandos
+
+```bash
+# ── Setup inicial ──────────────────────────────────────────────
+cp .env.example .env                 # Crear archivo de variables de entorno
+uv sync                              # Instalar dependencias (prod + dev)
+docker compose up db -d              # Levantar PostgreSQL en Docker
+uv run alembic upgrade head          # Aplicar migraciones pendientes
+
+# ── Desarrollo (servidor local) ───────────────────────────────
+uv run uvicorn src.main:app --reload # FastAPI en http://localhost:8000
+                                     # Docs en /docs (Swagger) y /redoc
+
+# ── Testing ────────────────────────────────────────────────────
+docker compose up db -d              # Asegurar que la DB esté corriendo
+uv run pytest -v                     # Ejecutar todos los tests
+uv run pytest tests/api/ -v          # Solo integración (endpoints)
+uv run pytest tests/crud/ -v         # Solo unitarios (repositorios)
+uv run pytest --cov=src --cov-report=term-missing  # Cobertura
+
+# ── Calidad de código ─────────────────────────────────────────
+uv run ruff check src/ tests/        # Linter
+uv run ruff format src/ tests/       # Formatter
+uv run mypy src/                     # Análisis estático de tipos
+
+# ── Migraciones (Alembic) ─────────────────────────────────────
+uv run alembic revision --autogenerate -m "descripcion"  # Nueva migración
+uv run alembic upgrade head          # Aplicar migraciones
+uv run alembic downgrade -1          # Revertir última migración
+
+# ── Docker (producción / CI) ──────────────────────────────────
+docker compose up --build            # Construir y levantar todo (app + db)
+docker compose down                  # Detener y eliminar contenedores
+docker compose logs -f app           # Ver logs de la aplicación
+```
+
+## Skills
+
+| Skill | Propósito | Cuándo usarlo | Ubicación |
+|---|---|---|---|
+| `notion-md-to-page` | Convertir archivos Markdown a páginas de Notion (vía MCP). Maneja el parseo y la segmentación (chunking). | Para exportar documentación, subir notas o migrar archivos `.md` a Notion. | `.agents/skills/notion-md-to-page/SKILL.md` |
+| `skill-creator` | Crear nuevas skills, modificar y mejorar skills existentes, y medir su rendimiento. | Para crear una skill desde cero, editar o optimizar una existente, o ejecutar evaluaciones y pruebas. | `.agents/skills/skill-creator/SKILL.md` |
+| `fastapi-app-creator` | Guía completa para crear aplicaciones FastAPI con mejores prácticas: arquitectura limpia, Pydantic V2, SQLAlchemy async, testing, seguridad y despliegue. | Para crear, estructurar o desarrollar aplicaciones FastAPI, configurar APIs REST con Python, o aplicar patrones de producción. | `.agents/skills/fastapi-app-creator/SKILL.md` |
+| `pytest-best-practices` | Guía completa de mejores prácticas para pytest: patrón AAA, fixtures, parametrización, mocking, testing asíncrono, cobertura y CI/CD. | Para escribir pruebas unitarias o de integración, configurar pytest, crear fixtures, hacer mocking, testear código async, o integrar pytest en pipelines CI/CD. | `.agents/skills/pytest-best-practices/SKILL.md` |
+| `python-best-practices` | Guía estricta de mejores prácticas y estándares de codificación en Python basados en PEP 8, PEP 20, PEP 257 y tipado moderno. | Para escribir, refactorizar o revisar código Python, asegurando el cumplimiento de estándares de calidad, convenciones y tipado. | `.agents/skills/python-best-practices/SKILL.md` |
+
+> [!TIP]
+> **Instrucción para el Agente:** Antes de utilizar un skill, usa la herramienta de lectura de archivos para revisar su `SKILL.md` y seguir sus instrucciones al pie de la letra.
+
+## Servidores MCP Disponibles
+
+| Servidor MCP | Propósito | Cuándo usarlo | Integración |
+|---|---|---|---|
+| `notion-mcp-server` | Integración directa con la API de Notion. Permite recuperar usuarios, leer/escribir bloques, páginas, bases de datos y realizar búsquedas de forma nativa. | Para realizar operaciones directas sobre el espacio de trabajo de Notion sin necesidad de crear scripts manuales. | `~/.gemini/antigravity/mcp/notion-mcp-server` |
+
+## Documentación
+
+- En `README.md` esta el contexto de la aplicacion.
+- En la carpeta `docs/` estan todos los planes de implementacion y documentacion tecnica generada por IA.
 
 ## Git y GitHub
 
@@ -167,34 +129,11 @@ tipo(ámbito): descripción corta en imperativo
     - `git diff --staged --stat`.
 - Ofrecer **3 opciones** de mensaje para que el usuario elija.
 
-## Skills
-
-| Skill | Propósito | Cuándo usarlo | Ubicación |
-|---|---|---|---|
-| `notion-md-to-page` | Convertir archivos Markdown a páginas de Notion (vía MCP). Maneja el parseo y la segmentación (chunking). | Para exportar documentación, subir notas o migrar archivos `.md` a Notion. | `.agents/skills/notion-md-to-page/SKILL.md` |
-| `skill-creator` | Crear nuevas skills, modificar y mejorar skills existentes, y medir su rendimiento. | Para crear una skill desde cero, editar o optimizar una existente, o ejecutar evaluaciones y pruebas. | `.agents/skills/skill-creator/SKILL.md` |
-| `fastapi-app-creator` | Guía completa para crear aplicaciones FastAPI con mejores prácticas: arquitectura limpia, Pydantic V2, SQLAlchemy async, testing, seguridad y despliegue. | Para crear, estructurar o desarrollar aplicaciones FastAPI, configurar APIs REST con Python, o aplicar patrones de producción. | `.agents/skills/fastapi-app-creator/SKILL.md` |
-| `pytest-best-practices` | Guía completa de mejores prácticas para pytest: patrón AAA, fixtures, parametrización, mocking, testing asíncrono, cobertura y CI/CD. | Para escribir pruebas unitarias o de integración, configurar pytest, crear fixtures, hacer mocking, testear código async, o integrar pytest en pipelines CI/CD. | `.agents/skills/pytest-best-practices/SKILL.md` |
-| `python-best-practices` | Guía estricta de mejores prácticas y estándares de codificación en Python basados en PEP 8, PEP 20, PEP 257 y tipado moderno. | Para escribir, refactorizar o revisar código Python, asegurando el cumplimiento de estándares de calidad, convenciones y tipado. | `.agents/skills/python-best-practices/SKILL.md` |
-
-> [!TIP]
-> **Instrucción para el Agente:** Antes de utilizar un skill, usa la herramienta de lectura de archivos para revisar su `SKILL.md` y seguir sus instrucciones al pie de la letra.
-
-## Servidores MCP Disponibles
-
-| Servidor MCP | Propósito | Cuándo usarlo | Integración |
-|---|---|---|---|
-| `notion-mcp-server` | Integración directa con la API de Notion. Permite recuperar usuarios, leer/escribir bloques, páginas, bases de datos y realizar búsquedas de forma nativa. | Para realizar operaciones directas sobre el espacio de trabajo de Notion sin necesidad de crear scripts manuales. | `~/.gemini/antigravity/mcp/notion-mcp-server` |
-
-## Documentación
-
-TODO: Pendiente
-
 ## Directrices para Planes de Implementación
 
 Cada vez que se solicite crear un plan de implementación para una nueva funcionalidad, componente o página, el plan debe generarse siguiendo estrictamente estas características y estructura:
 
-1. **Ubicación del Archivo:** Los planes deben guardarse siempre como archivos Markdown (`.md`) dentro de una carpeta específica bajo el directorio `docsAI/` (por ejemplo, `docsAI/<nombre_implementacion>/nombre_implementacion_plan_de_implementacion.md`).
+1. **Ubicación del Archivo:** Los planes deben guardarse siempre como archivos Markdown (`.md`) dentro de una carpeta específica bajo el directorio `docs/` (por ejemplo, `docs/<nombre_implementacion>/plan_<nombre_implementacion>_YYYYMMDD.md`).
 2. **Fases Estructuradas:** El plan debe dividirse en Fases lógicas y progresivas. Cada fase debe tener un objetivo claro.
 3. **Checklist de Tareas:** Cada fase debe contar con un checklist accionable (`- [ ]`) de tareas muy específicas y granulares que permitan hacer seguimiento visual del progreso.
 4. **Fase Obligatoria de Validación (QA y Accesibilidad):** Todo plan debe incluir como última fase la validación integral.
