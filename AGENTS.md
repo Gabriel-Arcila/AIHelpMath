@@ -81,7 +81,7 @@ docker compose logs -f app           # Ver logs de la aplicación
 ## Documentación
 
 - En `README.md` esta el contexto de la aplicacion.
-- En la carpeta `docs/` estan todos los planes de implementacion y documentacion tecnica generada por IA.
+- En la carpeta `spec/` estan todos los planes de implementacion y documentacion tecnica generada por IA.
 
 ## Git y GitHub
 
