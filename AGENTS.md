@@ -82,6 +82,7 @@ docker compose logs -f app           # Ver logs de la aplicación
 
 - En `README.md` esta el contexto de la aplicacion.
 - En la carpeta `spec/` estan todos los planes de implementacion y documentacion tecnica generada por IA.
+- Ignora el archivo `Backlog.md` en la carpeta `spec/` a menos que se te diga lo contrario.
 
 ## Git y GitHub
 
@@ -134,9 +135,11 @@ tipo(ámbito): descripción corta en imperativo
 Cada vez que se solicite crear un plan de implementación para una nueva funcionalidad, componente o página, el plan debe generarse siguiendo estrictamente estas características y estructura:
 
 1. **Ubicación del Archivo:** Los planes deben guardarse siempre como archivos Markdown (`.md`) dentro de una carpeta específica bajo el directorio `spec/` (por ejemplo, `spec/<nombre_implementacion>_YYYYMMDD/plan_<nombre_implementacion>_YYYYMMDD.md`).
-2. **Fases Estructuradas:** El plan debe dividirse en Fases lógicas y progresivas. Cada fase debe tener un objetivo claro.
-3. **Checklist de Tareas:** Cada fase debe contar con un checklist accionable (`- [ ]`) de tareas muy específicas y granulares que permitan hacer seguimiento visual del progreso.
-4. **Fase Obligatoria de Validación (QA y Accesibilidad):** Todo plan debe incluir como última fase la validación integral.
-5. **Criterios de Aceptación:** Una lista al final de las fases definiendo qué condiciones exactas deben cumplirse para dar por exitosa la implementación.
-6. **Referencias Técnicas:** Una tabla enlazando los archivos base necesarios.
-7. **Resumen de Archivos:** Una tabla detallando qué archivos nuevos se crearán (`🆕 Crear`), cuáles se modificarán (`✏️ Modificar`) y cuáles solo se revisarán (`🔍 Revisar`).
+2. **Contexto:** El plan debe incluir un resumen del contexto actual, la justificación, el objetivo, el riesgo y el enfoque de la implementación.
+3. **Fases Estructuradas:** El plan debe dividirse en Fases lógicas y progresivas. Cada fase debe tener un objetivo claro y debe indicar los archivos a modificar, crear o eliminar.
+4. **Checklist de Tareas:** Cada fase debe contar con un checklist accionable (`- [ ]`) de tareas muy específicas y granulares que permitan hacer seguimiento visual del progreso.
+5. **Fase Obligatoria de Validación (QA y Accesibilidad):** Todo plan debe incluir como última fase la validación integral.
+6. **Criterios de Aceptación:** Una lista al final de las fases definiendo qué condiciones exactas deben cumplirse para dar por exitosa la implementación.
+7. **Referencias Técnicas:** Una tabla enlazando los archivos base necesarios.
+8. **Resumen de Archivos:** Una tabla detallando qué archivos nuevos se crearán (`Crear`), cuáles se modificarán (`Modificar`) y cuáles solo se revisarán (`Revisar`).
+9. **Actualizacion del Archivo `roadmap.md`:** Al crear, modificar o completar un plan de implementacion se debe actualizar el archivo `roadmap.md` en la seccion "Hecho" o "Siguiente" segun corresponda con el numero del plan,descripcion corta, nombre, fecha y enlace al plan.
