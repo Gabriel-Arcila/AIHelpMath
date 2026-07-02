@@ -7,35 +7,35 @@ y Response (lectura).
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 # ==========================================
-# ESQUEMAS PARA USER ROL
+# ESQUEMAS PARA USER ROLE
 # ==========================================
 
 
-class UserRolCreate(BaseModel):
+class UserRoleCreate(BaseModel):
     """Esquema para la creación de un Rol.
 
     Attributes:
-        nombre (str): Nombre del rol (ej. 'ESTUDIANTE').
-        descripcion (str | None): Descripción opcional de las funciones del rol.
+        name (str): Nombre del rol (ej. 'ESTUDIANTE').
+        description (str | None): Descripción opcional de las funciones del rol.
     """
 
-    nombre: str = Field(..., description="Nombre del rol")
-    descripcion: str | None = Field(default=None, description="Descripción del rol")
+    name: str = Field(..., description="Role name")
+    description: str | None = Field(default=None, description="Role description")
 
 
-class UserRolUpdate(BaseModel):
+class UserRoleUpdate(BaseModel):
     """Esquema para la actualización de un Rol.
 
     Attributes:
-        nombre (str | None): Nuevo nombre para el rol.
-        descripcion (str | None): Nueva descripción para el rol.
+        name (str | None): Nuevo nombre para el rol.
+        description (str | None): Nueva descripción para el rol.
     """
 
-    nombre: str | None = Field(default=None)
-    descripcion: str | None = Field(default=None)
+    name: str | None = Field(default=None)
+    description: str | None = Field(default=None)
 
 
-class UserRolResponse(UserRolCreate):
+class UserRoleResponse(UserRoleCreate):
     """Esquema de respuesta de un Rol.
 
     Attributes:
@@ -47,39 +47,39 @@ class UserRolResponse(UserRolCreate):
 
 
 # ==========================================
-# ESQUEMAS PARA USER NIVEL
+# ESQUEMAS PARA USER LEVEL
 # ==========================================
 
 
-class UserNivelCreate(BaseModel):
+class UserLevelCreate(BaseModel):
     """Esquema para la creación de un Nivel de conocimiento.
 
     Attributes:
-        nombre (str): Nombre del nivel de conocimiento (ej. 'PRINCIPIANTE').
-        cuantificador (int): Valor numérico asignado al nivel.
-        descripcion (str | None): Descripción opcional del nivel.
+        name (str): Nombre del nivel de conocimiento (ej. 'PRINCIPIANTE').
+        quantifier (int): Valor numérico asignado al nivel.
+        description (str | None): Descripción opcional del nivel.
     """
 
-    nombre: str = Field(..., description="Nombre del nivel de conocimiento")
-    cuantificador: int = Field(..., description="Valor numérico de lógica")
-    descripcion: str | None = Field(default=None)
+    name: str = Field(..., description="Knowledge level name")
+    quantifier: int = Field(..., description="Numeric quantifier value")
+    description: str | None = Field(default=None)
 
 
-class UserNivelUpdate(BaseModel):
+class UserLevelUpdate(BaseModel):
     """Esquema para la actualización de un Nivel de conocimiento.
 
     Attributes:
-        nombre (str | None): Nuevo nombre del nivel de conocimiento.
-        cuantificador (int | None): Nuevo valor numérico del nivel.
-        descripcion (str | None): Nueva descripción del nivel.
+        name (str | None): Nuevo nombre del nivel de conocimiento.
+        quantifier (int | None): Nuevo valor numérico del nivel.
+        description (str | None): Nueva descripción del nivel.
     """
 
-    nombre: str | None = Field(default=None)
-    cuantificador: int | None = Field(default=None)
-    descripcion: str | None = Field(default=None)
+    name: str | None = Field(default=None)
+    quantifier: int | None = Field(default=None)
+    description: str | None = Field(default=None)
 
 
-class UserNivelResponse(UserNivelCreate):
+class UserLevelResponse(UserLevelCreate):
     """Esquema de respuesta de un Nivel de conocimiento.
 
     Attributes:
@@ -91,35 +91,35 @@ class UserNivelResponse(UserNivelCreate):
 
 
 # ==========================================
-# ESQUEMAS PARA USER TEMA INTERES
+# ESQUEMAS PARA USER TOPIC
 # ==========================================
 
 
-class UserTemaInteresCreate(BaseModel):
+class UserTopicCreate(BaseModel):
     """Esquema para la creación de un Tema de interés.
 
     Attributes:
-        nombre (str): Nombre del tema favorito (ej. 'ÁLGEBRA').
-        descripcion (str | None): Descripción opcional del tema de interés.
+        name (str): Nombre del tema favorito (ej. 'ÁLGEBRA').
+        description (str | None): Descripción opcional del tema de interés.
     """
 
-    nombre: str = Field(..., description="Nombre del tema favorito")
-    descripcion: str | None = Field(default=None)
+    name: str = Field(..., description="Topic name")
+    description: str | None = Field(default=None)
 
 
-class UserTemaInteresUpdate(BaseModel):
+class UserTopicUpdate(BaseModel):
     """Esquema para la actualización de un Tema de interés.
 
     Attributes:
-        nombre (str | None): Nuevo nombre del tema de interés.
-        descripcion (str | None): Nueva descripción del tema de interés.
+        name (str | None): Nuevo nombre del tema de interés.
+        description (str | None): Nueva descripción del tema de interés.
     """
 
-    nombre: str | None = Field(default=None)
-    descripcion: str | None = Field(default=None)
+    name: str | None = Field(default=None)
+    description: str | None = Field(default=None)
 
 
-class UserTemaInteresResponse(UserTemaInteresCreate):
+class UserTopicResponse(UserTopicCreate):
     """Esquema de respuesta de un Tema de interés.
 
     Attributes:
@@ -131,43 +131,41 @@ class UserTemaInteresResponse(UserTemaInteresCreate):
 
 
 # ==========================================
-# ESQUEMAS PARA USER PERFIL IA
+# ESQUEMAS PARA USER AI PROFILE
 # ==========================================
 
 
-class UserPerfilIACreate(BaseModel):
+class UserAIProfileCreate(BaseModel):
     """Esquema para la creación de un Perfil IA de usuario.
 
     Attributes:
         id_user (str): Identificador único del usuario asociado.
-        id_user_nivel (int): Identificador único del nivel asociado.
-        id_user_tema_interes (int): Identificador único del tema asociado.
-        descripcion (str | None): Descripción opcional del perfil.
+        id_user_level (int): Identificador único del nivel asociado.
+        id_user_topic (int): Identificador único del tema asociado.
+        description (str | None): Descripción opcional del perfil.
     """
 
-    id_user: str = Field(..., description="Identificador del usuario")
-    id_user_nivel: int = Field(..., description="Identificador del nivel asociado")
-    id_user_tema_interes: int = Field(
-        ..., description="Identificador del tema asociado"
-    )
-    descripcion: str | None = Field(default=None)
+    id_user: str = Field(..., description="User identifier")
+    id_user_level: int = Field(..., description="Associated level identifier")
+    id_user_topic: int = Field(..., description="Associated topic identifier")
+    description: str | None = Field(default=None)
 
 
-class UserPerfilIAUpdate(BaseModel):
+class UserAIProfileUpdate(BaseModel):
     """Esquema para la actualización de un Perfil IA de usuario.
 
     Attributes:
-        id_user_nivel (int | None): Nuevo identificador de nivel.
-        id_user_tema_interes (int | None): Nuevo identificador de tema de interés.
-        descripcion (str | None): Nueva descripción para el perfil.
+        id_user_level (int | None): Nuevo identificador de nivel.
+        id_user_topic (int | None): Nuevo identificador de tema de interés.
+        description (str | None): Nueva descripción para el perfil.
     """
 
-    id_user_nivel: int | None = Field(default=None)
-    id_user_tema_interes: int | None = Field(default=None)
-    descripcion: str | None = Field(default=None)
+    id_user_level: int | None = Field(default=None)
+    id_user_topic: int | None = Field(default=None)
+    description: str | None = Field(default=None)
 
 
-class UserPerfilIAResponse(UserPerfilIACreate):
+class UserAIProfileResponse(UserAIProfileCreate):
     """Esquema de respuesta de un Perfil IA de usuario.
 
     Attributes:
@@ -178,18 +176,18 @@ class UserPerfilIAResponse(UserPerfilIACreate):
     model_config = ConfigDict(from_attributes=True)
 
 
-class UserPerfilIADetailed(UserPerfilIAResponse):
+class UserAIProfileDetailed(UserAIProfileResponse):
     """Esquema de respuesta detallado de un Perfil IA.
 
     Incluye la expansión completa del nivel y tema de interés relacionados.
 
     Attributes:
-        user_nivel (UserNivelResponse): Objeto de respuesta del nivel.
-        user_tema_interes (UserTemaInteresResponse): Objeto de respuesta del tema.
+        user_level (UserLevelResponse): Objeto de respuesta del nivel.
+        user_topic (UserTopicResponse): Objeto de respuesta del tema.
     """
 
-    user_nivel: UserNivelResponse
-    user_tema_interes: UserTemaInteresResponse
+    user_level: UserLevelResponse
+    user_topic: UserTopicResponse
 
 
 # ==========================================
@@ -201,31 +199,31 @@ class UserCreate(BaseModel):
     """Esquema para la creación de un Usuario.
 
     Attributes:
-        id_rol (int): Identificador único del rol asignado.
-        nombre (str): Nombre o nombres del usuario.
-        apellido (str): Apellido o apellidos del usuario.
+        id_role (int): Identificador único del rol asignado.
+        first_name (str): Nombre o nombres del usuario.
+        last_name (str): Apellido o apellidos del usuario.
         email (EmailStr): Correo electrónico válido del usuario.
     """
 
-    id_rol: int = Field(..., description="Identificador del rol principal")
-    nombre: str = Field(..., description="Nombres del usuario")
-    apellido: str = Field(..., description="Apellidos del usuario")
-    email: EmailStr = Field(..., description="Correo electrónico válido")
+    id_role: int = Field(..., description="Primary role identifier")
+    first_name: str = Field(..., description="User first name")
+    last_name: str = Field(..., description="User last name")
+    email: EmailStr = Field(..., description="Valid email address")
 
 
 class UserUpdate(BaseModel):
     """Esquema para la actualización parcial de un Usuario.
 
     Attributes:
-        id_rol (int | None): Nuevo identificador del rol.
-        nombre (str | None): Nuevo nombre del usuario.
-        apellido (str | None): Nuevo apellido del usuario.
+        id_role (int | None): Nuevo identificador del rol.
+        first_name (str | None): Nuevo nombre del usuario.
+        last_name (str | None): Nuevo apellido del usuario.
         email (EmailStr | None): Nuevo correo electrónico.
     """
 
-    id_rol: int | None = Field(default=None)
-    nombre: str | None = Field(default=None)
-    apellido: str | None = Field(default=None)
+    id_role: int | None = Field(default=None)
+    first_name: str | None = Field(default=None)
+    last_name: str | None = Field(default=None)
     email: EmailStr | None = Field(default=None)
 
 
@@ -246,9 +244,10 @@ class UserDetailed(UserResponse):
     Incluye la información completa del rol y todos sus perfiles IA asociados.
 
     Attributes:
-        user_rol (UserRolResponse): Objeto de respuesta del rol.
-        user_perfiles_ia (list[UserPerfilIADetailed]): Lista de perfiles IA del usuario.
+        user_role (UserRoleResponse): Objeto de respuesta del rol.
+        user_ai_profiles (list[UserAIProfileDetailed]): Lista de perfiles IA
+            del usuario.
     """
 
-    user_rol: UserRolResponse
-    user_perfiles_ia: list[UserPerfilIADetailed] = []
+    user_role: UserRoleResponse
+    user_ai_profiles: list[UserAIProfileDetailed] = []

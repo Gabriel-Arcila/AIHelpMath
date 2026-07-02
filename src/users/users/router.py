@@ -14,7 +14,7 @@ router = APIRouter()
     "/",
     response_model=UserResponse,
     status_code=status.HTTP_201_CREATED,
-    summary="Crear un nuevo usuario",
+    summary="Create a new user",
 )
 async def create_user(
     user_data: UserCreate,
@@ -37,7 +37,7 @@ async def create_user(
     "/",
     response_model=list[UserResponse],
     status_code=status.HTTP_200_OK,
-    summary="Obtener lista de usuarios",
+    summary="Get users list",
 )
 async def get_users(
     skip: int = 0,
@@ -62,7 +62,7 @@ async def get_users(
     "/{user_id}",
     response_model=UserResponse,
     status_code=status.HTTP_200_OK,
-    summary="Obtener usuario por ID",
+    summary="Get user by ID",
 )
 async def get_user(
     user_id: str,
@@ -82,7 +82,7 @@ async def get_user(
     """
     db_user = await service.get_user(user_id)
     if not db_user:
-        raise NotFoundException(f"Usuario con ID {user_id} no encontrado")
+        raise NotFoundException(f"User with ID {user_id} not found")
     return UserResponse.model_validate(db_user)
 
 
@@ -90,7 +90,7 @@ async def get_user(
     "/{user_id}",
     response_model=UserResponse,
     status_code=status.HTTP_200_OK,
-    summary="Actualizar usuario",
+    summary="Update user",
 )
 async def update_user(
     user_id: str,
@@ -112,14 +112,14 @@ async def update_user(
     """
     updated_user = await service.update_user(user_id, user_update)
     if not updated_user:
-        raise NotFoundException(f"Usuario con ID {user_id} no encontrado")
+        raise NotFoundException(f"User with ID {user_id} not found")
     return UserResponse.model_validate(updated_user)
 
 
 @router.delete(
     "/{user_id}",
     status_code=status.HTTP_204_NO_CONTENT,
-    summary="Eliminar usuario",
+    summary="Delete user",
 )
 async def delete_user(
     user_id: str,
@@ -139,5 +139,5 @@ async def delete_user(
     """
     deleted = await service.delete_user(user_id)
     if not deleted:
-        raise NotFoundException(f"Usuario con ID {user_id} no encontrado")
+        raise NotFoundException(f"User with ID {user_id} not found")
     return Response(status_code=status.HTTP_204_NO_CONTENT)

@@ -22,45 +22,48 @@
 ## Fase 1: Refactorización de Modelos de Base de Datos
 **Objetivo:** Traducir al inglés los modelos de SQLModel y atributos internos en `src/users/models.py`.
 
-- [ ] Renombrar la clase `UserNivel` a `UserLevel` y su tabla a `user_level`.
-- [ ] Renombrar la clase `UserTemaInteres` a `UserTopic` y su tabla a `user_topic`.
-- [ ] Renombrar la clase `UserPerfilIA` a `UserAIProfile` y su tabla a `user_ai_profile`.
-- [ ] Renombrar la clase `UserRol` a `UserRole` y su tabla a `user_role`.
-- [ ] En la clase `User`, renombrar atributos foráneos conservando el prefijo `id_`: `id_rol` -> `id_role`.
-- [ ] En la clase `User`, renombrar atributos estándar: `nombre` -> `first_name`, `apellido` -> `last_name`. Cambiar relaciones: `user_rol` -> `user_role`, `user_perfiles_ia` -> `user_ai_profiles`.
-- [ ] En los demás modelos, traducir atributos correspondientes (ej. `descripcion` -> `description`, `cuantificador` -> `quantifier`, `id_user_nivel` -> `id_user_level`, `id_user_tema_interes` -> `id_user_topic`, etc.).
+- [x] Renombrar la clase `UserNivel` a `UserLevel` y su tabla a `user_level`.
+- [x] Renombrar la clase `UserTemaInteres` a `UserTopic` y su tabla a `user_topic`.
+- [x] Renombrar la clase `UserPerfilIA` a `UserAIProfile` y su tabla a `user_ai_profile`.
+- [x] Renombrar la clase `UserRol` a `UserRole` y su tabla a `user_role`.
+- [x] En la clase `User`, renombrar atributos foráneos conservando el prefijo `id_`: `id_rol` -> `id_role`.
+- [x] En la clase `User`, renombrar atributos estándar: `nombre` -> `first_name`, `apellido` -> `last_name`. Cambiar relaciones: `user_rol` -> `user_role`, `user_perfiles_ia` -> `user_ai_profiles`.
+- [x] En los demás modelos, traducir atributos correspondientes (ej. `descripcion` -> `description`, `cuantificador` -> `quantifier`, `id_user_nivel` -> `id_user_level`, `id_user_tema_interes` -> `id_user_topic`, etc.).
 
 ## Fase 2: Refactorización de Esquemas Pydantic
 **Objetivo:** Estandarizar los esquemas de entrada y salida al inglés en `src/users/schemas.py`.
 
-- [ ] Traducir esquemas de roles: `UserRolCreate` -> `UserRoleCreate`, `UserRolUpdate` -> `UserRoleUpdate`, `UserRolResponse` -> `UserRoleResponse`.
-- [ ] Traducir esquemas de niveles: `UserNivelCreate` -> `UserLevelCreate`, etc.
-- [ ] Traducir esquemas de temas: `UserTemaInteresCreate` -> `UserTopicCreate`, etc.
-- [ ] Traducir esquemas de perfil IA: `UserPerfilIACreate` -> `UserAIProfileCreate`, etc.
-- [ ] Actualizar atributos de esquemas para coincidir con los modelos en inglés y el prefijo `id_` (`first_name`, `last_name`, `description`, `id_role`, `id_user_level`, etc.).
+- [x] Traducir esquemas de roles: `UserRolCreate` -> `UserRoleCreate`, `UserRolUpdate` -> `UserRoleUpdate`, `UserRolResponse` -> `UserRoleResponse`.
+- [x] Traducir esquemas de niveles: `UserNivelCreate` -> `UserLevelCreate`, etc.
+- [x] Traducir esquemas de temas: `UserTemaInteresCreate` -> `UserTopicCreate`, etc.
+- [x] Traducir esquemas de perfil IA: `UserPerfilIACreate` -> `UserAIProfileCreate`, etc.
+- [x] Actualizar atributos de esquemas para coincidir con los modelos en inglés y el prefijo `id_` (`first_name`, `last_name`, `description`, `id_role`, `id_user_level`, etc.).
 
 ## Fase 3: Refactorización de Capa de Negocio y API
 **Objetivo:** Actualizar repositorios, servicios, rutas y dependencias para usar los nuevos nombres y variables locales en inglés.
 
-- [ ] Actualizar importaciones y tipos en `src/users/users/repository.py`. Renombrar variables locales en español.
-- [ ] Actualizar importaciones y tipos en `src/users/users/service.py`.
-- [ ] Actualizar importaciones, tipos y decoradores en `src/users/users/router.py`.
-- [ ] Revisar `src/users/users/dependencies.py` y actualizar imports si es necesario.
+- [x] Actualizar importaciones y tipos en `src/users/users/repository.py`. Renombrar variables locales en español.
+- [x] Actualizar importaciones y tipos en `src/users/users/service.py`.
+- [x] Actualizar importaciones, tipos y decoradores en `src/users/users/router.py`.
+- [x] Revisar `src/users/users/dependencies.py` y actualizar imports si es necesario.
+- [x] Renombrar el sub-módulo de ejemplo/placeholder `src/users/usernivel/` a `src/users/user_level/` y actualizar su referencia en el `README.md`.
 
 ## Fase 4: Refactorización de Tests
 **Objetivo:** Asegurar que las pruebas pasen utilizando los nuevos nombres y estructuras.
 
-- [ ] Revisar y modificar los fixtures y mockups en `tests/conftest.py`.
-- [ ] Actualizar los tests en `tests/crud/` y `tests/api/` si están presentes, usando la nueva nomenclatura.
+- [x] Revisar y modificar los fixtures y mockups en `tests/conftest.py`.
+- [x] Actualizar los tests en `tests/crud/` y `tests/api/` si están presentes, usando la nueva nomenclatura.
 
 ## Fase 5: Validación (QA y Accesibilidad)
 **Objetivo:** Generar migraciones y validar que todo el backend compile, pase tests y linter sin errores.
 
-- [ ] Ejecutar linting y formatting: `uv run ruff check src/ tests/` y `uv run ruff format src/ tests/`.
-- [ ] Ejecutar comprobación estática de tipos: `uv run mypy src/`.
-- [ ] Generar migración de Alembic: `uv run alembic revision --autogenerate -m "translate_functional_code_to_english"`.
-- [ ] Levantar la base de datos de test (`docker compose up db -d`) y aplicar la migración (`uv run alembic upgrade head`).
-- [ ] Ejecutar los tests: `uv run pytest -v`.
+- [x] Ejecutar linting y formatting: `uv run ruff format src/ tests/` y `uv run ruff check src/ tests/` (0 errores).
+- [x] Ejecutar comprobación estática de tipos: `uv run mypy src/` (0 errores).
+- [x] Generar migración de Alembic: Creado script manual de migración data-preserving en `migrations/versions/e427b0c9fd1a_translate_to_english.py`.
+- [x] Aplicar la migración localmente: `uv run alembic upgrade head` — Migración `e427b0c9fd1a` aplicada exitosamente.
+- [x] Ejecutar los tests localmente: `uv run pytest -v` — 0 tests recolectados (no hay tests escritos aún). Sin fallos.
+
+> **Nota:** Se detectó código funcional residual en español y fue corregido exitosamente. Ver plan de corrección: [plan_correccion_residual_20260701.md](plan_correccion_residual_20260701.md) (completado).
 
 ---
 

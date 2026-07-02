@@ -29,7 +29,7 @@ class NotFoundException(AppException):
         detail (str): Mensaje descriptivo de la ausencia del recurso.
     """
 
-    def __init__(self, detail: str = "Recurso no encontrado") -> None:
+    def __init__(self, detail: str = "Resource not found") -> None:
         super().__init__(detail=detail, status_code=status.HTTP_404_NOT_FOUND)
 
 
@@ -40,7 +40,7 @@ class ConflictException(AppException):
         detail (str): Mensaje descriptivo del conflicto.
     """
 
-    def __init__(self, detail: str = "Conflicto en la solicitud") -> None:
+    def __init__(self, detail: str = "Request conflict") -> None:
         super().__init__(detail=detail, status_code=status.HTTP_409_CONFLICT)
 
 
@@ -51,7 +51,7 @@ class ValidationException(AppException):
         detail (str): Mensaje descriptivo del error de validación.
     """
 
-    def __init__(self, detail: str = "Error de validación de datos") -> None:
+    def __init__(self, detail: str = "Data validation error") -> None:
         super().__init__(
             detail=detail, status_code=status.HTTP_422_UNPROCESSABLE_ENTITY
         )
