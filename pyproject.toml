@@ -26,6 +26,13 @@ dependencies = [
     "python-dotenv>=1.0.0",
     # Validación de correos electrónicos
     "email-validator>=2.3.0",
+
+    # Revision de los tipos de datos
+    "typeguard>=4.4.4",
+    "pydantic>=2.12.5",
+
+    # Base de Datos (Migrations)
+    "alembic>=1.18.4",
 ]
 
 # Dependencias de Desarrollo
@@ -35,17 +42,11 @@ dev = [
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",   # Vital para probar FastAPI
     "httpx>=0.26.0",
-
-    # Revision de los tipos de datos
-    "typeguard>=4.4.4",
-    "pydantic>=2.12.5",
+    "coverage>=7.15.0",
 
     # Calidad de Código (Linter & Formatter)
     "ruff>=0.1.14",
     "mypy>=1.20.0",
-
-    # Base de Datos (Migrations)
-    "alembic>=1.18.4",
 ]
 
 # Configuración de UV para indicar que no es un paquete
