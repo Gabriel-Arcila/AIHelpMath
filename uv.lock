@@ -7,54 +7,54 @@ name = "aihelpmath"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "alembic" },
     { name = "asyncpg" },
-    { name = "coverage" },
     { name = "email-validator" },
     { name = "fastapi" },
     { name = "langchain" },
     { name = "langchain-openai" },
+    { name = "pydantic" },
     { name = "pydantic-settings" },
     { name = "python-dotenv" },
     { name = "sqlmodel" },
+    { name = "typeguard" },
     { name = "uvicorn", extra = ["standard"] },
 ]
 
 [package.dev-dependencies]
 dev = [
-    { name = "alembic" },
+    { name = "coverage" },
     { name = "httpx" },
     { name = "mypy" },
-    { name = "pydantic" },
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "ruff" },
-    { name = "typeguard" },
 ]
 
 [package.metadata]
 requires-dist = [
+    { name = "alembic", specifier = ">=1.18.4" },
     { name = "asyncpg", specifier = ">=0.29.0" },
-    { name = "coverage", specifier = ">=7.15.0" },
     { name = "email-validator", specifier = ">=2.3.0" },
     { name = "fastapi", specifier = ">=0.109.0" },
     { name = "langchain", specifier = ">=0.1.0" },
     { name = "langchain-openai", specifier = ">=0.0.5" },
+    { name = "pydantic", specifier = ">=2.12.5" },
     { name = "pydantic-settings", specifier = ">=2.1.0" },
     { name = "python-dotenv", specifier = ">=1.0.0" },
     { name = "sqlmodel", specifier = ">=0.0.14" },
+    { name = "typeguard", specifier = ">=4.4.4" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.27.0" },
 ]
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "alembic", specifier = ">=1.18.4" },
+    { name = "coverage", specifier = ">=7.15.0" },
     { name = "httpx", specifier = ">=0.26.0" },
     { name = "mypy", specifier = ">=1.20.0" },
-    { name = "pydantic", specifier = ">=2.12.5" },
     { name = "pytest", specifier = ">=8.0.0" },
     { name = "pytest-asyncio", specifier = ">=0.23.0" },
     { name = "ruff", specifier = ">=0.1.14" },
-    { name = "typeguard", specifier = ">=4.4.4" },
 ]
 
 [[package]]

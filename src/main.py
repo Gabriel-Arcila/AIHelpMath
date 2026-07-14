@@ -11,7 +11,6 @@ from fastapi import FastAPI, status
 
 from src.core.config import settings
 from src.core.exceptions import register_exception_handlers
-from src.users.users.router import router as users_router
 
 
 @asynccontextmanager
@@ -37,8 +36,7 @@ app = FastAPI(
 # Registro de manejadores de excepciones globales (RFC 9457)
 register_exception_handlers(app)
 
-# Inclusión de routers de dominio
-app.include_router(users_router, prefix="/v1/users", tags=["users"])
+
 
 
 @app.get("/health", status_code=status.HTTP_200_OK, tags=["health"])
