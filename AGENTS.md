@@ -111,6 +111,7 @@ tipo(ámbito): descripción corta en imperativo
 | `style` | Formato, espacios, puntos y comas (sin cambio lógico). |
 | `perf` | Mejoras de rendimiento. |
 | `chore` | Tareas de mantenimiento que no tocan `src/` ni `tests/`. |
+| `delete` | Limpieza de codigo. |
 
 **Ámbitos:** Usar los dominios del proyecto (`users`, `core`, `shared`, `api`, etc..) o infraestructura (`docker`, `deps`, `migrations`, etc..).
 
