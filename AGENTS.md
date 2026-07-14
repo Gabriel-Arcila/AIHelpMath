@@ -7,9 +7,10 @@
 - Responda siempre en **Español** a menos que se indique explícitamente lo contrario.
 - Siempre dame respuestas objetivas y tecnicas. No seas adulador ni excesivamente cortés.
 - El codigo generado siempre tiene que ser en **Ingles**.
-- Al terminar, dime qué cambiaste para que lo revise.
+- Al terminar, indicame que realizaste y porque lo realizaste para que pueda revisarlo, sin ser demasido extenso.
 - Lee el archivo `README.md` antes de hacer cualquier cambio para tener el contexto de la aplicacion. 
-
+- Si realizaste algun principio importante que no esta considerado en los aspectos dentro de las `skills` o del `AGENTS.md`, indicamelo para la verificacion y realizacion de una mejora de las `skills` o el `AGENTS.md`.
+  
 ## Testing y Pruebas
 
 | Herramienta | Propósito | Cuándo usarla |
@@ -137,9 +138,10 @@ Cada vez que se solicite crear un plan de implementación para una nueva funcion
 1. **Ubicación del Archivo:** Los planes deben guardarse siempre como archivos Markdown (`.md`) dentro de una carpeta específica bajo el directorio `spec/` (por ejemplo, `spec/<nombre_implementacion>_YYYYMMDD/plan_<nombre_implementacion>_YYYYMMDD.md`).
 2. **Contexto:** El plan debe incluir un resumen del contexto actual, la justificación, el objetivo, el riesgo y el enfoque de la implementación.
 3. **Fases Estructuradas:** El plan debe dividirse en Fases lógicas y progresivas. Cada fase debe tener un objetivo claro y debe indicar los archivos a modificar, crear o eliminar.
-4. **Checklist de Tareas:** Cada fase debe contar con un checklist accionable (`- [ ]`) de tareas muy específicas y granulares que permitan hacer seguimiento visual del progreso.
-5. **Fase Obligatoria de Validación (QA y Accesibilidad):** Todo plan debe incluir como última fase la validación integral.
-6. **Criterios de Aceptación:** Una lista al final de las fases definiendo qué condiciones exactas deben cumplirse para dar por exitosa la implementación.
-7. **Referencias Técnicas:** Una tabla enlazando los archivos base necesarios.
-8. **Resumen de Archivos:** Una tabla detallando qué archivos nuevos se crearán (`Crear`), cuáles se modificarán (`Modificar`) y cuáles solo se revisarán (`Revisar`).
-9. **Actualizacion del Archivo `roadmap.md`:** Al crear, modificar o completar un plan de implementacion se debe actualizar el archivo `roadmap.md` en la seccion "Hecho" o "Siguiente" segun corresponda con el numero del plan,descripcion corta, nombre, fecha y enlace al plan.
+4.**TDD (Test-Driven Development):** La primera fase siempre debe tratar sobre prueba unitarias con pytest en la carpeta `tests/` del proyecto.
+5. **Checklist de Tareas:** Cada fase debe contar con un checklist accionable (`- [ ]`) de tareas muy específicas y granulares que permitan hacer seguimiento visual del progreso (Cada ves que termines una tarea, marcala con un 'x').
+6. **Fase Obligatoria de Validación (QA y Accesibilidad):** Todo plan debe incluir como última fase la validación integral.
+7. **Criterios de Aceptación:** Una lista al final de las fases definiendo qué condiciones exactas deben cumplirse para dar por exitosa la implementación.
+8. **Referencias Técnicas:** Una tabla enlazando los archivos base necesarios.
+9. **Resumen de Archivos:** Una tabla detallando qué archivos nuevos se crearán (`Crear`), cuáles se modificarán (`Modificar`) y cuáles solo se revisarán (`Revisar`).
+10. **Actualizacion del Archivo `roadmap.md`:** Al crear, modificar o completar un plan de implementacion se debe actualizar el archivo `roadmap.md` en la seccion "Hecho" o "Siguiente" segun corresponda con el numero del plan,descripcion corta, nombre, fecha y enlace al plan.
