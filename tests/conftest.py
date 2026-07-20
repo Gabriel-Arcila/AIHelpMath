@@ -3,12 +3,31 @@
 from collections.abc import AsyncGenerator
 
 import pytest
+import asyncio
 from httpx import ASGITransport, AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.database import engine
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.pool import NullPool
+
+from src.core.config import settings
 from src.core.dependencies import get_db
 from src.main import app
+
+# Adaptar URL a postgresql+asyncpg:// para soporte asíncrono
+db_url = settings.database_url
+if db_url.startswith("postgres://"):
+    db_url = db_url.replace("postgres://", "postgresql+asyncpg://", 1)
+elif db_url.startswith("postgresql://"):
+    db_url = db_url.replace("postgresql://", "postgresql+asyncpg://", 1)
+
+# Creamos un engine de test específico con NullPool para evitar el error
+# 'got Future attached to a different loop' al reutilizar conexiones en loops distintos.
+engine_test = create_async_engine(
+    db_url,
+    poolclass=NullPool,
+    echo=True,
+)
 
 
 @pytest.fixture
@@ -21,7 +40,7 @@ async def db_session() -> AsyncGenerator[AsyncSession, None]:
     Yields:
         AsyncSession: Sesión de base de datos activa para el test.
     """
-    async with engine.connect() as connection:
+    async with engine_test.connect() as connection:
         transaction = await connection.begin()
         session = AsyncSession(
             bind=connection,
@@ -60,3 +79,15 @@ async def async_client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, 
         yield ac
 
     app.dependency_overrides.clear()
+
+@pytest.fixture(scope="session")
+def event_loop():
+    """Crea una instancia única de event loop de asyncio para toda la sesión de pruebas.
+
+    Evita el error 'Event loop is closed' que ocurre al cerrar y abrir loops por test
+    en Windows cuando se usa SQLAlchemy y drivers asíncronos.
+    """
+    loop = asyncio.get_event_loop_policy().new_event_loop()
+    yield loop
+    loop.close()
+

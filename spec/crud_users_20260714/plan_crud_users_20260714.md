@@ -65,10 +65,10 @@ Tests planificados (10):
 | 10 | `test_get_detailed_loads_relationships` | `get_detailed()` carga `user_role` y `user_ai_profiles` |
 
 Checklist:
-- [ ] Crear `tests/crud/conftest.py` con fixture `seed_user_role` que inserte un `UserRole` base
-- [ ] Crear fixture `sample_user_create` que retorne un dict con datos válidos de `UserCreate`
-- [ ] Escribir los 10 tests unitarios del repository siguiendo patrón AAA
-- [ ] Verificar que todos fallan: `uv run pytest tests/crud/test_user_repository.py -v` (fase Red)
+- [x] Crear `tests/crud/conftest.py` con fixture `seed_user_role` que inserte un `UserRole` base
+- [x] Crear fixture `sample_user_create` que retorne un dict con datos válidos de `UserCreate` (o datos directos en las pruebas unitarias)
+- [x] Escribir los 10 tests unitarios del repository siguiendo patrón AAA
+- [x] Verificar que todos fallan: `uv run pytest tests/crud/test_user_repository.py -v` (fase Red)
 
 ---
 
@@ -94,9 +94,9 @@ Métodos a implementar:
 | `get_detailed` | `(self, user_id: str) -> User \| None` | Query con eager loading de relaciones |
 
 Checklist:
-- [ ] Implementar clase `UserRepository` con los 9 métodos
-- [ ] Usar `selectinload` para eager loading en `get_detailed`
-- [ ] Ejecutar `uv run pytest tests/crud/test_user_repository.py -v` — todos deben pasar (fase Green)
+- [x] Implementar clase `UserRepository` con los 9 métodos
+- [x] Usar `selectinload` para eager loading en `get_detailed`
+- [x] Ejecutar `uv run pytest tests/crud/test_user_repository.py -v` — todos deben pasar (fase Green)
 
 ---
 

@@ -10,7 +10,12 @@
 - Al terminar, indicame que realizaste y porque lo realizaste para que pueda revisarlo, sin ser demasido extenso.
 - Lee el archivo `README.md` antes de hacer cualquier cambio para tener el contexto de la aplicacion. 
 - Si realizaste algun principio importante que no esta considerado en los aspectos dentro de las `skills` o del `AGENTS.md`, indicamelo para la verificacion y realizacion de una mejora de las `skills` o el `AGENTS.md`.
-  
+
+### Que debes hacer cuando te pidan explicar el codigo
+-  Explicar paso a paso el codigo con detalles.
+-  Explicar el porque se realizo de esa menera.
+-  Utiliza metodos socraticos para afianzar la explicacion.
+
 ## Testing y Pruebas
 
 | Herramienta | Propósito | Cuándo usarla |
