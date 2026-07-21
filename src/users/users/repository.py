@@ -6,6 +6,7 @@ Encapsula las operaciones CRUD directas sobre la base de datos para la entidad U
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
+from sqlmodel import col
 
 from src.users.models import User, UserAIProfile
 from src.users.schemas import UserCreate, UserUpdate
@@ -48,9 +49,7 @@ class UserRepository:
         Returns:
             User | None: Instancia del usuario si existe, de lo contrario None.
         """
-        result = await self.session.execute(
-            select(User).where(User.id == user_id)
-        )
+        result = await self.session.execute(select(User).where(col(User.id) == user_id))
         return result.scalar_one_or_none()
 
     async def get_by_email(self, email: str) -> User | None:
@@ -63,7 +62,7 @@ class UserRepository:
             User | None: Instancia del usuario si existe, de lo contrario None.
         """
         result = await self.session.execute(
-            select(User).where(User.email == email)
+            select(User).where(col(User.email) == email)
         )
         return result.scalar_one_or_none()
 
@@ -77,9 +76,7 @@ class UserRepository:
         Returns:
             list[User]: Lista de usuarios obtenidos.
         """
-        result = await self.session.execute(
-            select(User).offset(offset).limit(limit)
-        )
+        result = await self.session.execute(select(User).offset(offset).limit(limit))
         return list(result.scalars().all())
 
     async def count(self) -> int:
@@ -88,9 +85,7 @@ class UserRepository:
         Returns:
             int: Cantidad total de usuarios.
         """
-        result = await self.session.execute(
-            select(func.count()).select_from(User)
-        )
+        result = await self.session.execute(select(func.count()).select_from(User))
         return result.scalar() or 0
 
     async def update(self, user: User, user_data: UserUpdate) -> User:
@@ -124,15 +119,20 @@ class UserRepository:
             user_id (str): Identificador único del usuario.
 
         Returns:
-            User | None: Instancia del usuario detallado si existe, de lo contrario None.
+            User | None: Instancia del usuario detallado si existe,
+                de lo contrario None.
         """
         result = await self.session.execute(
             select(User)
             .options(
-                selectinload(User.user_role),
-                selectinload(User.user_ai_profiles).selectinload(UserAIProfile.user_level),
-                selectinload(User.user_ai_profiles).selectinload(UserAIProfile.user_topic)
+                selectinload(User.user_role),  # type: ignore[arg-type]
+                selectinload(User.user_ai_profiles).selectinload(  # type: ignore[arg-type]
+                    UserAIProfile.user_level  # type: ignore[arg-type]
+                ),
+                selectinload(User.user_ai_profiles).selectinload(  # type: ignore[arg-type]
+                    UserAIProfile.user_topic  # type: ignore[arg-type]
+                ),
             )
-            .where(User.id == user_id)
+            .where(col(User.id) == user_id)
         )
         return result.scalar_one_or_none()

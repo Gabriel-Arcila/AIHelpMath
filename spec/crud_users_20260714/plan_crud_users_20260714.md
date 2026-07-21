@@ -325,11 +325,11 @@ class PaginationParams(BaseModel):
 
 ---
 
-### Fase 6 — Implementación de Dependencies + Router + Registro (Green)
+### ~~Fase 6 — Implementación de Dependencies + Router + Registro (Green)~~ ✅
 
 **Objetivo:** Conectar la cadena de inyección de dependencias, implementar los endpoints HTTP y registrar el router en `main.py`. Los tests de la Fase 3 deben pasar al completar esta fase.
 
-**Archivos a modificar:**
+**Archivos modificados:**
 - `src/users/users/dependencies.py`
 - `src/users/users/router.py`
 - `src/users/users/__init__.py`
@@ -388,55 +388,55 @@ app.include_router(
 
 **Checklist:**
 
-- [ ] **Implementar `dependencies.py`:**
-  - [ ] Importar `Depends` de FastAPI, `AsyncSession` de SQLAlchemy, `get_session` de `src.core.dependencies`
-  - [ ] Importar `UserRepository` y `UserService` del sub-módulo
-  - [ ] Implementar `get_user_service(session = Depends(get_session)) -> UserService` que instancie `UserRepository(session)` y retorne `UserService(session, repository)`
-  - [ ] Docstring Google-style con `Args` y `Returns`
-- [ ] **Implementar `router.py`:**
-  - [ ] Crear instancia `router = APIRouter()`
-  - [ ] Importar schemas: `UserCreate`, `UserUpdate`, `UserResponse`, `UserDetailed` de `src.users.schemas`
-  - [ ] Importar `PaginatedResponse`, `PaginationParams` de `src.shared.pagination`
-  - [ ] Importar `get_user_service` de `dependencies.py`
-  - [ ] Implementar `create_user`:
-    - [ ] Decorador: `@router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)`
-    - [ ] Parámetros: `user_data: UserCreate`, `service: UserService = Depends(get_user_service)`
-    - [ ] Body: `return await service.create(user_data)`
-    - [ ] Docstring Google-style
-  - [ ] Implementar `list_users`:
-    - [ ] Decorador: `@router.get("/", response_model=PaginatedResponse[UserResponse])`
-    - [ ] Parámetros: `pagination: PaginationParams = Depends()`, `service: UserService = Depends(get_user_service)`
-    - [ ] Body: `return await service.get_all(pagination)`
-    - [ ] Docstring Google-style
-  - [ ] Implementar `get_user`:
-    - [ ] Decorador: `@router.get("/{user_id}", response_model=UserResponse)`
-    - [ ] Parámetros: `user_id: str`, `service: UserService = Depends(get_user_service)`
-    - [ ] Body: `return await service.get_by_id(user_id)`
-    - [ ] Docstring Google-style
-  - [ ] Implementar `get_user_detailed`:
-    - [ ] Decorador: `@router.get("/{user_id}/detailed", response_model=UserDetailed)`
-    - [ ] Parámetros: `user_id: str`, `service: UserService = Depends(get_user_service)`
-    - [ ] Body: `return await service.get_detailed(user_id)`
-    - [ ] Docstring Google-style
-  - [ ] Implementar `update_user`:
-    - [ ] Decorador: `@router.patch("/{user_id}", response_model=UserResponse)`
-    - [ ] Parámetros: `user_id: str`, `user_data: UserUpdate`, `service: UserService = Depends(get_user_service)`
-    - [ ] Body: `return await service.update(user_id, user_data)`
-    - [ ] Docstring Google-style
-  - [ ] Implementar `delete_user`:
-    - [ ] Decorador: `@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)`
-    - [ ] Parámetros: `user_id: str`, `service: UserService = Depends(get_user_service)`
-    - [ ] Body: `await service.delete(user_id)`, sin return
-    - [ ] Docstring Google-style
-- [ ] **Actualizar `__init__.py` del sub-módulo:**
-  - [ ] Exportar `router` con alias: `from src.users.users.router import router as users_router`
-  - [ ] Definir `__all__ = ["users_router"]`
-- [ ] **Registrar router en `main.py`:**
-  - [ ] Agregar import: `from src.users.users.router import router as users_router`
-  - [ ] Agregar: `app.include_router(users_router, prefix="/v1/users", tags=["users"])`
-- [ ] **Ejecutar tests:**
-  - [ ] `uv run pytest tests/api/test_user_router.py -v` — los 14 tests de integración deben pasar (fase Green)
-  - [ ] `uv run pytest -v` — toda la suite (24 tests) debe pasar
+- [x] **Implementar `dependencies.py`:**
+  - [x] Importar `Depends` de FastAPI, `AsyncSession` de SQLAlchemy, `get_db` de `src.core.dependencies`
+  - [x] Importar `UserRepository` y `UserService` del sub-módulo
+  - [x] Implementar `get_user_service(session = Depends(get_db)) -> UserService` que instancie `UserRepository(session)` y retorne `UserService(session, repository)`
+  - [x] Docstring Google-style con `Args` y `Returns`
+- [x] **Implementar `router.py`:**
+  - [x] Crear instancia `router = APIRouter()`
+  - [x] Importar schemas: `UserCreate`, `UserUpdate`, `UserResponse`, `UserDetailed` de `src.users.schemas`
+  - [x] Importar `PaginatedResponse`, `PaginationParams` de `src.shared.pagination`
+  - [x] Importar `get_user_service` de `dependencies.py`
+  - [x] Implementar `create_user`:
+    - [x] Decorador: `@router.post("/", response_model=UserResponse, status_code=status.HTTP_201_CREATED)`
+    - [x] Parámetros: `user_data: UserCreate`, `service: UserService = Depends(get_user_service)`
+    - [x] Body: `return await service.create(user_data)`
+    - [x] Docstring Google-style
+  - [x] Implementar `list_users`:
+    - [x] Decorador: `@router.get("/", response_model=PaginatedResponse[UserResponse])`
+    - [x] Parámetros: `pagination: PaginationParams = Depends()`, `service: UserService = Depends(get_user_service)`
+    - [x] Body: `return await service.get_all(pagination)`
+    - [x] Docstring Google-style
+  - [x] Implementar `get_user`:
+    - [x] Decorador: `@router.get("/{user_id}", response_model=UserResponse)`
+    - [x] Parámetros: `user_id: str`, `service: UserService = Depends(get_user_service)`
+    - [x] Body: `return await service.get_by_id(user_id)`
+    - [x] Docstring Google-style
+  - [x] Implementar `get_user_detailed`:
+    - [x] Decorador: `@router.get("/{user_id}/detailed", response_model=UserDetailed)`
+    - [x] Parámetros: `user_id: str`, `service: UserService = Depends(get_user_service)`
+    - [x] Body: `return await service.get_detailed(user_id)`
+    - [x] Docstring Google-style
+  - [x] Implementar `update_user`:
+    - [x] Decorador: `@router.patch("/{user_id}", response_model=UserResponse)`
+    - [x] Parámetros: `user_id: str`, `user_data: UserUpdate`, `service: UserService = Depends(get_user_service)`
+    - [x] Body: `return await service.update(user_id, user_data)`
+    - [x] Docstring Google-style
+  - [x] Implementar `delete_user`:
+    - [x] Decorador: `@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)`
+    - [x] Parámetros: `user_id: str`, `service: UserService = Depends(get_user_service)`
+    - [x] Body: `await service.delete(user_id)`, sin return
+    - [x] Docstring Google-style
+- [x] **Actualizar `__init__.py` del sub-módulo:**
+  - [x] Exportar `router` con alias: `from src.users.users.router import router as users_router`
+  - [x] Definir `__all__ = ["users_router"]`
+- [x] **Registrar router en `main.py`:**
+  - [x] Agregar import: `from src.users.users import users_router`
+  - [x] Agregar: `app.include_router(users_router, prefix="/v1/users", tags=["users"])`
+- [x] **Ejecutar tests:**
+  - [x] `uv run pytest tests/api/test_user_router.py -v` — los 14 tests de integración deben pasar (fase Green)
+  - [x] `uv run pytest -v` — toda la suite (24 tests) debe pasar
 
 ---
 
@@ -510,10 +510,10 @@ app.include_router(
 | `tests/api/test_user_router.py` | Crear | ✅ Creado (14 tests) |
 | `src/shared/pagination.py` | Modificar | ✅ Implementado |
 | `src/users/users/service.py` | Modificar | ✅ Implementado |
-| `src/users/users/dependencies.py` | Modificar | ⏳ Pendiente |
-| `src/users/users/router.py` | Modificar | ⏳ Pendiente |
-| `src/users/users/__init__.py` | Modificar | ⏳ Pendiente |
-| `src/main.py` | Modificar | ⏳ Pendiente |
+| `src/users/users/dependencies.py` | Modificar | ✅ Implementado |
+| `src/users/users/router.py` | Modificar | ✅ Implementado |
+| `src/users/users/__init__.py` | Modificar | ✅ Implementado |
+| `src/main.py` | Modificar | ✅ Actualizado |
 | `spec/roadmap.md` | Modificar | ⏳ Pendiente |
 | `src/users/models.py` | Revisar | 📋 Referencia |
 | `src/users/schemas.py` | Revisar | 📋 Referencia |
