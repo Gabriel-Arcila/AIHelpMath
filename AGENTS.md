@@ -14,7 +14,6 @@
 ### Que debes hacer cuando te pidan explicar el codigo
 -  Explicar paso a paso el codigo con detalles.
 -  Explicar el porque se realizo de esa menera.
--  Utiliza metodos socraticos para afianzar la explicacion.
 
 ## Testing y Pruebas
 
