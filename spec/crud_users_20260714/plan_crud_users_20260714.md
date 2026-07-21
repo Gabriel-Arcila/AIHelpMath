@@ -132,11 +132,11 @@ Checklist:
 
 ## Fases pendientes
 
-### Fase 3 — Tests de integración del Router (Red)
+### ~~Fase 3 — Tests de integración del Router (Red)~~ ✅
 
 **Objetivo:** Escribir los tests de integración que definen el contrato HTTP del CRUD antes de implementar Service, Dependencies y Router.
 
-**Archivos a crear:**
+**Archivos creados:**
 - `tests/api/conftest.py`
 - `tests/api/test_user_router.py`
 
@@ -188,38 +188,38 @@ Checklist:
 
 **Checklist:**
 
-- [ ] **Crear `tests/api/conftest.py`** con:
-  - [ ] Fixture `seed_user_role` (reutilizar lógica de `tests/crud/conftest.py`) que inserte un `UserRole` base y retorne la instancia
-  - [ ] Helper async `create_test_user(async_client, user_data, role_id)` que cree un usuario via `POST /v1/users/` y retorne el JSON de respuesta
-- [ ] **Escribir tests del endpoint `POST /v1/users/`** (tests 1-3):
-  - [ ] `test_create_user_returns_201`: Enviar `{"name": "Test", "email": "test@example.com", "user_role_id": "<role_uuid>"}` → verificar status 201, verificar que el body contiene `id`, `name`, `email`, `created_at`, `updated_at`
-  - [ ] `test_create_user_returns_422_invalid_email`: Enviar email inválido → verificar status 422
-  - [ ] `test_create_user_returns_409_duplicate_email`: Crear usuario → intentar crear otro con mismo email → verificar status 409 y que el body sigue formato RFC 9457 (`type`, `title`, `status`, `detail`, `instance`)
-- [ ] **Escribir tests del endpoint `GET /v1/users/{user_id}`** (tests 4-5):
-  - [ ] `test_get_user_returns_200`: Crear usuario via helper → `GET /v1/users/{id}` → verificar status 200 y campos de `UserResponse`
-  - [ ] `test_get_user_returns_404_nonexistent`: `GET /v1/users/{uuid_aleatorio}` → verificar status 404 y formato RFC 9457
-- [ ] **Escribir tests del endpoint `GET /v1/users/{user_id}/detailed`** (tests 6-7):
-  - [ ] `test_get_user_detailed_returns_200_with_role`: Crear usuario → `GET /v1/users/{id}/detailed` → verificar que el body contiene `user_role` como objeto con `id`, `name`, `description` y `user_ai_profiles` como lista
-  - [ ] `test_get_user_detailed_returns_404_nonexistent`: UUID inexistente → status 404
-- [ ] **Escribir tests del endpoint `GET /v1/users/`** (tests 8-10):
-  - [ ] `test_list_users_returns_200_with_pagination`: Crear 1 usuario → `GET /v1/users/?offset=0&limit=10` → verificar claves `items`, `total`, `limit`, `offset` en el body
-  - [ ] `test_list_users_returns_200_empty`: Sin crear usuarios → `GET /v1/users/` → verificar `items: []`, `total: 0`
-  - [ ] `test_list_users_respects_limit`: Crear 3 usuarios → `GET /v1/users/?limit=2` → verificar `len(items) == 2` y `total == 3`
-- [ ] **Escribir tests del endpoint `PATCH /v1/users/{user_id}`** (tests 11-13):
-  - [ ] `test_update_user_returns_200`: Crear usuario → `PATCH /v1/users/{id}` con `{"name": "Updated"}` → verificar status 200 y `name == "Updated"`
-  - [ ] `test_update_user_returns_404_nonexistent`: `PATCH` a UUID inexistente → status 404
-  - [ ] `test_update_user_returns_409_duplicate_email`: Crear 2 usuarios → intentar actualizar email del segundo al del primero → status 409
-- [ ] **Escribir tests del endpoint `DELETE /v1/users/{user_id}`** (test 14):
-  - [ ] `test_delete_user_returns_204`: Crear usuario → `DELETE /v1/users/{id}` → verificar status 204 y body vacío → verificar con `GET` que retorna 404
-- [ ] **Verificar que todos los tests fallan:** `uv run pytest tests/api/test_user_router.py -v` (fase Red)
+- [x] **Crear `tests/api/conftest.py`** con:
+  - [x] Fixture `seed_user_role` (reutilizar lógica de `tests/crud/conftest.py`) que inserte un `UserRole` base y retorne la instancia
+  - [x] Helper async `create_test_user(async_client, user_data, role_id)` que cree un usuario via `POST /v1/users/` y retorne el JSON de respuesta
+- [x] **Escribir tests del endpoint `POST /v1/users/`** (tests 1-3):
+  - [x] `test_create_user_returns_201`: Enviar `{"name": "Test", "email": "test@example.com", "user_role_id": "<role_uuid>"}` → verificar status 201, verificar que el body contiene `id`, `name`, `email`, `created_at`, `updated_at`
+  - [x] `test_create_user_returns_422_invalid_email`: Enviar email inválido → verificar status 422
+  - [x] `test_create_user_returns_409_duplicate_email`: Crear usuario → intentar crear otro con mismo email → verificar status 409 y que el body sigue formato RFC 9457 (`type`, `title`, `status`, `detail`, `instance`)
+- [x] **Escribir tests del endpoint `GET /v1/users/{user_id}`** (tests 4-5):
+  - [x] `test_get_user_returns_200`: Crear usuario via helper → `GET /v1/users/{id}` → verificar status 200 y campos de `UserResponse`
+  - [x] `test_get_user_returns_404_nonexistent`: `GET /v1/users/{uuid_aleatorio}` → verificar status 404 y formato RFC 9457
+- [x] **Escribir tests del endpoint `GET /v1/users/{user_id}/detailed`** (tests 6-7):
+  - [x] `test_get_user_detailed_returns_200_with_role`: Crear usuario → `GET /v1/users/{id}/detailed` → verificar que el body contiene `user_role` como objeto con `id`, `name`, `description` y `user_ai_profiles` como lista
+  - [x] `test_get_user_detailed_returns_404_nonexistent`: UUID inexistente → status 404
+- [x] **Escribir tests del endpoint `GET /v1/users/`** (tests 8-10):
+  - [x] `test_list_users_returns_200_with_pagination`: Crear 1 usuario → `GET /v1/users/?offset=0&limit=10` → verificar claves `items`, `total`, `limit`, `offset` en el body
+  - [x] `test_list_users_returns_200_empty`: Sin crear usuarios → `GET /v1/users/` → verificar `items: []`, `total: 0`
+  - [x] `test_list_users_respects_limit`: Crear 3 usuarios → `GET /v1/users/?limit=2` → verificar `len(items) == 2` y `total == 3`
+- [x] **Escribir tests del endpoint `PATCH /v1/users/{user_id}`** (tests 11-13):
+  - [x] `test_update_user_returns_200`: Crear usuario → `PATCH /v1/users/{id}` con `{"name": "Updated"}` → verificar status 200 y `name == "Updated"`
+  - [x] `test_update_user_returns_404_nonexistent`: `PATCH` a UUID inexistente → status 404
+  - [x] `test_update_user_returns_409_duplicate_email`: Crear 2 usuarios → intentar actualizar email del segundo al del primero → status 409
+- [x] **Escribir tests del endpoint `DELETE /v1/users/{user_id}`** (test 14):
+  - [x] `test_delete_user_returns_204`: Crear usuario → `DELETE /v1/users/{id}` → verificar status 204 y body vacío → verificar con `GET` que retorna 404
+- [x] **Verificar que todos los tests fallan:** `uv run pytest tests/api/test_user_router.py -v` (fase Red)
 
 ---
 
-### Fase 4 — Implementación de `PaginatedResponse` y `PaginationParams`
+### ~~Fase 4 — Implementación de `PaginatedResponse` y `PaginationParams`~~ ✅
 
 **Objetivo:** Implementar el esquema de paginación genérico reutilizable antes del Service, ya que el Service depende de `PaginatedResponse`.
 
-**Archivo a modificar:** `src/shared/pagination.py`
+**Archivo modificado:** `src/shared/pagination.py`
 
 #### Especificación de `PaginatedResponse[T]`
 
@@ -257,14 +257,14 @@ class PaginationParams(BaseModel):
 
 **Checklist:**
 
-- [ ] Implementar `PaginatedResponse[T]` como schema Pydantic genérico con `Generic[T]`
-  - [ ] Campos: `items: list[T]`, `total: int`, `limit: int`, `offset: int`
-  - [ ] Docstring Google-style con descripción de la clase y cada campo
-- [ ] Implementar `PaginationParams` como dependencia inyectable
-  - [ ] Campo `offset: int = Field(default=0, ge=0)` — no puede ser negativo
-  - [ ] Campo `limit: int = Field(default=10, ge=1, le=100)` — entre 1 y 100
-  - [ ] Docstring Google-style
-- [ ] Verificar que los imports funcionan: `from src.shared.pagination import PaginatedResponse, PaginationParams`
+- [x] Implementar `PaginatedResponse[T]` como schema Pydantic genérico con `Generic[T]`
+  - [x] Campos: `items: list[T]`, `total: int`, `limit: int`, `offset: int`
+  - [x] Docstring Google-style con descripción de la clase y cada campo
+- [x] Implementar `PaginationParams` como dependencia inyectable
+  - [x] Campo `offset: int = Field(default=0, ge=0)` — no puede ser negativo
+  - [x] Campo `limit: int = Field(default=10, ge=1, le=100)` — entre 1 y 100
+  - [x] Docstring Google-style
+- [x] Verificar que los imports funcionan: `from src.shared.pagination import PaginatedResponse, PaginationParams`
 
 ---
 
@@ -506,9 +506,9 @@ app.include_router(
 | `tests/crud/conftest.py` | — | ✅ Ya existe |
 | `tests/crud/test_user_repository.py` | — | ✅ Ya existe (10 tests) |
 | `src/users/users/repository.py` | — | ✅ Ya implementado |
-| `tests/api/conftest.py` | Crear | ⏳ Pendiente |
-| `tests/api/test_user_router.py` | Crear | ⏳ Pendiente |
-| `src/shared/pagination.py` | Modificar | ⏳ Pendiente |
+| `tests/api/conftest.py` | Crear | ✅ Creado |
+| `tests/api/test_user_router.py` | Crear | ✅ Creado (14 tests) |
+| `src/shared/pagination.py` | Modificar | ✅ Implementado |
 | `src/users/users/service.py` | Modificar | ⏳ Pendiente |
 | `src/users/users/dependencies.py` | Modificar | ⏳ Pendiente |
 | `src/users/users/router.py` | Modificar | ⏳ Pendiente |
