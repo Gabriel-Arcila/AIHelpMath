@@ -268,11 +268,11 @@ class PaginationParams(BaseModel):
 
 ---
 
-### Fase 5 — Implementación del Service
+### ~~Fase 5 — Implementación del Service~~ ✅
 
 **Objetivo:** Implementar la capa de lógica de negocio. Según el skill (sección 7), el Service es la **única capa que ejecuta `commit()` o `rollback()`** y coordina el repositorio.
 
-**Archivo a modificar:** `src/users/users/service.py`
+**Archivo modificado:** `src/users/users/service.py`
 
 #### Especificación del `UserService`
 
@@ -288,40 +288,40 @@ class PaginationParams(BaseModel):
 
 **Checklist:**
 
-- [ ] Implementar `UserService.__init__` que reciba `session: AsyncSession` y `repository: UserRepository`
-  - [ ] Docstring Google-style describiendo la clase y sus dependencias
-- [ ] Implementar `UserService.create`:
-  - [ ] Verificar email duplicado con `self.repository.get_by_email(user_data.email)`
-  - [ ] Si existe → `raise ConflictException(detail=f"User with email '{user_data.email}' already exists")`
-  - [ ] Delegar a `self.repository.add(user_data)` (sin commit — eso lo hace el service)
-  - [ ] `await self.session.commit()`
-  - [ ] `await self.session.refresh(user)` para obtener valores generados por la DB (`id`, `created_at`)
-  - [ ] Retornar `user`
-- [ ] Implementar `UserService.get_by_id`:
-  - [ ] Delegar a `self.repository.get_by_id(user_id)`
-  - [ ] Si `None` → `raise NotFoundException(detail=f"User with id '{user_id}' not found")`
-  - [ ] Retornar `user`
-- [ ] Implementar `UserService.get_detailed`:
-  - [ ] Delegar a `self.repository.get_detailed(user_id)`
-  - [ ] Si `None` → `raise NotFoundException(detail=f"User with id '{user_id}' not found")`
-  - [ ] Retornar `user` (con relaciones ya cargadas por eager loading)
-- [ ] Implementar `UserService.get_all`:
-  - [ ] Obtener items: `self.repository.get_all(pagination.offset, pagination.limit)`
-  - [ ] Obtener total: `self.repository.count()`
-  - [ ] Construir `PaginatedResponse(items=items, total=total, limit=pagination.limit, offset=pagination.offset)`
-  - [ ] Retornar `PaginatedResponse`
-- [ ] Implementar `UserService.update`:
-  - [ ] Obtener usuario existente via `self.get_by_id(user_id)` (reutiliza la validación de existencia)
-  - [ ] Si `user_data.email` no es `None` y difiere de `user.email` → verificar duplicado con `self.repository.get_by_email(user_data.email)` → `ConflictException` si existe
-  - [ ] Delegar a `self.repository.update(user, user_data)`
-  - [ ] `await self.session.commit()`
-  - [ ] `await self.session.refresh(user)`
-  - [ ] Retornar `user`
-- [ ] Implementar `UserService.delete`:
-  - [ ] Obtener usuario via `self.get_by_id(user_id)`
-  - [ ] Delegar a `self.repository.delete(user)`
-  - [ ] `await self.session.commit()`
-- [ ] Verificar que todos los métodos tienen docstrings Google-style con `Args` y `Returns`/`Raises`
+- [x] Implementar `UserService.__init__` que reciba `session: AsyncSession` y `repository: UserRepository`
+  - [x] Docstring Google-style describiendo la clase y sus dependencias
+- [x] Implementar `UserService.create`:
+  - [x] Verificar email duplicado con `self.repository.get_by_email(user_data.email)`
+  - [x] Si existe → `raise ConflictException(detail=f"User with email '{user_data.email}' already exists")`
+  - [x] Delegar a `self.repository.add(user_data)` (sin commit — eso lo hace el service)
+  - [x] `await self.session.commit()`
+  - [x] `await self.session.refresh(user)` para obtener valores generados por la DB (`id`, `created_at`)
+  - [x] Retornar `user`
+- [x] Implementar `UserService.get_by_id`:
+  - [x] Delegar a `self.repository.get_by_id(user_id)`
+  - [x] Si `None` → `raise NotFoundException(detail=f"User with id '{user_id}' not found")`
+  - [x] Retornar `user`
+- [x] Implementar `UserService.get_detailed`:
+  - [x] Delegar a `self.repository.get_detailed(user_id)`
+  - [x] Si `None` → `raise NotFoundException(detail=f"User with id '{user_id}' not found")`
+  - [x] Retornar `user` (con relaciones ya cargadas por eager loading)
+- [x] Implementar `UserService.get_all`:
+  - [x] Obtener items: `self.repository.get_all(pagination.offset, pagination.limit)`
+  - [x] Obtener total: `self.repository.count()`
+  - [x] Construir `PaginatedResponse(items=items, total=total, limit=pagination.limit, offset=pagination.offset)`
+  - [x] Retornar `PaginatedResponse`
+- [x] Implementar `UserService.update`:
+  - [x] Obtener usuario existente via `self.get_by_id(user_id)` (reutiliza la validación de existencia)
+  - [x] Si `user_data.email` no es `None` y difiere de `user.email` → verificar duplicado con `self.repository.get_by_email(user_data.email)` → `ConflictException` si existe
+  - [x] Delegar a `self.repository.update(user, user_data)`
+  - [x] `await self.session.commit()`
+  - [x] `await self.session.refresh(user)`
+  - [x] Retornar `user`
+- [x] Implementar `UserService.delete`:
+  - [x] Obtener usuario via `self.get_by_id(user_id)`
+  - [x] Delegar a `self.repository.delete(user)`
+  - [x] `await self.session.commit()`
+- [x] Verificar que todos los métodos tienen docstrings Google-style con `Args` y `Returns`/`Raises`
 
 ---
 
@@ -509,7 +509,7 @@ app.include_router(
 | `tests/api/conftest.py` | Crear | ✅ Creado |
 | `tests/api/test_user_router.py` | Crear | ✅ Creado (14 tests) |
 | `src/shared/pagination.py` | Modificar | ✅ Implementado |
-| `src/users/users/service.py` | Modificar | ⏳ Pendiente |
+| `src/users/users/service.py` | Modificar | ✅ Implementado |
 | `src/users/users/dependencies.py` | Modificar | ⏳ Pendiente |
 | `src/users/users/router.py` | Modificar | ⏳ Pendiente |
 | `src/users/users/__init__.py` | Modificar | ⏳ Pendiente |
