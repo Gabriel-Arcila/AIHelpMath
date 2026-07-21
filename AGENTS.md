@@ -143,11 +143,11 @@ Cada vez que se solicite crear un plan de implementación para una nueva funcion
 
 1. **Ubicación del Archivo:** Los planes deben guardarse siempre como archivos Markdown (`.md`) dentro de una carpeta específica bajo el directorio `spec/` (por ejemplo, `spec/<nombre_implementacion>_YYYYMMDD/plan_<nombre_implementacion>_YYYYMMDD.md`).
 2. **Contexto:** El plan debe incluir un resumen del contexto actual, la justificación, el objetivo, el riesgo y el enfoque de la implementación.
-3. **Fases Estructuradas:** El plan debe dividirse en Fases lógicas y progresivas. Cada fase debe tener un objetivo claro y debe indicar los archivos a modificar, crear o eliminar.
-4.**TDD (Test-Driven Development):** La primera fase siempre debe tratar sobre prueba unitarias con pytest en la carpeta `tests/` del proyecto.
+3. **Fases Estructuradas:** El plan debe dividirse en Fases lógicas y progresivas. Cada fase debe tener un objetivo claro y debe indicar los archivos a modificar, crear o eliminar, asi como los conceptos que se van a aplicar y de donde se baso para realizarlo de esa manera (Agents.md, Skills u otro lado).
+4. **TDD (Test-Driven Development):** La primera fase siempre debe tratar sobre prueba unitarias con pytest en la carpeta `tests/` del proyecto.
 5. **Checklist de Tareas:** Cada fase debe contar con un checklist accionable (`- [ ]`) de tareas muy específicas y granulares que permitan hacer seguimiento visual del progreso (Cada ves que termines una tarea, marcala con un 'x').
 6. **Fase Obligatoria de Validación (QA y Accesibilidad):** Todo plan debe incluir como última fase la validación integral.
 7. **Criterios de Aceptación:** Una lista al final de las fases definiendo qué condiciones exactas deben cumplirse para dar por exitosa la implementación.
 8. **Referencias Técnicas:** Una tabla enlazando los archivos base necesarios.
 9. **Resumen de Archivos:** Una tabla detallando qué archivos nuevos se crearán (`Crear`), cuáles se modificarán (`Modificar`) y cuáles solo se revisarán (`Revisar`).
-10. **Actualizacion del Archivo `roadmap.md`:** Al crear, modificar o completar un plan de implementacion se debe actualizar el archivo `roadmap.md` en la seccion "Hecho" o "Siguiente" segun corresponda con el numero del plan,descripcion corta, nombre, fecha y enlace al plan.
+10.  **Actualizacion del Archivo `roadmap.md`:** Al crear, modificar o completar un plan de implementacion se debe actualizar el archivo `roadmap.md` en la seccion "Hecho" o "Siguiente" segun corresponda con el numero del plan,descripcion corta, nombre, fecha y enlace al plan.
