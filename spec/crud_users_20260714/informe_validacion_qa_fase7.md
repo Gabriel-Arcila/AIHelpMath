@@ -419,18 +419,18 @@ El ítem `004 · CRUD de Usuarios` sigue en la sección **"Siguiente"** en [road
 
 **AC-02: Corregir errores de ruff check en archivos de test**
 
-- [ ] Ejecutar `uv run ruff check --fix tests/` para auto-corregir 6 errores (I001, F811, F401, W293)
-- [ ] Reformular docstrings largos a multi-línea en `tests/api/test_user_router.py` (8 errores E501)
-- [ ] Reformular comentarios largos a multi-línea en `tests/crud/test_user_repository.py` (3 errores E501)
-- [ ] Reemplazar `user1 = await create_test_user(...)` por `await create_test_user(...)` en `test_user_router.py:292` (F841)
-- [ ] Verificar: `uv run ruff check src/users/users/ src/shared/pagination.py tests/` — 0 errores
+- [x] Ejecutar `uv run ruff check --fix tests/` para auto-corregir 6 errores (I001, F811, F401, W293)
+- [x] Reformular docstrings largos a multi-línea en `tests/api/test_user_router.py` (8 errores E501)
+- [x] Reformular comentarios largos a multi-línea en `tests/crud/test_user_repository.py` (3 errores E501)
+- [x] Reemplazar `user1 = await create_test_user(...)` por `await create_test_user(...)` en `test_user_router.py:292` (F841)
+- [x] Verificar: `uv run ruff check src/users/users/ src/shared/pagination.py tests/` — 0 errores
 
 **AC-03: Reformatear archivos de test con ruff format**
 
-- [ ] Ejecutar `uv run ruff format tests/conftest.py`
-- [ ] Ejecutar `uv run ruff format tests/api/test_user_router.py`
-- [ ] Ejecutar `uv run ruff format tests/crud/test_user_repository.py`
-- [ ] Verificar: `uv run ruff format --check tests/` — todos formateados
+- [x] Ejecutar `uv run ruff format tests/conftest.py`
+- [x] Ejecutar `uv run ruff format tests/api/test_user_router.py`
+- [x] Ejecutar `uv run ruff format tests/crud/test_user_repository.py`
+- [x] Verificar: `uv run ruff format --check tests/` — todos formateados
 
 **AC-04: Agregar `pytest-cov` a dependencias dev**
 

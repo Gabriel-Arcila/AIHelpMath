@@ -1,6 +1,5 @@
 """Pruebas de integración para los endpoints de la entidad User (Router HTTP)."""
 
-import pytest
 from httpx import AsyncClient
 
 from src.users.models import UserRole
@@ -41,7 +40,9 @@ class TestUserRouter:
     async def test_create_user_returns_422_invalid_email(
         self, async_client: AsyncClient, seed_user_role: UserRole
     ) -> None:
-        """Verifica que POST /v1/users/ retorna 422 Unprocessable Entity si el email es inválido."""
+        """Verifica que POST /v1/users/ retorna 422 Unprocessable Entity
+        si el email es inválido.
+        """
         # Arrange
         payload = {
             "id_role": seed_user_role.id,
@@ -59,7 +60,9 @@ class TestUserRouter:
     async def test_create_user_returns_409_duplicate_email(
         self, async_client: AsyncClient, seed_user_role: UserRole
     ) -> None:
-        """Verifica que POST /v1/users/ retorna 409 Conflict y formato RFC 9457 si el email ya existe."""
+        """Verifica que POST /v1/users/ retorna 409 Conflict y formato RFC 9457
+        si el email ya existe.
+        """
         # Arrange
         payload = {
             "id_role": seed_user_role.id,
@@ -82,7 +85,8 @@ class TestUserRouter:
         assert response.status_code == 409
         data = response.json()
         assert data.get("status") == 409
-        assert "duplicate" in data.get("detail", "").lower() or "already exists" in data.get("detail", "").lower()
+        detail = data.get("detail", "").lower()
+        assert "duplicate" in detail or "already exists" in detail
         assert "title" in data
         assert "type" in data
         assert "instance" in data
@@ -94,7 +98,9 @@ class TestUserRouter:
     async def test_get_user_returns_200(
         self, async_client: AsyncClient, seed_user_role: UserRole
     ) -> None:
-        """Verifica que GET /v1/users/{user_id} retorna status 200 y el usuario correspondiente."""
+        """Verifica que GET /v1/users/{user_id} retorna status 200 y el
+        usuario correspondiente.
+        """
         # Arrange
         user_data = {
             "first_name": "Get",
@@ -116,9 +122,12 @@ class TestUserRouter:
     async def test_get_user_returns_404_nonexistent(
         self, async_client: AsyncClient
     ) -> None:
-        """Verifica que GET /v1/users/{user_id} retorna status 404 Not Found si el usuario no existe."""
+        """Verifica que GET /v1/users/{user_id} retorna status 404 Not Found
+        si el usuario no existe.
+        """
         # Act
-        response = await async_client.get("/v1/users/00000000-0000-0000-0000-000000000000")
+        non_existent_id = "00000000-0000-0000-0000-000000000000"
+        response = await async_client.get(f"/v1/users/{non_existent_id}")
 
         # Assert
         assert response.status_code == 404
@@ -132,7 +141,9 @@ class TestUserRouter:
     async def test_get_user_detailed_returns_200_with_role(
         self, async_client: AsyncClient, seed_user_role: UserRole
     ) -> None:
-        """Verifica que GET /v1/users/{user_id}/detailed retorna UserDetailed con relaciones cargadas."""
+        """Verifica que GET /v1/users/{user_id}/detailed retorna UserDetailed
+        con relaciones cargadas.
+        """
         # Arrange
         user_data = {
             "first_name": "Detailed",
@@ -158,9 +169,12 @@ class TestUserRouter:
     async def test_get_user_detailed_returns_404_nonexistent(
         self, async_client: AsyncClient
     ) -> None:
-        """Verifica que GET /v1/users/{user_id}/detailed retorna status 404 si no existe el usuario."""
+        """Verifica que GET /v1/users/{user_id}/detailed retorna status 404
+        si no existe el usuario.
+        """
         # Act
-        response = await async_client.get("/v1/users/00000000-0000-0000-0000-000000000000/detailed")
+        non_existent_id = "00000000-0000-0000-0000-000000000000"
+        response = await async_client.get(f"/v1/users/{non_existent_id}/detailed")
 
         # Assert
         assert response.status_code == 404
@@ -201,7 +215,9 @@ class TestUserRouter:
     async def test_list_users_returns_200_empty(
         self, async_client: AsyncClient
     ) -> None:
-        """Verifica que GET /v1/users/ retorna items vacíos y total 0 cuando no hay usuarios."""
+        """Verifica que GET /v1/users/ retorna items vacíos y total 0 cuando
+        no hay usuarios.
+        """
         # Act
         response = await async_client.get("/v1/users/?offset=0&limit=10")
 
@@ -272,10 +288,13 @@ class TestUserRouter:
     async def test_update_user_returns_404_nonexistent(
         self, async_client: AsyncClient
     ) -> None:
-        """Verifica que PATCH /v1/users/{user_id} retorna 404 si el usuario no existe."""
+        """Verifica que PATCH /v1/users/{user_id} retorna 404 si el usuario
+        no existe.
+        """
         # Act
+        non_existent_id = "00000000-0000-0000-0000-000000000000"
         response = await async_client.patch(
-            "/v1/users/00000000-0000-0000-0000-000000000000",
+            f"/v1/users/{non_existent_id}",
             json={"first_name": "Ghost"},
         )
 
@@ -287,9 +306,11 @@ class TestUserRouter:
     async def test_update_user_returns_409_duplicate_email(
         self, async_client: AsyncClient, seed_user_role: UserRole
     ) -> None:
-        """Verifica que PATCH /v1/users/{user_id} retorna 409 si el nuevo email pertenece a otro usuario."""
+        """Verifica que PATCH /v1/users/{user_id} retorna 409 si el nuevo email
+        pertenece a otro usuario.
+        """
         # Arrange
-        user1 = await create_test_user(
+        await create_test_user(
             async_client,
             {
                 "first_name": "UserOne",
@@ -326,7 +347,9 @@ class TestUserRouter:
     async def test_delete_user_returns_204(
         self, async_client: AsyncClient, seed_user_role: UserRole
     ) -> None:
-        """Verifica que DELETE /v1/users/{user_id} elimina el usuario y retorna status 204 No Content."""
+        """Verifica que DELETE /v1/users/{user_id} elimina el usuario y retorna
+        status 204 No Content.
+        """
         # Arrange
         created = await create_test_user(
             async_client,
