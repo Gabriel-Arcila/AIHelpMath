@@ -444,25 +444,27 @@ app.include_router(
 
 **Objetivo:** Verificar la calidad integral del código, cobertura de tests y coherencia del proyecto.
 
+**Informe detallado:** → [informe_validacion_qa_fase7.md](spec/crud_users_20260714/informe_validacion_qa_fase7.md)
+
 **Checklist:**
 
 - [ ] **Linting:**
-  - [ ] `uv run ruff check src/users/users/ src/shared/pagination.py tests/` — sin errores
-  - [ ] `uv run ruff format src/users/users/ src/shared/pagination.py tests/` — código formateado
-- [ ] **Análisis estático de tipos:**
-  - [ ] `uv run mypy src/users/users/ src/shared/pagination.py` — sin errores
+  - [ ] ~~`uv run ruff check src/users/users/ src/shared/pagination.py tests/` — sin errores~~ → **❌ 23 errores** (E501 líneas largas en docstrings de tests, F841 variable no usada, I001 imports desordenados, F811 import duplicado, F401 import no usado, W293 whitespace en líneas vacías). Archivos de producción sin errores, todos los errores están en `tests/`.
+  - [ ] ~~`uv run ruff format src/users/users/ src/shared/pagination.py tests/` — código formateado~~ → **❌ 3 archivos requieren reformateo** (`tests/conftest.py`, `tests/api/test_user_router.py`, `tests/crud/test_user_repository.py`). Los 11 archivos de producción ya están formateados.
+- [x] **Análisis estático de tipos:**
+  - [x] `uv run mypy src/users/users/ src/shared/pagination.py` — ✅ `Success: no issues found in 6 source files`
 - [ ] **Cobertura de tests:**
-  - [ ] `uv run pytest --cov=src/users/users --cov-report=term-missing` — cobertura ≥ 90%
+  - [ ] ~~`uv run pytest --cov=src/users/users --cov-report=term-missing` — cobertura ≥ 90%~~ → **❌ `pytest: error: unrecognized arguments: --cov`** — Falta la dependencia `pytest-cov` en `pyproject.toml` (tiene `coverage` pero no el plugin de pytest).
 - [ ] **Suite completa:**
-  - [ ] `uv run pytest -v` — toda la suite verde
+  - [ ] ~~`uv run pytest -v` — toda la suite verde~~ → **❌ 4 failed, 20 passed** (de 24 tests). Fallan: `test_get_all_returns_list`, `test_get_all_returns_empty_list_when_no_users`, `test_list_users_returns_200_empty`, `test_list_users_respects_limit`. **Causa raíz:** La fixture `db_session` no implementa SAVEPOINT nesting (`begin_nested()` + event listener), por lo que los `commit()` del Service finalizan la transacción contenedora y los datos persisten entre tests. Solución documentada en `pytest-best-practices/references/async_testing.md` §4 y `fastapi-app-creator/references/testing.md` §3.
 - [ ] **Verificación manual en Swagger:**
-  - [ ] Levantar servidor: `uv run uvicorn src.main:app --reload`
-  - [ ] Verificar que los 6 endpoints aparecen en `/docs`
-  - [ ] Probar `POST /v1/users/` con datos válidos
-  - [ ] Probar `GET /v1/users/` con paginación
-  - [ ] Probar `GET /v1/users/{id}/detailed`
+  - [ ] Levantar servidor: `uv run uvicorn src.main:app --reload` — ⏸️ Pendiente
+  - [ ] Verificar que los 6 endpoints aparecen en `/docs` — ⏸️ Pendiente
+  - [ ] Probar `POST /v1/users/` con datos válidos — ⏸️ Pendiente
+  - [ ] Probar `GET /v1/users/` con paginación — ⏸️ Pendiente
+  - [ ] Probar `GET /v1/users/{id}/detailed` — ⏸️ Pendiente
 - [ ] **Actualizar `spec/roadmap.md`:**
-  - [ ] Mover el plan 004 de la sección "Siguiente" a "Hecho"
+  - [ ] Mover el plan 004 de la sección "Siguiente" a "Hecho" — ⏸️ Pendiente (bloqueado por correcciones)
 
 ---
 

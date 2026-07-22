@@ -13,6 +13,7 @@
 4. **004 · CRUD de Usuarios** — Implementar el CRUD completo (Create, Read, Read all con paginación, Read detailed, Update, Delete) para la entidad `User` con TDD, arquitectura Router → Service → Repository y paginación genérica. (2026-07-14) → [spec/crud_users_20260714/plan_crud_users_20260714.md](spec/crud_users_20260714/plan_crud_users_20260714.md)
 
 5. Mejorar el skills de TDD.
-6. Realizar pruebas de cobertura.
-7. GitHub Actions para la ejecución de pruebas.
-8. Generador aleatorio con faker u otra librería.
+6. Especificar como se tiene que hacer el archivo de validaciones.
+7. Realizar pruebas de cobertura.
+8. GitHub Actions para la ejecución de pruebas.
+9. Generador aleatorio con faker u otra librería.
