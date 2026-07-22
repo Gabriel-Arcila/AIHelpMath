@@ -404,11 +404,11 @@ El ítem `004 · CRUD de Usuarios` sigue en la sección **"Siguiente"** en [road
 
 **AC-01: Implementar SAVEPOINT nesting en `tests/conftest.py`**
 
-- [ ] Agregar `from sqlalchemy import event` a los imports
-- [ ] Agregar `await connection.begin_nested()` después de `transaction = await connection.begin()`
-- [ ] Agregar event listener `after_transaction_end` que reinicie el savepoint tras cada `commit()`
-- [ ] Verificar que los 4 tests fallidos ahora pasan: `uv run pytest -v`
-- [ ] Verificar que el warning `SAWarning: transaction already deassociated` desaparece
+- [x] Agregar `from sqlalchemy import event` a los imports
+- [x] Agregar `await connection.begin_nested()` después de `transaction = await connection.begin()`
+- [x] Agregar event listener `after_transaction_end` que reinicie el savepoint tras cada `commit()`
+- [x] Verificar que los 4 tests fallidos ahora pasan: `uv run pytest -v`
+- [x] Verificar que el warning `SAWarning: transaction already deassociated` desaparece
 
 > Referencia: `pytest-best-practices/references/async_testing.md` §4, `fastapi-app-creator/references/testing.md` §3  
 > **Impacto:** Resuelve los 4 tests fallidos de una sola vez.

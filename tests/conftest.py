@@ -1,12 +1,11 @@
 """Fixtures globales de pytest para pruebas de integración y unitarias."""
 
+import asyncio
 from collections.abc import AsyncGenerator
 
 import pytest
-import asyncio
 from httpx import ASGITransport, AsyncClient
-from sqlalchemy.ext.asyncio import AsyncSession
-
+from sqlalchemy import event, text
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.pool import NullPool
 
@@ -30,22 +29,45 @@ engine_test = create_async_engine(
 )
 
 
+@pytest.fixture(scope="session", autouse=True)
+async def clean_database_before_suite():
+    """Limpia datos residuales en la DB de test
+    antes de ejecutar la suite.
+    """
+    async with engine_test.begin() as conn:
+        await conn.execute(
+            text('TRUNCATE TABLE "user", user_role RESTART IDENTITY CASCADE;')
+        )
+
+
 @pytest.fixture
 async def db_session() -> AsyncGenerator[AsyncSession, None]:
     """Proporciona una sesión de base de datos asíncrona aislada para pruebas.
 
-    Cada test se ejecuta en una transacción contenedora que realiza rollback
-    automático al finalizar para garantizar el aislamiento de la base de datos.
+    Cada test se ejecuta en una transacción contenedora con savepoints que realiza
+    rollback automático al finalizar para garantizar el aislamiento de la base de datos.
 
     Yields:
         AsyncSession: Sesión de base de datos activa para el test.
     """
     async with engine_test.connect() as connection:
         transaction = await connection.begin()
+        await connection.begin_nested()
+
         session = AsyncSession(
             bind=connection,
             expire_on_commit=False,
         )
+
+        @event.listens_for(
+            session.sync_session,
+            "after_transaction_end",
+        )
+        def restart_savepoint(sync_session, trans):
+            """Reinicia el savepoint tras cada commit."""
+            if trans.nested and not trans._parent.nested:
+                sync_session.begin_nested()
+
         try:
             yield session
         finally:
@@ -80,6 +102,7 @@ async def async_client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, 
 
     app.dependency_overrides.clear()
 
+
 @pytest.fixture(scope="session")
 def event_loop():
     """Crea una instancia única de event loop de asyncio para toda la sesión de pruebas.
@@ -90,4 +113,3 @@ def event_loop():
     loop = asyncio.get_event_loop_policy().new_event_loop()
     yield loop
     loop.close()
-
