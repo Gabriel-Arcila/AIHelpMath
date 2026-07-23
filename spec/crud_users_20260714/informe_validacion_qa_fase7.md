@@ -434,10 +434,10 @@ El ítem `004 · CRUD de Usuarios` sigue en la sección **"Siguiente"** en [road
 
 **AC-04: Agregar `pytest-cov` a dependencias dev**
 
-- [ ] Agregar `"pytest-cov>=6.0.0"` al grupo `dev` en `pyproject.toml`
-- [ ] Ejecutar `uv sync` para instalar la dependencia
-- [ ] Ejecutar `uv run pytest --cov=src/users/users --cov-report=term-missing`
-- [ ] Verificar que la cobertura es ≥ 90%
+- [x] Agregar `"pytest-cov>=6.0.0"` al grupo `dev` en `pyproject.toml`
+- [x] Ejecutar `uv sync` para instalar la dependencia
+- [x] Ejecutar `uv run pytest --cov=src/users/users --cov-report=term-missing`
+- [ ] Verificar que la cobertura es ≥ 90% (Pendiente por decisión del usuario)
 
 **AC-05: Completar configuración de `pyproject.toml`** (según skills)
 
