@@ -448,23 +448,23 @@ app.include_router(
 
 **Checklist:**
 
-- [ ] **Linting:**
-  - [ ] ~~`uv run ruff check src/users/users/ src/shared/pagination.py tests/` — sin errores~~ → **❌ 23 errores** (E501 líneas largas en docstrings de tests, F841 variable no usada, I001 imports desordenados, F811 import duplicado, F401 import no usado, W293 whitespace en líneas vacías). Archivos de producción sin errores, todos los errores están en `tests/`.
-  - [ ] ~~`uv run ruff format src/users/users/ src/shared/pagination.py tests/` — código formateado~~ → **❌ 3 archivos requieren reformateo** (`tests/conftest.py`, `tests/api/test_user_router.py`, `tests/crud/test_user_repository.py`). Los 11 archivos de producción ya están formateados.
+- [x] **Linting:**
+  - [x] `uv run ruff check src/users/users/ src/shared/pagination.py tests/` — ✅ `All checks passed!` (corregido tras AC-02)
+  - [x] `uv run ruff format --check src/users/users/ src/shared/pagination.py tests/` — ✅ `14 files already formatted` (corregido tras AC-03)
 - [x] **Análisis estático de tipos:**
   - [x] `uv run mypy src/users/users/ src/shared/pagination.py` — ✅ `Success: no issues found in 6 source files`
 - [ ] **Cobertura de tests:**
-  - [ ] ~~`uv run pytest --cov=src/users/users --cov-report=term-missing` — cobertura ≥ 90%~~ → **❌ `pytest: error: unrecognized arguments: --cov`** — Falta la dependencia `pytest-cov` en `pyproject.toml` (tiene `coverage` pero no el plugin de pytest).
-- [ ] **Suite completa:**
-  - [ ] ~~`uv run pytest -v` — toda la suite verde~~ → **❌ 4 failed, 20 passed** (de 24 tests). Fallan: `test_get_all_returns_list`, `test_get_all_returns_empty_list_when_no_users`, `test_list_users_returns_200_empty`, `test_list_users_respects_limit`. **Causa raíz:** La fixture `db_session` no implementa SAVEPOINT nesting (`begin_nested()` + event listener), por lo que los `commit()` del Service finalizan la transacción contenedora y los datos persisten entre tests. Solución documentada en `pytest-best-practices/references/async_testing.md` §4 y `fastapi-app-creator/references/testing.md` §3.
-- [ ] **Verificación manual en Swagger:**
-  - [ ] Levantar servidor: `uv run uvicorn src.main:app --reload` — ⏸️ Pendiente
-  - [ ] Verificar que los 6 endpoints aparecen en `/docs` — ⏸️ Pendiente
-  - [ ] Probar `POST /v1/users/` con datos válidos — ⏸️ Pendiente
-  - [ ] Probar `GET /v1/users/` con paginación — ⏸️ Pendiente
-  - [ ] Probar `GET /v1/users/{id}/detailed` — ⏸️ Pendiente
-- [ ] **Actualizar `spec/roadmap.md`:**
-  - [ ] Mover el plan 004 de la sección "Siguiente" a "Hecho" — ⏸️ Pendiente (bloqueado por correcciones)
+  - [ ] `uv run pytest --cov=src/users/users --cov-report=term-missing` — ⏸️ Cobertura actual: **76%** (< 90%). Pendiente por decisión del usuario. El 24% faltante corresponde a líneas del `service.py` y `router.py` que no se trazan correctamente a través de ASGI transport en tests de integración.
+- [x] **Suite completa:**
+  - [x] `uv run pytest -v` — ✅ **24 passed** en 2.75s (corregido tras AC-01: SAVEPOINT nesting)
+- [x] **Verificación manual en Swagger:**
+  - [x] Levantar servidor: `uv run uvicorn src.main:app --reload` — ✅ Realizado (2026-07-22)
+  - [x] Verificar que los 6 endpoints aparecen en `/docs` — ✅ Realizado (2026-07-22)
+  - [x] Probar `POST /v1/users/` con datos válidos — ✅ Realizado (2026-07-22)
+  - [x] Probar `GET /v1/users/` con paginación — ✅ Realizado (2026-07-22)
+  - [x] Probar `GET /v1/users/{id}/detailed` — ✅ Realizado (2026-07-22)
+- [x] **Actualizar `spec/roadmap.md`:**
+  - [x] Mover el plan 004 de la sección "Siguiente" a "Hecho" — ✅ Actualizado (2026-07-22)
 
 ---
 
@@ -516,7 +516,7 @@ app.include_router(
 | `src/users/users/router.py` | Modificar | ✅ Implementado |
 | `src/users/users/__init__.py` | Modificar | ✅ Implementado |
 | `src/main.py` | Modificar | ✅ Actualizado |
-| `spec/roadmap.md` | Modificar | ⏳ Pendiente |
+| `spec/roadmap.md` | Modificar | ✅ Actualizado |
 | `src/users/models.py` | Revisar | 📋 Referencia |
 | `src/users/schemas.py` | Revisar | 📋 Referencia |
 | `src/core/exceptions.py` | Revisar | 📋 Referencia |

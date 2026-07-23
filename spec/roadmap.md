@@ -8,13 +8,13 @@
 
 3. **003 · Traducción de Código Funcional al Inglés** — Renombrar modelos, atributos, esquemas y tablas del dominio `users` al inglés, junto a una nueva migración de Alembic. → [spec/migracion-codigo-ingles-20260701/plan_migracion_codigo_ingles_20260701.md](spec/migracion-codigo-ingles-20260701/plan_migracion_codigo_ingles_20260701.md)
 
-## Siguiente:
-
 4. **004 · CRUD de Usuarios** — Implementar el CRUD completo (Create, Read, Read all con paginación, Read detailed, Update, Delete) para la entidad `User` con TDD, arquitectura Router → Service → Repository y paginación genérica. (2026-07-14) → [spec/crud_users_20260714/plan_crud_users_20260714.md](spec/crud_users_20260714/plan_crud_users_20260714.md)
 
-5. Revisar que no hay ningun rollback en user src y cambiar a otra base de datos para tests.
+## Siguiente:
+
+5. Revisar que no hay ningun rollback en user src y cambiar a otra base de datos para tests, revisar la cobertura.
+   
 6. Mejorar el skills de TDD.
 7. Especificar como se tiene que hacer el archivo de validaciones.
-8. Realizar pruebas de cobertura.
-9. GitHub Actions para la ejecución de pruebas.
-10. Generador aleatorio con faker u otra librería.
+8.  GitHub Actions para la ejecución de pruebas.
+9.  Generador aleatorio con faker u otra librería.
