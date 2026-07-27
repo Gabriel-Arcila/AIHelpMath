@@ -12,9 +12,9 @@
 
 ## Siguiente:
 
-5. Revisar que no hay ningun rollback en user src y cambiar a otra base de datos para tests, revisar la cobertura.
-   
+5. **005 · Rollback en Service, Base de Datos de Test y Cobertura** — Aplicar rollback explícito en `UserService`, configurar base de datos de test separada `TestAIHelpMath` y cerrar gaps de cobertura con tests unitarios del Service, excepciones, paginación y health check. (2026-07-27) → [spec/rollback_testdb_coverage_20260727/plan_rollback_testdb_coverage_20260727.md](spec/rollback_testdb_coverage_20260727/plan_rollback_testdb_coverage_20260727.md)
+
 6. Mejorar el skills de TDD.
 7. Especificar como se tiene que hacer el archivo de validaciones.
-8.  GitHub Actions para la ejecución de pruebas.
-9.  Generador aleatorio con faker u otra librería.
+8. GitHub Actions para la ejecución de pruebas.
+9. Generador aleatorio con faker u otra librería.
