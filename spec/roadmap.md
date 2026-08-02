@@ -10,11 +10,11 @@
 
 4. **004 · CRUD de Usuarios** — Implementar el CRUD completo (Create, Read, Read all con paginación, Read detailed, Update, Delete) para la entidad `User` con TDD, arquitectura Router → Service → Repository y paginación genérica. (2026-07-14) → [spec/crud_users_20260714/plan_crud_users_20260714.md](spec/crud_users_20260714/plan_crud_users_20260714.md)
 
+5. **005 · Rollback en Service, Base de Datos de Test y Cobertura** — Aplicar rollback explícito en `UserService`, configurar base de datos de test separada `TestAIHelpMath` y cerrar gaps de cobertura con tests unitarios del Service, excepciones, paginación y health check. (2026-07-27 → 2026-08-02) → [spec/rollback_testdb_coverage_20260727/plan_rollback_testdb_coverage_20260727.md](spec/rollback_testdb_coverage_20260727/plan_rollback_testdb_coverage_20260727.md)
+
 ## Siguiente:
 
-5. **005 · Rollback en Service, Base de Datos de Test y Cobertura** — Aplicar rollback explícito en `UserService`, configurar base de datos de test separada `TestAIHelpMath` y cerrar gaps de cobertura con tests unitarios del Service, excepciones, paginación y health check. (2026-07-27) → [spec/rollback_testdb_coverage_20260727/plan_rollback_testdb_coverage_20260727.md](spec/rollback_testdb_coverage_20260727/plan_rollback_testdb_coverage_20260727.md)
-
-6. Mejorar el skills de TDD.
-7. Especificar como se tiene que hacer el archivo de validaciones.
-8. GitHub Actions para la ejecución de pruebas.
-9. Generador aleatorio con faker u otra librería.
+1. Mejorar el skills de TDD.
+2. Especificar como se tiene que hacer el archivo de validaciones.
+3. GitHub Actions para la ejecución de pruebas.
+4.  Generador aleatorio con faker u otra librería.
