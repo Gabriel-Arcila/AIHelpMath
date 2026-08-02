@@ -16,12 +16,16 @@ class Settings(BaseSettings):
         project_name (str): Nombre del proyecto.
         project_version (str): Versión del proyecto.
         database_url (str): URL de conexión a la base de datos.
+        test_database_url (str): URL de conexión a la base de datos de pruebas.
         api_v1_str (str): Prefijo de ruta para la API v1.
     """
 
     project_name: str = "IAHelpMath"
     project_version: str = "0.1.0"
     database_url: str = "postgresql://user:password@localhost:5432/iahelpmath"
+    test_database_url: str = (
+        "postgresql+asyncpg://user:password@localhost:5432/TestAIHelpMath"
+    )
     api_v1_str: str = "/api/v1"
 
     model_config = SettingsConfigDict(

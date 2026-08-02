@@ -5,23 +5,30 @@ from collections.abc import AsyncGenerator
 
 import pytest
 from httpx import ASGITransport, AsyncClient
-from sqlalchemy import event, text
+from sqlalchemy import event
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.pool import NullPool
+from sqlmodel import SQLModel
 
 from src.core.config import settings
 from src.core.dependencies import get_db
 from src.main import app
+from src.users.models import (  
+    User,
+    UserAIProfile,
+    UserLevel,
+    UserRole,
+    UserTopic,
+)
 
-# Adaptar URL a postgresql+asyncpg:// para soporte asíncrono
-db_url = settings.database_url
+# Adaptar URL a postgresql+asyncpg:// para soporte asíncrono en la DB de pruebas
+db_url = settings.test_database_url
 if db_url.startswith("postgres://"):
     db_url = db_url.replace("postgres://", "postgresql+asyncpg://", 1)
 elif db_url.startswith("postgresql://"):
     db_url = db_url.replace("postgresql://", "postgresql+asyncpg://", 1)
 
-# Creamos un engine de test específico con NullPool para evitar el error
-# 'got Future attached to a different loop' al reutilizar conexiones en loops distintos.
+# Engine de test con NullPool para evitar conflictos de event loop entre hilos en tests
 engine_test = create_async_engine(
     db_url,
     poolclass=NullPool,
@@ -30,18 +37,21 @@ engine_test = create_async_engine(
 
 
 @pytest.fixture(scope="session", autouse=True)
-async def clean_database_before_suite():
-    """Limpia datos residuales en la DB de test
-    antes de ejecutar la suite.
+async def setup_database():
+    """Crea y destruye las tablas en la base de datos de pruebas (TestAIHelpMath).
+
+    Se ejecuta una sola vez por sesión de pytest.
     """
     async with engine_test.begin() as conn:
-        await conn.execute(
-            text('TRUNCATE TABLE "user", user_role RESTART IDENTITY CASCADE;')
-        )
+        await conn.run_sync(SQLModel.metadata.create_all)
+    yield
+    async with engine_test.begin() as conn:
+        await conn.run_sync(SQLModel.metadata.drop_all)
+    await engine_test.dispose()
 
 
 @pytest.fixture
-async def db_session() -> AsyncGenerator[AsyncSession, None]:
+async def db_session(setup_database) -> AsyncGenerator[AsyncSession, None]:
     """Proporciona una sesión de base de datos asíncrona aislada para pruebas.
 
     Cada test se ejecuta en una transacción contenedora con savepoints que realiza

@@ -64,9 +64,7 @@ class UserService:
             return user
         except Exception as err:
             await self.session.rollback()
-            raise DatabaseException(
-                detail=f"Database operation failed: {err}"
-            ) from err
+            raise DatabaseException(detail=f"Database operation failed: {err}") from err
 
     async def get_by_id(self, user_id: str) -> User:
         """Obtiene un usuario por su identificador único.
@@ -156,9 +154,7 @@ class UserService:
             return updated_user
         except Exception as err:
             await self.session.rollback()
-            raise DatabaseException(
-                detail=f"Database operation failed: {err}"
-            ) from err
+            raise DatabaseException(detail=f"Database operation failed: {err}") from err
 
     async def delete(self, user_id: str) -> None:
         """Elimina un usuario del sistema.
@@ -175,6 +171,4 @@ class UserService:
             await self.session.commit()
         except Exception as err:
             await self.session.rollback()
-            raise DatabaseException(
-                detail=f"Database operation failed: {err}"
-            ) from err
+            raise DatabaseException(detail=f"Database operation failed: {err}") from err

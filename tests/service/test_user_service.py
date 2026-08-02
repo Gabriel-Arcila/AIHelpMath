@@ -46,6 +46,7 @@ class TestUserServiceCreate:
         mock_session: AsyncMock,
         mock_repository: AsyncMock,
     ) -> None:
+        """Verifica que crear un usuario confirme la transacción exitosamente."""
         user_data = UserCreate(
             id_role=1,
             first_name="John",
@@ -77,6 +78,7 @@ class TestUserServiceCreate:
         mock_session: AsyncMock,
         mock_repository: AsyncMock,
     ) -> None:
+        """Verifica que un error en el repositorio ejecute rollback."""
         user_data = UserCreate(
             id_role=1,
             first_name="John",
@@ -99,6 +101,7 @@ class TestUserServiceCreate:
         mock_session: AsyncMock,
         mock_repository: AsyncMock,
     ) -> None:
+        """Verifica que un error en commit ejecute rollback."""
         user_data = UserCreate(
             id_role=1,
             first_name="John",
@@ -127,6 +130,7 @@ class TestUserServiceCreate:
         mock_session: AsyncMock,
         mock_repository: AsyncMock,
     ) -> None:
+        """Verifica que email duplicado lance ConflictException sin rollback."""
         user_data = UserCreate(
             id_role=1,
             first_name="John",
@@ -158,6 +162,7 @@ class TestUserServiceUpdate:
         mock_session: AsyncMock,
         mock_repository: AsyncMock,
     ) -> None:
+        """Verifica que actualizar un usuario confirme la transacción exitosamente."""
         user_id = "user-123"
         existing_user = User(
             id=user_id,
@@ -191,6 +196,7 @@ class TestUserServiceUpdate:
         mock_session: AsyncMock,
         mock_repository: AsyncMock,
     ) -> None:
+        """Verifica que un error en update ejecute rollback."""
         user_id = "user-123"
         existing_user = User(
             id=user_id,
@@ -217,6 +223,7 @@ class TestUserServiceUpdate:
         mock_session: AsyncMock,
         mock_repository: AsyncMock,
     ) -> None:
+        """Verifica conflicto por email duplicado al actualizar."""
         user_id = "user-123"
         existing_user = User(
             id=user_id,
@@ -250,6 +257,7 @@ class TestUserServiceUpdate:
         mock_session: AsyncMock,
         mock_repository: AsyncMock,
     ) -> None:
+        """Verifica que actualizar un usuario inexistente lance NotFoundException."""
         user_id = "non-existent"
         update_data = UserUpdate(first_name="Johnny")
         mock_repository.get_by_id.return_value = None
@@ -271,6 +279,7 @@ class TestUserServiceDelete:
         mock_session: AsyncMock,
         mock_repository: AsyncMock,
     ) -> None:
+        """Verifica que eliminar un usuario confirme la transacción exitosamente."""
         user_id = "user-123"
         existing_user = User(
             id=user_id,
@@ -293,6 +302,7 @@ class TestUserServiceDelete:
         mock_session: AsyncMock,
         mock_repository: AsyncMock,
     ) -> None:
+        """Verifica que un error al eliminar ejecute rollback."""
         user_id = "user-123"
         existing_user = User(
             id=user_id,
@@ -316,6 +326,7 @@ class TestUserServiceDelete:
         mock_session: AsyncMock,
         mock_repository: AsyncMock,
     ) -> None:
+        """Verifica que eliminar un usuario inexistente lance NotFoundException."""
         user_id = "non-existent"
         mock_repository.get_by_id.return_value = None
 
@@ -334,6 +345,7 @@ class TestUserServiceRead:
         user_service: UserService,
         mock_repository: AsyncMock,
     ) -> None:
+        """Verifica que get_by_id retorne el usuario encontrado."""
         user_id = "user-123"
         expected_user = User(
             id=user_id,
@@ -354,6 +366,7 @@ class TestUserServiceRead:
         user_service: UserService,
         mock_repository: AsyncMock,
     ) -> None:
+        """Verifica que get_by_id lance NotFoundException si no existe."""
         user_id = "non-existent"
         mock_repository.get_by_id.return_value = None
 
@@ -365,6 +378,7 @@ class TestUserServiceRead:
         user_service: UserService,
         mock_repository: AsyncMock,
     ) -> None:
+        """Verifica que get_detailed retorne el usuario detallado."""
         user_id = "user-123"
         expected_user = User(
             id=user_id,
@@ -384,6 +398,7 @@ class TestUserServiceRead:
         user_service: UserService,
         mock_repository: AsyncMock,
     ) -> None:
+        """Verifica que get_detailed lance NotFoundException si no existe."""
         user_id = "non-existent"
         mock_repository.get_detailed.return_value = None
 
@@ -395,6 +410,7 @@ class TestUserServiceRead:
         user_service: UserService,
         mock_repository: AsyncMock,
     ) -> None:
+        """Verifica que get_all retorne una respuesta paginada."""
         pagination = PaginationParams(offset=0, limit=10)
         expected_user = User(
             id="user-123",

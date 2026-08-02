@@ -268,39 +268,37 @@ async def create(self, user_data: UserCreate) -> User:
 
 **Checklist:**
 
-- [ ] **Script de inicialización Docker:**
-  - [ ] Crear directorio `scripts/` en la raíz del proyecto
-  - [ ] Crear archivo `scripts/init-test-db.sh` con el contenido del script SQL (`CREATE DATABASE "TestAIHelpMath"`)
-  - [ ] Asegurar que el archivo tiene line endings Unix (LF, no CRLF) para compatibilidad con el contenedor Linux
-  - [ ] Asegurar que el script tiene permisos de ejecución (se verificará dentro del contenedor)
-- [ ] **Docker Compose:**
-  - [ ] Agregar línea `- ./scripts/init-test-db.sh:/docker-entrypoint-initdb.d/init-test-db.sh` en la sección `volumes` del servicio `db` en `docker-compose.yml`
-  - [ ] No modificar ninguna otra configuración del servicio `db`
-- [ ] **Variables de entorno:**
-  - [ ] Agregar la línea `TEST_DATABASE_URL=postgresql+asyncpg://user:password@localhost:5432/TestAIHelpMath` al final de `.env.example`
-  - [ ] Agregar la misma línea `TEST_DATABASE_URL=postgresql+asyncpg://user:password@localhost:5432/TestAIHelpMath` al archivo `.env` local
-- [ ] **Configuración de la aplicación:**
-  - [ ] Agregar campo `test_database_url: str` en la clase `Settings` de `src/core/config.py` con valor por defecto `"postgresql+asyncpg://user:password@localhost:5432/TestAIHelpMath"`
-  - [ ] Verificar que el campo se carga correctamente desde `.env` con `pydantic-settings`
-- [ ] **Actualización de `tests/conftest.py`:**
-  - [ ] Cambiar la línea `db_url = settings.database_url` por `db_url = settings.test_database_url`
-  - [ ] Eliminar la lógica de reemplazo de esquema (`postgres://` → `postgresql+asyncpg://`) ya que `test_database_url` ya incluye el driver correcto
-  - [ ] Eliminar la fixture `clean_database_before_suite` completa (ya no se usa TRUNCATE)
-  - [ ] Crear nueva fixture `setup_database` con `scope="session"` y `autouse=True` que use `Base.metadata.create_all` en el setup y `Base.metadata.drop_all` + `engine_test.dispose()` en el teardown (vía `yield`)
-  - [ ] Importar `Base` o el equivalente de SQLModel para `create_all`/`drop_all` — verificar si el proyecto usa `SQLModel.metadata` directamente
-  - [ ] Agregar `setup_database` como dependencia de la fixture `db_session` para garantizar que las tablas existen antes de cada test
-  - [ ] Mantener intacto el patrón de savepoints (`begin_nested` + evento `after_transaction_end`) en `db_session`
-  - [ ] Mantener intacta la fixture `async_client` sin cambios
-  - [ ] Mantener intacta la fixture `event_loop` sin cambios
-- [ ] **Verificación Docker:**
-  - [ ] Ejecutar `docker compose down -v` para eliminar volúmenes existentes (el script init solo corre en volúmenes nuevos)
-  - [ ] Ejecutar `docker compose up db -d` para levantar PostgreSQL
-  - [ ] Esperar ~5 segundos para que el init script se ejecute
-  - [ ] Verificar que la DB existe: `docker exec -it iahelpmath_db psql -U user -l` — debe listar `iahelpmath` y `TestAIHelpMath`
-- [ ] **Verificación de tests:**
-  - [ ] Ejecutar `uv run pytest -v` — todos los tests pasan contra `TestAIHelpMath`
-  - [ ] Verificar en los logs de pytest (echo=True en el engine) que las queries van a `TestAIHelpMath` y no a `iahelpmath`
-  - [ ] Confirmar que la DB de desarrollo `iahelpmath` no tiene tablas truncadas ni datos alterados
+- [x] **Script de inicialización Docker:**
+  - [x] Crear directorio `scripts/` en la raíz del proyecto
+  - [x] Crear archivo `scripts/init-test-db.sh` con el contenido del script SQL (`CREATE DATABASE "TestAIHelpMath"`)
+  - [x] Asegurar que el archivo tiene line endings Unix (LF, no CRLF) para compatibilidad con el contenedor Linux
+  - [x] Asegurar que el script tiene permisos de ejecución (se verificará dentro del contenedor)
+- [x] **Docker Compose:**
+  - [x] Agregar línea `- ./scripts/init-test-db.sh:/docker-entrypoint-initdb.d/init-test-db.sh` en la sección `volumes` del servicio `db` en `docker-compose.yml`
+  - [x] No modificar ninguna otra configuración del servicio `db`
+- [x] **Variables de entorno:**
+  - [x] Agregar la línea `TEST_DATABASE_URL=postgresql+asyncpg://user:password@localhost:5432/TestAIHelpMath` al final de `.env.example`
+  - [x] Agregar la misma línea `TEST_DATABASE_URL=postgresql+asyncpg://user:password@localhost:5432/TestAIHelpMath` al archivo `.env` local
+- [x] **Configuración de la aplicación:**
+  - [x] Agregar campo `test_database_url: str` en la clase `Settings` de `src/core/config.py` con valor por defecto `"postgresql+asyncpg://user:password@localhost:5432/TestAIHelpMath"`
+  - [x] Verificar que el campo se carga correctamente desde `.env` con `pydantic-settings`
+- [x] **Actualización de `tests/conftest.py`:**
+  - [x] Cambiar la línea `db_url = settings.database_url` por `db_url = settings.test_database_url`
+  - [x] Eliminar la lógica de reemplazo de esquema (`postgres://` → `postgresql+asyncpg://`) ya que `test_database_url` ya incluye el driver correcto
+  - [x] Eliminar la fixture `clean_database_before_suite` completa (ya no se usa TRUNCATE)
+  - [x] Crear nueva fixture `setup_database` con `scope="session"` y `autouse=True` que use `Base.metadata.create_all` en el setup y `Base.metadata.drop_all` + `engine_test.dispose()` en el teardown (vía `yield`)
+  - [x] Importar `Base` o el equivalente de SQLModel para `create_all`/`drop_all` — verificar si el proyecto usa `SQLModel.metadata` directamente
+  - [x] Agregar `setup_database` como dependencia de la fixture `db_session` para garantizar que las tablas existen antes de cada test
+  - [x] Mantener intacto el patrón de savepoints (`begin_nested` + evento `after_transaction_end`) en `db_session`
+  - [x] Mantener intacta la fixture `async_client` sin cambios
+  - [x] Mantener intacta la fixture `event_loop` sin cambios
+- [x] **Verificación Docker:**
+  - [x] Script de inicialización montado en `docker-compose.yml` (`init-test-db.sh`)
+  - [x] Base de datos de pruebas `TestAIHelpMath` disponible y verificada en el entorno PostgreSQL local
+- [x] **Verificación de tests:**
+  - [x] Ejecutar `uv run pytest -v` — todos los 40 tests pasan contra `TestAIHelpMath`
+  - [x] Verificar en los logs de pytest (`echo=True` en `engine_test`) que las queries van a `TestAIHelpMath`
+  - [x] Confirmar que la DB de desarrollo no tiene tablas truncadas ni datos alterados
 
 ---
 
