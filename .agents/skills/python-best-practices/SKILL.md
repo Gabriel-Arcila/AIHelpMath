@@ -1,6 +1,6 @@
 ---
 name: python-best-practices
-description: Guía estricta de mejores prácticas y estándares de codificación en Python basados en PEP 8, PEP 20, PEP 257 y tipado moderno. Usa esta skill siempre que vayas a escribir, refactorizar o revisar código Python, para asegurar que cumple con los estándares de calidad, convenciones de nomenclatura, documentación, manejo de errores y tipado requeridos por el proyecto.
+description: Guía estricta de mejores prácticas y estándares de codificación en Python basados en PEP 8, PEP 20, PEP 257, PEP 3134 y tipado moderno. Usa esta skill siempre que vayas a escribir, refactorizar o revisar código Python, para asegurar que cumple con los estándares de calidad, convenciones de nomenclatura, documentación, manejo de errores y tipado requeridos por el proyecto.
 ---
 
 # Python Best Practices (Mejores Prácticas en Python)
@@ -72,5 +72,7 @@ def example_function(param_name: str) -> int:
 - **Excepciones Quirúrgicas:**
   - Usa bloques `try...except` atrapando excepciones específicas (ej. `except ValueError:`).
   - **PROHIBIDO:** Atrapar errores globales con `except Exception:` sin justificación extrema.
+- **Encadenamiento de Excepciones (PEP 3134):**
+  - Al capturar o re-empaquetar excepciones en tipos personalizados (ej. excepciones RFC 9457), utiliza explícitamente `raise CustomException(...) from err` para preservar la causa raíz original (*traceback context*).
 - **Liberación de Recursos:**
   - Utiliza la cláusula `finally` incondicionalmente cuando se requiera liberar recursos del sistema (si no se usa un bloque `with`), garantizando la clausura segura.
