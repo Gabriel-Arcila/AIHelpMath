@@ -97,45 +97,46 @@ Implementar los tres sub-objetivos del punto 5 del roadmap:
 
 **Checklist:**
 
-- [ ] Crear el directorio `tests/service/`
-- [ ] Crear archivo vacío `tests/service/__init__.py`
-- [ ] Crear archivo `tests/service/test_user_service.py` con los imports necesarios: `pytest`, `AsyncMock` de `unittest.mock`, `UserService`, `UserCreate`, `UserUpdate`, `UserResponse`, `ConflictException`, `NotFoundException`, `PaginationParams`, `PaginatedResponse`
-- [ ] Crear fixture `mock_session` que retorne un `AsyncMock` con métodos `commit`, `rollback` y `refresh` como `AsyncMock()`
-- [ ] Crear fixture `mock_repository` que retorne un `AsyncMock()` genérico
-- [ ] **`TestUserServiceCreate`:**
-  - [ ] `test_create_calls_commit_on_success` — Arrange: `mock_repository.get_by_email.return_value = None`, `mock_repository.add.return_value = User(...)`. Act: `await service.create(user_data)`. Assert: `mock_repository.add.assert_called_once()`, `mock_session.commit.assert_called_once()`, `mock_session.refresh.assert_called_once()`, `mock_session.rollback.assert_not_called()`
-  - [ ] `test_create_calls_rollback_on_repository_error` — Arrange: `mock_repository.get_by_email.return_value = None`, `mock_repository.add.side_effect = Exception("DB error")`. Act+Assert: `pytest.raises(Exception)`, luego `mock_session.rollback.assert_called_once()`, `mock_session.commit.assert_not_called()`
-  - [ ] `test_create_calls_rollback_on_commit_error` — Arrange: `mock_repository.get_by_email.return_value = None`, `mock_repository.add.return_value = User(...)`, `mock_session.commit.side_effect = Exception("Commit failed")`. Act+Assert: `pytest.raises(Exception)`, luego `mock_session.rollback.assert_called_once()`
-  - [ ] `test_create_raises_conflict_for_duplicate_email` — Arrange: `mock_repository.get_by_email.return_value = User(...)`. Act+Assert: `pytest.raises(ConflictException)`. Verificar que `mock_session.commit.assert_not_called()` y `mock_session.rollback.assert_not_called()` (la excepción se lanza antes del try)
-- [ ] **`TestUserServiceUpdate`:**
-  - [ ] `test_update_calls_commit_on_success` — Arrange: `mock_repository.get_by_id.return_value = User(...)`, `mock_repository.get_by_email.return_value = None`, `mock_repository.update.return_value = User(...)`. Assert: `mock_session.commit.assert_called_once()`, `mock_session.refresh.assert_called_once()`
-  - [ ] `test_update_calls_rollback_on_error` — Arrange: `mock_repository.get_by_id.return_value = User(...)`, `mock_repository.update.side_effect = Exception("DB error")`. Act+Assert: `pytest.raises(Exception)`, `mock_session.rollback.assert_called_once()`
-  - [ ] `test_update_raises_conflict_for_duplicate_email` — Arrange: usuario existente con email diferente, `mock_repository.get_by_email.return_value = User(otro)`. Assert: `pytest.raises(ConflictException)`
-  - [ ] `test_update_raises_not_found` — Arrange: `mock_repository.get_by_id.return_value = None`. Assert: `pytest.raises(NotFoundException)`
-- [ ] **`TestUserServiceDelete`:**
-  - [ ] `test_delete_calls_commit_on_success` — Arrange: `mock_repository.get_by_id.return_value = User(...)`. Assert: `mock_repository.delete.assert_called_once()`, `mock_session.commit.assert_called_once()`
-  - [ ] `test_delete_calls_rollback_on_error` — Arrange: `mock_repository.get_by_id.return_value = User(...)`, `mock_repository.delete.side_effect = Exception("DB error")`. Assert: `mock_session.rollback.assert_called_once()`
-  - [ ] `test_delete_raises_not_found` — Arrange: `mock_repository.get_by_id.return_value = None`. Assert: `pytest.raises(NotFoundException)`
-- [ ] **`TestUserServiceRead`:**
-  - [ ] `test_get_by_id_returns_user` — Arrange: `mock_repository.get_by_id.return_value = User(...)`. Assert: resultado no es `None`, tiene el `id` esperado
-  - [ ] `test_get_by_id_raises_not_found` — Arrange: `mock_repository.get_by_id.return_value = None`. Assert: `pytest.raises(NotFoundException)`
-  - [ ] `test_get_detailed_returns_user` — Arrange: `mock_repository.get_detailed.return_value = User(...)`. Assert: resultado no es `None`
-  - [ ] `test_get_detailed_raises_not_found` — Arrange: `mock_repository.get_detailed.return_value = None`. Assert: `pytest.raises(NotFoundException)`
-  - [ ] `test_get_all_returns_paginated_response` — Arrange: `mock_repository.get_all.return_value = [User(...)]`, `mock_repository.count.return_value = 1`. Assert: resultado es `PaginatedResponse`, `len(result.items) == 1`, `result.total == 1`
-- [ ] Ejecutar `uv run pytest tests/service/ -v` y verificar:
-  - [ ] Los tests de rollback (`*_rollback_*`) fallan (red) porque el service no tiene `try/except`
-  - [ ] Los tests de lectura (`TestUserServiceRead`) pasan (ya implementados)
-  - [ ] Los tests de excepciones de negocio (`*_conflict_*`, `*_not_found`) pasan
+- [x] Crear el directorio `tests/service/`
+- [x] Crear archivo vacío `tests/service/__init__.py`
+- [x] Crear archivo `tests/service/test_user_service.py` con los imports necesarios: `pytest`, `AsyncMock` de `unittest.mock`, `UserService`, `UserCreate`, `UserUpdate`, `UserResponse`, `ConflictException`, `NotFoundException`, `PaginationParams`, `PaginatedResponse`
+- [x] Crear fixture `mock_session` que retorne un `AsyncMock` con métodos `commit`, `rollback` y `refresh` como `AsyncMock()`
+- [x] Crear fixture `mock_repository` que retorne un `AsyncMock()` genérico
+- [x] **`TestUserServiceCreate`:**
+  - [x] `test_create_calls_commit_on_success` — Arrange: `mock_repository.get_by_email.return_value = None`, `mock_repository.add.return_value = User(...)`. Act: `await service.create(user_data)`. Assert: `mock_repository.add.assert_called_once()`, `mock_session.commit.assert_called_once()`, `mock_session.refresh.assert_called_once()`, `mock_session.rollback.assert_not_called()`
+  - [x] `test_create_calls_rollback_on_repository_error` — Arrange: `mock_repository.get_by_email.return_value = None`, `mock_repository.add.side_effect = Exception("DB error")`. Act+Assert: `pytest.raises(Exception)`, luego `mock_session.rollback.assert_called_once()`, `mock_session.commit.assert_not_called()`
+  - [x] `test_create_calls_rollback_on_commit_error` — Arrange: `mock_repository.get_by_email.return_value = None`, `mock_repository.add.return_value = User(...)`, `mock_session.commit.side_effect = Exception("Commit failed")`. Act+Assert: `pytest.raises(Exception)`, luego `mock_session.rollback.assert_called_once()`
+  - [x] `test_create_raises_conflict_for_duplicate_email` — Arrange: `mock_repository.get_by_email.return_value = User(...)`. Act+Assert: `pytest.raises(ConflictException)`. Verificar que `mock_session.commit.assert_not_called()` y `mock_session.rollback.assert_not_called()` (la excepción se lanza antes del try)
+- [x] **`TestUserServiceUpdate`:**
+  - [x] `test_update_calls_commit_on_success` — Arrange: `mock_repository.get_by_id.return_value = User(...)`, `mock_repository.get_by_email.return_value = None`, `mock_repository.update.return_value = User(...)`. Assert: `mock_session.commit.assert_called_once()`, `mock_session.refresh.assert_called_once()`
+  - [x] `test_update_calls_rollback_on_error` — Arrange: `mock_repository.get_by_id.return_value = User(...)`, `mock_repository.update.side_effect = Exception("DB error")`. Act+Assert: `pytest.raises(Exception)`, `mock_session.rollback.assert_called_once()`
+  - [x] `test_update_raises_conflict_for_duplicate_email` — Arrange: usuario existente con email diferente, `mock_repository.get_by_email.return_value = User(otro)`. Assert: `pytest.raises(ConflictException)`
+  - [x] `test_update_raises_not_found` — Arrange: `mock_repository.get_by_id.return_value = None`. Assert: `pytest.raises(NotFoundException)`
+- [x] **`TestUserServiceDelete`:**
+  - [x] `test_delete_calls_commit_on_success` — Arrange: `mock_repository.get_by_id.return_value = User(...)`. Assert: `mock_repository.delete.assert_called_once()`, `mock_session.commit.assert_called_once()`
+  - [x] `test_delete_calls_rollback_on_error` — Arrange: `mock_repository.get_by_id.return_value = User(...)`, `mock_repository.delete.side_effect = Exception("DB error")`. Assert: `mock_session.rollback.assert_called_once()`
+  - [x] `test_delete_raises_not_found` — Arrange: `mock_repository.get_by_id.return_value = None`. Assert: `pytest.raises(NotFoundException)`
+- [x] **`TestUserServiceRead`:**
+  - [x] `test_get_by_id_returns_user` — Arrange: `mock_repository.get_by_id.return_value = User(...)`. Assert: resultado no es `None`, tiene el `id` esperado
+  - [x] `test_get_by_id_raises_not_found` — Arrange: `mock_repository.get_by_id.return_value = None`. Assert: `pytest.raises(NotFoundException)`
+  - [x] `test_get_detailed_returns_user` — Arrange: `mock_repository.get_detailed.return_value = User(...)`. Assert: resultado no es `None`
+  - [x] `test_get_detailed_raises_not_found` — Arrange: `mock_repository.get_detailed.return_value = None`. Assert: `pytest.raises(NotFoundException)`
+  - [x] `test_get_all_returns_paginated_response` — Arrange: `mock_repository.get_all.return_value = [User(...)]`, `mock_repository.count.return_value = 1`. Assert: resultado es `PaginatedResponse`, `len(result.items) == 1`, `result.total == 1`
+- [x] Ejecutar `uv run pytest tests/service/ -v` y verificar:
+  - [x] Los tests de rollback (`*_rollback_*`) fallan (red) porque el service no tiene `try/except`
+  - [x] Los tests de lectura (`TestUserServiceRead`) pasan (ya implementados)
+  - [x] Los tests de excepciones de negocio (`*_conflict_*`, `*_not_found`) pasan
 
 ---
 
-### Fase 2 — Rollback explícito en `UserService` (TDD — Green)
+### Fase 2 — Rollback explícito en `UserService` y Excepción RFC 9457 (TDD — Green)
 
-**Objetivo:** Implementar `try/except` con `rollback()` explícito en los métodos de escritura del `UserService` para que los tests de la Fase 1 pasen.
+**Objetivo:** Implementar `try/except` con `rollback()` explícito en los métodos de escritura del `UserService` y envolver cualquier error de base de datos capturado en una excepción personalizada que cumpla con el estándar RFC 9457 (`DatabaseException` en `src/core/exceptions.py`).
 
 **Conceptos aplicados:**
 - Regla fundamental de transacciones: commit/rollback exclusivo del Service — Skill [fastapi-app-creator](file:///c:/Users/gabri/OneDrive/Documentos/Proyecto/IAHelpMath/.agents/skills/fastapi-app-creator/SKILL.md), sección 1
 - Límites transaccionales y antipatrón autocommit — Skill [fastapi-app-creator](file:///c:/Users/gabri/OneDrive/Documentos/Proyecto/IAHelpMath/.agents/skills/fastapi-app-creator/references/database.md), sección 3
+- Manejo centralizado de excepciones RFC 9457 — [AGENTS.md](file:///c:/Users/gabri/OneDrive/Documentos/Proyecto/IAHelpMath/AGENTS.md) y `src/core/exceptions.py`
 - Arquitectura Router → Service → Repository — [README.md](file:///c:/Users/gabri/OneDrive/Documentos/Proyecto/IAHelpMath/README.md), sección "Patrones de Diseño"
 - TDD Green — Skill [tdd](file:///c:/Users/gabri/OneDrive/Documentos/Proyecto/IAHelpMath/.agents/skills/tdd/SKILL.md)
 
@@ -143,11 +144,27 @@ Implementar los tres sub-objetivos del punto 5 del roadmap:
 
 | Archivo | Acción |
 |---|---|
+| `src/core/exceptions.py` | Modificar |
 | `src/users/users/service.py` | Modificar |
+| `tests/service/test_user_service.py` | Modificar |
 
 **Patrón a implementar:**
 
 ```python
+# 1. Definición en src/core/exceptions.py
+class DatabaseException(AppException):
+    """Excepción lanzada cuando ocurre un error durante una operación de base de datos.
+
+    Args:
+        detail (str): Mensaje descriptivo del error de base de datos.
+    """
+
+    def __init__(self, detail: str = "Database operation failed") -> None:
+        super().__init__(
+            detail=detail, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+# 2. Uso en src/users/users/service.py
 async def create(self, user_data: UserCreate) -> User:
     # Validaciones de negocio ANTES del try (no disparan rollback)
     existing_user = await self.repository.get_by_email(user_data.email)
@@ -160,33 +177,37 @@ async def create(self, user_data: UserCreate) -> User:
         await self.session.commit()
         await self.session.refresh(user)
         return user
-    except Exception:
+    except Exception as err:
         await self.session.rollback()
-        raise
+        raise DatabaseException(
+            detail=f"Database operation failed: {err}"
+        ) from err
 ```
 
 **Checklist:**
 
-- [ ] **Modificar `UserService.create()`:**
-  - [ ] Mover la validación de email duplicado (`get_by_email` + `ConflictException`) **antes** del bloque `try` para que no dispare rollback
-  - [ ] Envolver `repository.add()`, `session.commit()` y `session.refresh()` dentro de `try`
-  - [ ] Agregar bloque `except Exception:` que ejecute `await self.session.rollback()` seguido de `raise`
-  - [ ] Verificar que el `return user` está **dentro** del `try` (después del `refresh`)
-- [ ] **Modificar `UserService.update()`:**
-  - [ ] Mover `self.get_by_id()` (que lanza `NotFoundException`) **antes** del bloque `try`
-  - [ ] Mover la validación de email duplicado (`get_by_email` + `ConflictException`) **antes** del bloque `try`
-  - [ ] Envolver `repository.update()`, `session.commit()` y `session.refresh()` dentro de `try`
-  - [ ] Agregar bloque `except Exception:` con `await self.session.rollback()` y `raise`
-- [ ] **Modificar `UserService.delete()`:**
-  - [ ] Mover `self.get_by_id()` (que lanza `NotFoundException`) **antes** del bloque `try`
-  - [ ] Envolver `repository.delete()` y `session.commit()` dentro de `try`
-  - [ ] Agregar bloque `except Exception:` con `await self.session.rollback()` y `raise`
-- [ ] Verificar que **ninguna** excepción de negocio (`ConflictException`, `NotFoundException`) queda dentro de un bloque `try` — deben lanzarse antes
-- [ ] Verificar que todos los métodos de solo lectura (`get_by_id`, `get_detailed`, `get_all`) **no** tienen `try/except` ni rollback (no modifican datos)
-- [ ] Ejecutar `uv run pytest tests/service/ -v` — todos los 15 tests del service pasan (green)
-- [ ] Ejecutar `uv run pytest tests/crud/ -v` — los 10 tests de repositorio siguen pasando
-- [ ] Ejecutar `uv run pytest tests/api/ -v` — los 14 tests de integración siguen pasando
-- [ ] Ejecutar `uv run pytest -v` completo — 0 fallos, sin regresiones
+- [x] **Modificar `UserService.create()`:**
+  - [x] Mover la validación de email duplicado (`get_by_email` + `ConflictException`) **antes** del bloque `try` para que no dispare rollback
+  - [x] Envolver `repository.add()`, `session.commit()` y `session.refresh()` dentro de `try`
+  - [x] Agregar bloque `except Exception:` que ejecute `await self.session.rollback()`
+  - [x] Verificar que el `return user` está **dentro** del `try` (después del `refresh`)
+- [x] **Modificar `UserService.update()`:**
+  - [x] Mover `self.get_by_id()` (que lanza `NotFoundException`) **antes** del bloque `try`
+  - [x] Mover la validación de email duplicado (`get_by_email` + `ConflictException`) **antes** del bloque `try`
+  - [x] Envolver `repository.update()`, `session.commit()` y `session.refresh()` dentro de `try`
+  - [x] Agregar bloque `except Exception:` con `await self.session.rollback()`
+- [x] **Modificar `UserService.delete()`:**
+  - [x] Mover `self.get_by_id()` (que lanza `NotFoundException`) **antes** del bloque `try`
+  - [x] Envolver `repository.delete()` y `session.commit()` dentro de `try`
+  - [x] Agregar bloque `except Exception:` con `await self.session.rollback()`
+- [x] **Crear excepción RFC 9457 para errores de DB:**
+  - [x] Crear la clase `DatabaseException(AppException)` en `src/core/exceptions.py` asignando `status.HTTP_500_INTERNAL_SERVER_ERROR`.
+  - [x] Reemplazar la elevación directa de `Exception` por `raise DatabaseException(...) from err` tras el `rollback()` en `create()`, `update()` y `delete()` de `UserService`.
+  - [x] Actualizar la suite de pruebas en `tests/service/test_user_service.py` para validar `pytest.raises(DatabaseException)` en lugar de `pytest.raises(Exception)`.
+- [x] Verificar que **ninguna** excepción de negocio (`ConflictException`, `NotFoundException`) queda dentro de un bloque `try` — deben lanzarse antes
+- [x] Verificar que todos los métodos de solo lectura (`get_by_id`, `get_detailed`, `get_all`) **no** tienen `try/except` ni rollback (no modifican datos)
+- [x] Ejecutar `uv run pytest tests/service/ -v` — todos los tests del service pasan con `DatabaseException` (green)
+- [x] Ejecutar `uv run pytest -v` completo — 0 fallos, sin regresiones
 
 ---
 
@@ -479,7 +500,7 @@ async def create(self, user_data: UserCreate) -> User:
 | `spec/roadmap.md` | Modificar |
 | `src/users/users/repository.py` | Revisar |
 | `src/users/users/router.py` | Revisar |
-| `src/core/exceptions.py` | Revisar |
+| `src/core/exceptions.py` | Modificar |
 | `src/core/dependencies.py` | Revisar |
 | `src/shared/pagination.py` | Revisar |
 | `src/main.py` | Revisar |

@@ -57,6 +57,19 @@ class ValidationException(AppException):
         )
 
 
+class DatabaseException(AppException):
+    """Excepción lanzada cuando ocurre un error durante una operación de base de datos.
+
+    Args:
+        detail (str): Mensaje descriptivo del error de base de datos.
+    """
+
+    def __init__(self, detail: str = "Database operation failed") -> None:
+        super().__init__(
+            detail=detail, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+
 def register_exception_handlers(app: FastAPI) -> None:
     """Registra los manejadores de excepciones globales en la aplicación FastAPI.
 

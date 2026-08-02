@@ -5,7 +5,11 @@ Coordina la lógica de negocio y las transacciones para la entidad User.
 
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.core.exceptions import ConflictException, NotFoundException
+from src.core.exceptions import (
+    ConflictException,
+    DatabaseException,
+    NotFoundException,
+)
 from src.shared.pagination import PaginatedResponse, PaginationParams
 from src.users.models import User
 from src.users.schemas import UserCreate, UserResponse, UserUpdate
@@ -53,10 +57,16 @@ class UserService:
                 detail=f"User with email '{user_data.email}' already exists"
             )
 
-        user = await self.repository.add(user_data)
-        await self.session.commit()
-        await self.session.refresh(user)
-        return user
+        try:
+            user = await self.repository.add(user_data)
+            await self.session.commit()
+            await self.session.refresh(user)
+            return user
+        except Exception as err:
+            await self.session.rollback()
+            raise DatabaseException(
+                detail=f"Database operation failed: {err}"
+            ) from err
 
     async def get_by_id(self, user_id: str) -> User:
         """Obtiene un usuario por su identificador único.
@@ -139,10 +149,16 @@ class UserService:
                     detail=f"User with email '{user_data.email}' already exists"
                 )
 
-        updated_user = await self.repository.update(user, user_data)
-        await self.session.commit()
-        await self.session.refresh(updated_user)
-        return updated_user
+        try:
+            updated_user = await self.repository.update(user, user_data)
+            await self.session.commit()
+            await self.session.refresh(updated_user)
+            return updated_user
+        except Exception as err:
+            await self.session.rollback()
+            raise DatabaseException(
+                detail=f"Database operation failed: {err}"
+            ) from err
 
     async def delete(self, user_id: str) -> None:
         """Elimina un usuario del sistema.
@@ -154,5 +170,11 @@ class UserService:
             NotFoundException: Si el usuario no existe.
         """
         user = await self.get_by_id(user_id)
-        await self.repository.delete(user)
-        await self.session.commit()
+        try:
+            await self.repository.delete(user)
+            await self.session.commit()
+        except Exception as err:
+            await self.session.rollback()
+            raise DatabaseException(
+                detail=f"Database operation failed: {err}"
+            ) from err
