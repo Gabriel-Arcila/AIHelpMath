@@ -87,5 +87,20 @@ asyncio_default_test_loop_scope = "session"
 strict = true
 plugins = ["pydantic.mypy"]
 
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "src/core/config.py",
+    "src/core/security.py",
+    "src/__init__.py",
+    "*/__init__.py",
+]
 
-
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.",
+    "if TYPE_CHECKING:",
+]

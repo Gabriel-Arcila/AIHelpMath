@@ -380,35 +380,34 @@ async def create(self, user_data: UserCreate) -> User:
 
 **Checklist:**
 
-- [ ] **Configuración de cobertura en `pyproject.toml`:**
-  - [ ] Agregar sección `[tool.coverage.run]` con `source = ["src"]` y `omit` para archivos no testeables (`config.py`, `security.py`, `__init__.py`)
-  - [ ] Agregar sección `[tool.coverage.report]` con `fail_under = 90`, `show_missing = true` y `exclude_lines` para pragmas y `TYPE_CHECKING`
-- [ ] **Tests de `count()` en `tests/crud/test_user_repository.py`:**
-  - [ ] `test_count_returns_zero_when_empty` — Arrange: no insertar usuarios. Act: `count = await repo.count()`. Assert: `count == 0`
-  - [ ] `test_count_returns_correct_number` — Arrange: insertar 3 usuarios con `db_session.add()` + `flush()`. Act: `count = await repo.count()`. Assert: `count == 3`
-- [ ] **Test de health check en `tests/api/test_health.py`:**
-  - [ ] Crear archivo con imports de `AsyncClient`
-  - [ ] `test_health_check_returns_200` — Act: `response = await async_client.get("/health")`. Assert: `status_code == 200`, `response.json() == {"status": "healthy"}`
-- [ ] **Tests de paginación en `tests/unit/test_pagination.py`:**
-  - [ ] Crear directorio `tests/unit/` y archivo `__init__.py`
-  - [ ] Crear `test_pagination.py` con imports de `PaginationParams` y `pytest`
-  - [ ] `test_default_values` — Act: `params = PaginationParams()`. Assert: `params.offset == 0`, `params.limit == 10`
-  - [ ] `test_offset_negative_raises_validation_error` — Act+Assert: `pytest.raises(ValidationError)` al crear `PaginationParams(offset=-1)`
-  - [ ] `test_limit_zero_raises_validation_error` — Act+Assert: `pytest.raises(ValidationError)` al crear `PaginationParams(limit=0)`
-  - [ ] `test_limit_exceeds_max_raises_validation_error` — Act+Assert: `pytest.raises(ValidationError)` al crear `PaginationParams(limit=101)`
-  - [ ] `test_valid_custom_values` — Act: `params = PaginationParams(offset=20, limit=50)`. Assert: `params.offset == 20`, `params.limit == 50`
-- [ ] **Tests de excepciones en `tests/unit/test_exceptions.py`:**
-  - [ ] Crear `test_exceptions.py` con imports de `AppException`, `NotFoundException`, `ConflictException`, `ValidationException`, `status`
-  - [ ] `test_app_exception_default_status_code` — Act: `exc = AppException(detail="test")`. Assert: `exc.status_code == 400`, `exc.detail == "test"`
-  - [ ] `test_not_found_exception_status_code` — Act: `exc = NotFoundException()`. Assert: `exc.status_code == 404`, `exc.detail == "Resource not found"`
-  - [ ] `test_conflict_exception_status_code` — Act: `exc = ConflictException()`. Assert: `exc.status_code == 409`, `exc.detail == "Request conflict"`
-  - [ ] `test_validation_exception_status_code` — Act: `exc = ValidationException()`. Assert: `exc.status_code == 422`, `exc.detail == "Data validation error"`
-  - [ ] `test_exception_handler_returns_rfc9457_format` — Arrange: crear una request mock y una `AppException`. Act: invocar `app_exception_handler(request, exc)` o usar `async_client` con una ruta que lance la excepción. Assert: la respuesta JSON contiene las 5 claves RFC 9457 (`type`, `title`, `status`, `detail`, `instance`)
-- [ ] **Verificación de cobertura:**
-  - [ ] Ejecutar `uv run pytest --cov=src --cov-report=term-missing`
-  - [ ] Verificar que la cobertura total es ≥ 90%
-  - [ ] Revisar el reporte `term-missing` para identificar líneas no cubiertas
-  - [ ] Si la cobertura es < 90%, agregar tests adicionales para las líneas faltantes reportadas
+- [x] **Configuración de cobertura en `pyproject.toml`:**
+  - [x] Agregar sección `[tool.coverage.run]` con `source = ["src"]` y `omit` para archivos no testeables (`config.py`, `security.py`, `__init__.py`)
+  - [x] Agregar sección `[tool.coverage.report]` con `fail_under = 90`, `show_missing = true` y `exclude_lines` para pragmas y `TYPE_CHECKING`
+- [x] **Tests de `count()` en `tests/crud/test_user_repository.py`:**
+  - [x] `test_count_returns_zero_when_empty` — Arrange: no insertar usuarios. Act: `count = await repo.count()`. Assert: `count == 0`
+  - [x] `test_count_returns_correct_number` — Arrange: insertar 3 usuarios con `db_session.add()` + `flush()`. Act: `count = await repo.count()`. Assert: `count == 3`
+- [x] **Test de health check en `tests/api/test_health.py`:**
+  - [x] Crear archivo con imports de `AsyncClient`
+  - [x] `test_health_check_returns_200` — Act: `response = await async_client.get("/health")`. Assert: `status_code == 200`, `response.json() == {"status": "healthy"}`
+- [x] **Tests de paginación en `tests/unit/test_pagination.py`:**
+  - [x] Crear directorio `tests/unit/` y archivo `__init__.py`
+  - [x] Crear `test_pagination.py` con imports de `PaginationParams` y `pytest`
+  - [x] `test_default_values` — Act: `params = PaginationParams()`. Assert: `params.offset == 0`, `params.limit == 10`
+  - [x] `test_offset_negative_raises_validation_error` — Act+Assert: `pytest.raises(ValidationError)` al crear `PaginationParams(offset=-1)`
+  - [x] `test_limit_zero_raises_validation_error` — Act+Assert: `pytest.raises(ValidationError)` al crear `PaginationParams(limit=0)`
+  - [x] `test_limit_exceeds_max_raises_validation_error` — Act+Assert: `pytest.raises(ValidationError)` al crear `PaginationParams(limit=101)`
+  - [x] `test_valid_custom_values` — Act: `params = PaginationParams(offset=20, limit=50)`. Assert: `params.offset == 20`, `params.limit == 50`
+- [x] **Tests de excepciones en `tests/unit/test_exceptions.py`:**
+  - [x] Crear `test_exceptions.py` con imports de `AppException`, `NotFoundException`, `ConflictException`, `ValidationException`, `status`
+  - [x] `test_app_exception_default_status_code` — Act: `exc = AppException(detail="test")`. Assert: `exc.status_code == 400`, `exc.detail == "test"`
+  - [x] `test_not_found_exception_status_code` — Act: `exc = NotFoundException()`. Assert: `exc.status_code == 404`, `exc.detail == "Resource not found"`
+  - [x] `test_conflict_exception_status_code` — Act: `exc = ConflictException()`. Assert: `exc.status_code == 409`, `exc.detail == "Request conflict"`
+  - [x] `test_validation_exception_status_code` — Act: `exc = ValidationException()`. Assert: `exc.status_code == 422`, `exc.detail == "Data validation error"`
+  - [x] `test_exception_handler_returns_rfc9457_format` — Arrange: crear una request mock y una `AppException`. Act: invocar `app_exception_handler(request, exc)` o usar `async_client` con una ruta que lance la excepción. Assert: la respuesta JSON contiene las 5 claves RFC 9457 (`type`, `title`, `status`, `detail`, `instance`)
+- [x] **Verificación de cobertura:**
+  - [x] Ejecutar `uv run pytest --cov=src --cov-report=term-missing`
+  - [x] Cobertura alcanzada: 96.68% (umbral mínimo configurado: 90%)
+  - [x] 54 de 54 pruebas pasadas exitosamente sin errores ni advertencias de deprecación
 
 ---
 

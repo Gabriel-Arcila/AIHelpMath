@@ -10,16 +10,10 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.pool import NullPool
 from sqlmodel import SQLModel
 
+import src.users.models
 from src.core.config import settings
 from src.core.dependencies import get_db
 from src.main import app
-from src.users.models import (  
-    User,
-    UserAIProfile,
-    UserLevel,
-    UserRole,
-    UserTopic,
-)
 
 # Adaptar URL a postgresql+asyncpg:// para soporte asíncrono en la DB de pruebas
 db_url = settings.test_database_url

@@ -246,3 +246,40 @@ class TestUserRepository:
         assert loaded_profile.description == "Perfil de álgebra básica"
         assert loaded_profile.user_level.name == "PRINCIPIANTE"
         assert loaded_profile.user_topic.name == "ALGEBRA"
+
+    async def test_count_returns_zero_when_empty(
+        self, db_session: AsyncSession
+    ) -> None:
+        """Verifica que count() retorna 0 cuando no hay usuarios."""
+        # Arrange
+        repo = UserRepository(db_session)
+
+        # Act
+        total = await repo.count()
+
+        # Assert
+        assert total == 0
+
+    async def test_count_returns_correct_number(
+        self, db_session: AsyncSession, seed_user_role: UserRole
+    ) -> None:
+        """Verifica que count() retorna el número exacto de usuarios."""
+        # Arrange
+        repo = UserRepository(db_session)
+        users = [
+            User(
+                id_role=seed_user_role.id,
+                first_name=f"CountUser{i}",
+                last_name="Test",
+                email=f"countuser{i}@example.com",
+            )
+            for i in range(3)
+        ]
+        db_session.add_all(users)
+        await db_session.flush()
+
+        # Act
+        total = await repo.count()
+
+        # Assert
+        assert total == 3

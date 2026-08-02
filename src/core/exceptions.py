@@ -53,7 +53,7 @@ class ValidationException(AppException):
 
     def __init__(self, detail: str = "Data validation error") -> None:
         super().__init__(
-            detail=detail, status_code=status.HTTP_422_UNPROCESSABLE_ENTITY
+            detail=detail, status_code=status.HTTP_422_UNPROCESSABLE_CONTENT
         )
 
 
