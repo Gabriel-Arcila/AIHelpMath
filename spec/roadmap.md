@@ -14,7 +14,8 @@
 
 ## Siguiente:
 
-1. Mejorar el skills de TDD.
-2. Especificar como se tiene que hacer el archivo de validaciones.
-3. GitHub Actions para la ejecución de pruebas.
-4.  Generador aleatorio con faker u otra librería.
+6. **006 · Refactorización de Tests** — Reorganizar tests por dominio funcional (replica de `src/`), separar clases por tipo de transacción (Insert, Select, Update, Delete) e implementar Polyfactory para generación automática de datos de prueba. (2026-08-02) → [spec/refactorizacion_tests_20260802/plan_refactorizacion_tests_20260802.md](spec/refactorizacion_tests_20260802/plan_refactorizacion_tests_20260802.md)
+
+7. Mejorar el skills de TDD, mejorar el apartado de polyfactory, Especificar como se tiene que hacer el archivo de validaciones y revisar si el apartado de test de fasapi-app-creator con pytest-best-practices.
+   
+8. GitHub Actions para la ejecución de pruebas.
