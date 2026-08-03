@@ -2,19 +2,16 @@
 name: pytest-best-practices
 description: >-
   Guía completa de mejores prácticas para escribir pruebas con pytest
-  en cualquier proyecto Python. Cubre el patrón AAA, fixtures con
-  yield y scopes, conftest.py jerárquico, parametrización avanzada,
-  manejo de excepciones con pytest.raises y match, monkeypatch,
-  pytest-mock, pruebas asíncronas con pytest-asyncio, tolerancias
-  numéricas con pytest.approx, plugins esenciales (xdist, cov,
-  randomly), configuración estricta en pyproject.toml, y estrategias
-  de CI/CD con JUnit XML. Usa esta skill siempre que el usuario
-  necesite escribir pruebas unitarias o de integración, configurar
-  pytest, crear fixtures, parametrizar tests, hacer mocking, testear
-  código asíncrono, o integrar pytest en pipelines de CI/CD. También
+  en cualquier proyecto Python. Usa esta skill siempre que el usuario necesite
+  escribir pruebas unitarias o de integración, configurar pytest,
+  crear fixtures, parametrizar tests, hacer mocking, testear código
+  asíncrono, generar datos de prueba con factories, organizar tests
+  por dominio, o integrar pytest en pipelines de CI/CD. También
   aplica cuando se mencionen conceptos como "tests en Python",
   "pruebas unitarias", "coverage", "test fixtures", "mocks",
-  "testing asíncrono", o cualquier referencia a pytest y su ecosistema.
+  "testing asíncrono", "Polyfactory", "factories de datos",
+  "separación por transacción", o cualquier referencia a pytest
+  y su ecosistema.
 ---
 
 # Pytest Best Practices
@@ -33,6 +30,7 @@ el archivo relevante según la tarea:
 | `references/mocking.md` | Monkeypatch, pytest-mock, parches, simulaciones de red |
 | `references/async_testing.md` | Pruebas asíncronas con pytest-asyncio, clientes async |
 | `references/ci_cd.md` | Plugins, pytest-xdist, cobertura, pipelines CI/CD, JUnit XML |
+| `references/polyfactory.md` | Generación de datos de prueba con Polyfactory, factories para Pydantic y SQLModel |
 
 Lee solo el archivo que necesites para la tarea actual.
 
@@ -63,6 +61,60 @@ especiales como `assertEqual` o `assertIn`.
 
 Las clases de test no requieren herencia de ninguna clase base.
 pytest las descubre automáticamente por el prefijo `Test`.
+
+### Separación de clases por tipo de transacción
+
+Cuando un archivo de test cubre operaciones CRUD de una entidad, las clases de test deben separarse por tipo de transacción SQL. Esto facilita la navegación, el filtrado
+selectivo con `pytest -k` y la comprensión inmediata de qué
+operación cubre cada grupo de tests.
+
+Patrón: `Test{Entidad}{Capa}{Transacción}`
+
+| Transacción | Operaciones que agrupa | Ejemplo de clase |
+|---|---|---|
+| `Insert` | Creación de registros (`add`, `create`, `POST`) | `TestUserRepositoryInsert` |
+| `Select` | Lectura de registros (`get_by_id`, `get_all`, `count`, `GET`) | `TestUserServiceSelect` |
+| `Update` | Modificación de registros (`update`, `PATCH`, `PUT`) | `TestUserRouterUpdate` |
+| `Delete` | Eliminación de registros (`delete`, `DELETE`) | `TestUserRepositoryDelete` |
+
+Esta separación aplica exclusivamente a tests de entidades con
+operaciones CRUD. Tests de utilidades, validaciones o excepciones
+mantienen sus clases descriptivas naturales (ej. `TestPaginationParams`,
+`TestAppExceptions`).
+
+```python
+# tests/users/users/test_repository.py
+
+class TestUserRepositoryInsert:
+    """Tests de inserción para UserRepository."""
+
+    async def test_add_persists_and_returns_user(self, ...) -> None:
+        ...
+
+
+class TestUserRepositorySelect:
+    """Tests de lectura para UserRepository."""
+
+    async def test_get_by_id_returns_existing_user(self, ...) -> None:
+        ...
+
+    async def test_get_by_id_returns_none_for_nonexistent(self, ...) -> None:
+        ...
+
+
+class TestUserRepositoryUpdate:
+    """Tests de actualización para UserRepository."""
+
+    async def test_update_modifies_fields(self, ...) -> None:
+        ...
+
+
+class TestUserRepositoryDelete:
+    """Tests de eliminación para UserRepository."""
+
+    async def test_delete_removes_user(self, ...) -> None:
+        ...
+```
 
 ---
 
@@ -153,38 +205,68 @@ te alerta inmediatamente del error.
 
 ## 5. Estructura de directorios (src layout)
 
-El patrón *src layout* aísla el código importable en `src/` y las
+El patrón *src layout* aísla el código importable en la aplicacion y las
 pruebas en `tests/`, impidiendo importaciones implícitas accidentales.
+
+La estructura de `tests/` debe replicar la estructura de la aplicacion,
+organizando los tests **por dominio funcional** (igual que el código
+fuente). Organizar tests por tipo de capa (`tests/api/`,
+`tests/crud/`, `tests/service/`, `tests/unit/`) está **prohibido**
+porque dificulta localizar los tests de un módulo específico y
+rompe la correspondencia visual con `src/`.
 
 ```
 proyecto/
 ├── src/
 │   ├── __init__.py
+│   ├── core/
+│   │   ├── exceptions.py
+│   │   └── config.py
+│   ├── shared/
+│   │   └── pagination.py
 │   └── users/
-│       ├── __init__.py
-│       ├── service.py
-│       └── models.py
+│       ├── models.py
+│       ├── schemas.py
+│       └── users/
+│           ├── repository.py
+│           ├── service.py
+│           └── router.py
 ├── tests/
-│   ├── conftest.py          # Fixtures globales
-│   ├── test_users/
-│   │   ├── conftest.py      # Fixtures específicas de users
-│   │   ├── test_service.py
-│   │   └── test_models.py
-│   └── test_items/
-│       └── test_service.py
+│   ├── conftest.py          # Fixtures globales (db, client)
+│   ├── factories.py         # Factories Polyfactory centralizadas
+│   ├── test_health.py       # Tests de endpoints raíz
+│   ├── core/
+│   │   └── test_exceptions.py
+│   ├── shared/
+│   │   └── test_pagination.py
+│   └── users/
+│       ├── conftest.py      # Fixtures del dominio users
+│       └── users/
+│           ├── test_repository.py
+│           ├── test_service.py
+│           └── test_router.py
 ├── pyproject.toml
 └── .env.test
 ```
 
 ### Reglas estructurales
 
-1. **`tests/` replica la estructura de `src/`**: Facilita localizar
-   los tests de cada módulo.
-2. **`conftest.py` jerárquico**: Fixtures globales en la raíz de
-   `tests/`, fixtures específicas en cada subdirectorio.
-3. **No importar fixtures desde conftest**: pytest las descubre
-   automáticamente. Importarlas rompe el mecanismo de inyección.
-4. **Cada test es independiente**: No debe depender del orden de
+1. **`tests/` replica la estructura de la aplicacion**: Cada directorio
+   en la aplicacion tiene su correspondiente en `tests/`. Facilita
+   localizar los tests de cada módulo.
+2. **Organización por dominio funcional, no por capa**: Los tests
+   de `src/users/users/repository.py` van en
+   `tests/users/users/test_repository.py`.
+3. **`conftest.py` jerárquico**: Fixtures globales en la raíz de
+   `tests/`, fixtures de dominio en el subdirectorio del dominio.
+   Una fixture debe vivir en el conftest del nivel más bajo que
+   la comparta. No duplicar fixtures entre conftest files.
+4. **No importar desde conftest**: pytest descubre las fixtures
+   automáticamente. Importar funciones o fixtures desde un
+   `conftest.py` rompe el mecanismo de inyección y crea
+   acoplamiento oculto. Si necesitas compartir helpers, usa
+   un módulo separado o conviértelos en fixtures.
+5. **Cada test es independiente**: No debe depender del orden de
    ejecución ni de efectos secundarios de otro test.
 
 ---
@@ -401,6 +483,88 @@ Todos los marcadores deben registrarse en `pyproject.toml` bajo
 
 ---
 
+## 11. Generación de datos con Polyfactory
+
+Los datos de prueba no deben construirse manualmente con literales
+hardcodeados. Polyfactory genera automáticamente instancias válidas
+de modelos Pydantic y SQLModel a partir de sus definiciones de tipo,
+eliminando la duplicación y reduciendo la fragilidad ante cambios
+en los schemas.
+
+Para patrones avanzados de Polyfactory (factories personalizadas,
+manejo de relaciones SQLModel, overrides, integración con fixtures),
+consultar `references/polyfactory.md`.
+
+### Uso básico
+
+```python
+from polyfactory.factories.pydantic_factory import ModelFactory
+
+from src.users.schemas import UserCreate, UserUpdate
+from src.users.models import User
+
+
+class UserCreateFactory(ModelFactory):
+    """Factory para generar instancias válidas de UserCreate."""
+
+    __model__ = UserCreate
+
+
+class UserModelFactory(ModelFactory):
+    """Factory para generar instancias de User (tests con mocks)."""
+
+    __model__ = User
+    __set_relationships__ = False
+```
+
+### Cómo usarlas en tests
+
+```python
+# Generar una instancia con valores aleatorios válidos
+user_data = UserCreateFactory.build()
+
+# Generar con overrides específicos para el test
+user_data = UserCreateFactory.build(id_role=seed_role.id)
+
+# Generar un modelo para tests con mocks
+user = UserModelFactory.build(id="user-123", id_role=1)
+
+# Generar payload para tests HTTP
+payload = UserCreateFactory.build(
+    id_role=seed_role.id,
+).model_dump(mode="json")
+```
+
+### Razón de usar Polyfactory
+
+Cuando los datos se construyen manualmente (`User(id="user-123",
+first_name="John", ...)`), cada test repite los mismos literales.
+Si un schema agrega un campo obligatorio, todos los tests se rompen
+simultáneamente. Polyfactory genera datos válidos a partir de la
+definición del modelo, por lo que los tests solo se rompen si
+cambia la estructura del schema — exactamente lo que queremos
+detectar.
+
+Además, los valores aleatorios por defecto reducen el riesgo de
+tests tautológicos que pasan por coincidir accidentalmente con
+valores hardcodeados.
+
+### Reglas de Polyfactory
+
+- **Centralizar factories**: Definir todas las factory classes en
+  `tests/factories.py` e importarlas donde se necesiten.
+- **Un factory por modelo/schema**: Cada modelo Pydantic o SQLModel
+  que se use en tests debe tener su factory.
+- **Excluir relaciones**: En modelos SQLModel con `table=True`,
+  usar `__set_relationships__ = False` para evitar que Polyfactory
+  intente generar objetos relacionados.
+- **Usar `.build()`**: El método `.build()` crea instancias sin
+  persistencia. Usar overrides para valores específicos del test.
+- **No hardcodear datos de prueba**: Si ves un `User(first_name=
+  "John", ...)` en un test, reemplázalo por una factory.
+
+---
+
 ## Resumen de convenciones
 
 | Aspecto | Regla |
@@ -409,11 +573,15 @@ Todos los marcadores deben registrarse en `pyproject.toml` bajo
 | Nomenclatura archivos | `test_*.py` |
 | Nomenclatura funciones | `test_*` |
 | Nomenclatura clases | `Test*` |
+| Clases CRUD | `Test{Entidad}{Capa}{Insert\|Select\|Update\|Delete}` |
 | Imports | Dependencia absoluta |
+| Estructura | Por dominio funcional (`tests/` replica la aplicacion) |
 | Fixtures | `yield` para teardown, no `setup/teardown` |
+| Datos de prueba | Polyfactory (no literales manuales) |
 | Parametrización | `@pytest.mark.parametrize` con `ids` |
 | Excepciones | `pytest.raises` con tipo exacto y `match` |
 | Punto flotante | `pytest.approx` |
 | Configuración | `pyproject.toml` exclusivamente |
 | Independencia | Cada test es hermético e independiente |
 | Marcadores | Registrados y estrictos |
+| conftest.py | Jerárquico, sin duplicación, sin imports directos |
