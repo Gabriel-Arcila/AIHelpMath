@@ -59,6 +59,19 @@ package = false
 # Configuración del Linter para que sea estricto pero justo
 [tool.ruff]
 line-length = 88
+exclude = [
+    ".agents",
+    ".git",
+    ".mypy_cache",
+    ".pytest_cache",
+    ".ruff_cache",
+    ".venv",
+    ".vscode",
+    "build",
+    "dist",
+    "migrations",
+    "spec",
+]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "D", "N", "UP", "ANN", "B"]
