@@ -52,6 +52,7 @@ uv run pytest --cov=src --cov-report=term-missing  # Cobertura
 uv run ruff check src/ tests/        # Linter
 uv run ruff format src/ tests/       # Formatter
 uv run mypy src/                     # Análisis estático de tipos
+uv run mypy tests/ #TODO: PENDIENTE POR REVISAR Análisis estático de tipos en tests
 
 # ── Migraciones (Alembic) ─────────────────────────────────────
 uv run alembic revision --autogenerate -m "descripcion"  # Nueva migración
