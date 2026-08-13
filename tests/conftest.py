@@ -1,7 +1,8 @@
 """Fixtures globales de pytest para pruebas de integración y unitarias."""
 
 import asyncio
-from collections.abc import AsyncGenerator
+from collections.abc import AsyncGenerator, Generator
+from typing import Any
 
 import pytest
 from httpx import ASGITransport, AsyncClient
@@ -31,7 +32,7 @@ engine_test = create_async_engine(
 
 
 @pytest.fixture(scope="session", autouse=True)
-async def setup_database():
+async def setup_database() -> AsyncGenerator[None, None]:
     """Crea y destruye las tablas en la base de datos de pruebas (TestAIHelpMath).
 
     Se ejecuta una sola vez por sesión de pytest.
@@ -45,7 +46,9 @@ async def setup_database():
 
 
 @pytest.fixture
-async def db_session(setup_database) -> AsyncGenerator[AsyncSession, None]:
+async def db_session(
+    setup_database: AsyncGenerator[None, None],
+) -> AsyncGenerator[AsyncSession, None]:
     """Proporciona una sesión de base de datos asíncrona aislada para pruebas.
 
     Cada test se ejecuta en una transacción contenedora con savepoints que realiza
@@ -67,7 +70,7 @@ async def db_session(setup_database) -> AsyncGenerator[AsyncSession, None]:
             session.sync_session,
             "after_transaction_end",
         )
-        def restart_savepoint(sync_session, trans):
+        def restart_savepoint(sync_session: Any, trans: Any) -> None:
             """Reinicia el savepoint tras cada commit."""
             if trans.nested and not trans._parent.nested:
                 sync_session.begin_nested()
@@ -108,7 +111,7 @@ async def async_client(db_session: AsyncSession) -> AsyncGenerator[AsyncClient, 
 
 
 @pytest.fixture(scope="session")
-def event_loop():
+def event_loop() -> Generator[asyncio.AbstractEventLoop, None, None]:
     """Crea una instancia única de event loop de asyncio para toda la sesión de pruebas.
 
     Evita el error 'Event loop is closed' que ocurre al cerrar y abrir loops por test

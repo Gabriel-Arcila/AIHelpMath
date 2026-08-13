@@ -15,6 +15,7 @@ class TestUserRepository:
     ) -> None:
         """Verifica que add() persiste un usuario en la base de datos y genera su ID."""
         # Arrange
+        assert seed_user_role.id is not None
         repo = UserRepository(db_session)
         user_data = UserCreate(
             id_role=seed_user_role.id,
@@ -40,6 +41,7 @@ class TestUserRepository:
     ) -> None:
         """Verifica que get_by_id() recupera un usuario existente por su ID."""
         # Arrange
+        assert seed_user_role.id is not None
         repo = UserRepository(db_session)
         user = User(
             id_role=seed_user_role.id,
@@ -76,6 +78,7 @@ class TestUserRepository:
     ) -> None:
         """Verifica que get_by_email() recupera un usuario por su email."""
         # Arrange
+        assert seed_user_role.id is not None
         repo = UserRepository(db_session)
         user = User(
             id_role=seed_user_role.id,
@@ -111,6 +114,7 @@ class TestUserRepository:
     ) -> None:
         """Verifica que get_all() retorna lista de usuarios con paginación."""
         # Arrange
+        assert seed_user_role.id is not None
         repo = UserRepository(db_session)
         users_to_create = [
             User(
@@ -149,6 +153,7 @@ class TestUserRepository:
     ) -> None:
         """Verifica que update() modifica los campos correspondientes de un usuario."""
         # Arrange
+        assert seed_user_role.id is not None
         repo = UserRepository(db_session)
         user = User(
             id_role=seed_user_role.id,
@@ -178,6 +183,7 @@ class TestUserRepository:
     ) -> None:
         """Verifica que delete() elimina un usuario de la base de datos."""
         # Arrange
+        assert seed_user_role.id is not None
         repo = UserRepository(db_session)
         user = User(
             id_role=seed_user_role.id,
@@ -203,6 +209,7 @@ class TestUserRepository:
         perfiles IA.
         """
         # Arrange
+        assert seed_user_role.id is not None
         repo = UserRepository(db_session)
 
         # Necesitamos crear UserLevel, UserTopic y UserAIProfile para probar la relación
@@ -210,6 +217,9 @@ class TestUserRepository:
         topic = UserTopic(name="ALGEBRA", description="Tema de álgebra")
         db_session.add_all([level, topic])
         await db_session.flush()
+
+        assert level.id is not None
+        assert topic.id is not None
 
         user = User(
             id_role=seed_user_role.id,
@@ -265,6 +275,7 @@ class TestUserRepository:
     ) -> None:
         """Verifica que count() retorna el número exacto de usuarios."""
         # Arrange
+        assert seed_user_role.id is not None
         repo = UserRepository(db_session)
         users = [
             User(

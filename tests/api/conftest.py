@@ -1,5 +1,7 @@
 """Fixtures locales para pruebas de integración de la API (Endpoints)."""
 
+from typing import Any, cast
+
 import pytest
 from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -25,19 +27,19 @@ async def seed_user_role(db_session: AsyncSession) -> UserRole:
 
 async def create_test_user(
     async_client: AsyncClient,
-    user_data: dict,
-    role_id: int,
-) -> dict:
+    user_data: dict[str, Any],
+    role_id: int | None,
+) -> dict[str, Any]:
     """Helper asíncrono para crear un usuario a través del endpoint POST /v1/users/.
 
     Args:
         async_client (AsyncClient): Cliente HTTP de pruebas.
-        user_data (dict): Datos del usuario a crear.
-        role_id (int): ID del rol a asociar.
+        user_data (dict[str, Any]): Datos del usuario a crear.
+        role_id (int | None): ID del rol a asociar.
 
     Returns:
-        dict: Cuerpo de la respuesta JSON retornada por el endpoint.
+        dict[str, Any]: Cuerpo de la respuesta JSON retornada por el endpoint.
     """
     payload = {**user_data, "id_role": role_id}
     response = await async_client.post("/v1/users/", json=payload)
-    return response.json()
+    return cast("dict[str, Any]", response.json())

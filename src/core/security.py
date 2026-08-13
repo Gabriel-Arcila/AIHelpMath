@@ -15,4 +15,3 @@ def get_current_user() -> None:
     """
     # TODO: Implementar la validación real de tokens JWT y recuperación de usuarios.
     pass
-
