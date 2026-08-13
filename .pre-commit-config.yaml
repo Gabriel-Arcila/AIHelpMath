@@ -1,0 +1,51 @@
+# Configuración de pre-commit para IAHelpMath
+# Para instalar los git hooks en el repositorio ejecuta:
+#   uv run pre-commit install
+
+default_install_hook_types: [pre-commit]
+
+repos:
+  # ── 1. Hooks Estándar ─────────────────────────────────────────────
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: ^migrations/
+      - id: end-of-file-fixer
+        exclude: ^migrations/
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ["--maxkb=1000"]
+      - id: check-merge-conflict
+
+  # ── 2. Ruff (Linter & Formatter) ──────────────────────────────────
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.6
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+
+  # ── 3. Local Hooks (Mypy, Alembic, Pytest) ────────────────────────
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy (type check)
+        entry: uv run mypy src/ tests/
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      - id: alembic-check
+        name: alembic (check schema migration sync)
+        entry: uv run alembic check
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      - id: pytest
+        name: pytest (test suite)
+        entry: uv run pytest
+        language: system
+        types: [python]
+        pass_filenames: false
