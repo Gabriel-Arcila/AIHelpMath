@@ -1,8 +1,15 @@
 # Configuración de pre-commit para IAHelpMath
 # Para instalar los git hooks en el repositorio ejecuta:
 #   uv run pre-commit install
+#   uv run pre-commit install --hook-type pre-push
+#
+# Estrategia:
+#   pre-commit → hooks rápidos (formato, lint, validaciones estáticas)
+#   pre-push   → hooks pesados (mypy, alembic check, pytest)
+#                 Requiere PostgreSQL activo para alembic y pytest.
 
-default_install_hook_types: [pre-commit]
+default_install_hook_types: [pre-commit, pre-push]
+fail_fast: true
 
 repos:
   # ── 1. Hooks Estándar ─────────────────────────────────────────────
@@ -14,19 +21,24 @@ repos:
       - id: end-of-file-fixer
         exclude: ^migrations/
       - id: check-yaml
+      - id: check-toml
+      - id: check-json
+        exclude: ^\.vscode/
+      - id: check-ast
       - id: check-added-large-files
         args: ["--maxkb=1000"]
       - id: check-merge-conflict
+      - id: debug-statements
 
   # ── 2. Ruff (Linter & Formatter) ──────────────────────────────────
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.9.6
+    rev: v0.16.2
     hooks:
-      - id: ruff
+      - id: ruff-check
         args: [--fix]
       - id: ruff-format
 
-  # ── 3. Local Hooks (Mypy, Alembic, Pytest) ────────────────────────
+  # ── 3. Local Hooks (pre-push: Mypy, Alembic, Pytest) ──────────────
   - repo: local
     hooks:
       - id: mypy
@@ -35,6 +47,7 @@ repos:
         language: system
         types: [python]
         pass_filenames: false
+        stages: [pre-push]
 
       - id: alembic-check
         name: alembic (check schema migration sync)
@@ -42,6 +55,7 @@ repos:
         language: system
         types: [python]
         pass_filenames: false
+        stages: [pre-push]
 
       - id: pytest
         name: pytest (test suite)
@@ -49,3 +63,4 @@ repos:
         language: system
         types: [python]
         pass_filenames: false
+        stages: [pre-push]
