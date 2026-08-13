@@ -7,64 +7,69 @@ from fastapi.responses import JSONResponse
 
 
 class AppException(Exception):
-    """Excepción base para todos los errores de la aplicación.
-
-    Args:
-        detail (str): Mensaje descriptivo del error.
-        status_code (int): Código de estado HTTP correspondiente.
-    """
+    """Excepción base para todos los errores de la aplicación."""
 
     def __init__(
         self, detail: str, status_code: int = status.HTTP_400_BAD_REQUEST
     ) -> None:
+        """Inicializa la excepción de la aplicación.
+
+        Args:
+            detail (str): Mensaje descriptivo del error.
+            status_code (int): Código de estado HTTP correspondiente.
+        """
         super().__init__(detail)
         self.detail = detail
         self.status_code = status_code
 
 
 class NotFoundException(AppException):
-    """Excepción lanzada cuando un recurso solicitado no es encontrado.
-
-    Args:
-        detail (str): Mensaje descriptivo de la ausencia del recurso.
-    """
+    """Excepción lanzada cuando un recurso solicitado no es encontrado."""
 
     def __init__(self, detail: str = "Resource not found") -> None:
+        """Inicializa la excepción NotFoundException.
+
+        Args:
+            detail (str): Mensaje descriptivo de la ausencia del recurso.
+        """
         super().__init__(detail=detail, status_code=status.HTTP_404_NOT_FOUND)
 
 
 class ConflictException(AppException):
-    """Excepción lanzada cuando hay un conflicto con el estado actual del recurso.
-
-    Args:
-        detail (str): Mensaje descriptivo del conflicto.
-    """
+    """Excepción lanzada cuando hay un conflicto con el estado actual del recurso."""
 
     def __init__(self, detail: str = "Request conflict") -> None:
+        """Inicializa la excepción ConflictException.
+
+        Args:
+            detail (str): Mensaje descriptivo del conflicto.
+        """
         super().__init__(detail=detail, status_code=status.HTTP_409_CONFLICT)
 
 
 class ValidationException(AppException):
-    """Excepción lanzada cuando los datos de entrada fallan las validaciones de negocio.
-
-    Args:
-        detail (str): Mensaje descriptivo del error de validación.
-    """
+    """Excepción lanzada al fallar las validaciones de negocio."""
 
     def __init__(self, detail: str = "Data validation error") -> None:
+        """Inicializa la excepción ValidationException.
+
+        Args:
+            detail (str): Mensaje descriptivo del error de validación.
+        """
         super().__init__(
             detail=detail, status_code=status.HTTP_422_UNPROCESSABLE_CONTENT
         )
 
 
 class DatabaseException(AppException):
-    """Excepción lanzada cuando ocurre un error durante una operación de base de datos.
-
-    Args:
-        detail (str): Mensaje descriptivo del error de base de datos.
-    """
+    """Excepción lanzada tras un fallo en la base de datos."""
 
     def __init__(self, detail: str = "Database operation failed") -> None:
+        """Inicializa la excepción DatabaseException.
+
+        Args:
+            detail (str): Mensaje descriptivo del error de base de datos.
+        """
         super().__init__(
             detail=detail, status_code=status.HTTP_500_INTERNAL_SERVER_ERROR
         )

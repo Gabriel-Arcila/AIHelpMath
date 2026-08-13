@@ -12,7 +12,7 @@ def get_current_user() -> None:
 
     Returns:
         None: Placeholder que no devuelve ningún usuario.
-
-    # TODO: Implementar la validación real de tokens JWT y recuperación de usuarios.
     """
-    return None 
+    # TODO: Implementar la validación real de tokens JWT y recuperación de usuarios.
+    pass
+
