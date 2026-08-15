@@ -7,8 +7,8 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
 from sqlmodel import SQLModel
-from app.core.config import settings
-import app.models  # Importar para registrar los modelos en SQLModel.metadata
+from src.core.config import settings
+import src.users.models  # Importar para registrar los modelos en SQLModel.metadata
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -26,7 +26,7 @@ if config.config_file_name is not None:
 target_metadata = SQLModel.metadata
 
 # Sobrescribir la URL de la base de datos con la configuración de la app
-db_url = settings.DATABASE_URL
+db_url = settings.database_url
 # Como env.py usa migraciones asíncronas, forzamos el driver asyncpg si es postgres
 if db_url.startswith("postgres://"):
     db_url = db_url.replace("postgres://", "postgresql+asyncpg://", 1)

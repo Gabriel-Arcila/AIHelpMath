@@ -1,0 +1,53 @@
+"""Inicialización del módulo de dominio de usuarios."""
+
+from src.users.models import (
+    User,
+    UserAIProfile,
+    UserLevel,
+    UserRole,
+    UserTopic,
+)
+from src.users.schemas import (
+    UserAIProfileCreate,
+    UserAIProfileDetailed,
+    UserAIProfileResponse,
+    UserAIProfileUpdate,
+    UserCreate,
+    UserDetailed,
+    UserLevelCreate,
+    UserLevelResponse,
+    UserLevelUpdate,
+    UserResponse,
+    UserRoleCreate,
+    UserRoleResponse,
+    UserRoleUpdate,
+    UserTopicCreate,
+    UserTopicResponse,
+    UserTopicUpdate,
+    UserUpdate,
+)
+
+__all__ = [
+    "User",
+    "UserAIProfile",
+    "UserAIProfileCreate",
+    "UserAIProfileDetailed",
+    "UserAIProfileResponse",
+    "UserAIProfileUpdate",
+    "UserCreate",
+    "UserDetailed",
+    "UserLevel",
+    "UserLevelCreate",
+    "UserLevelResponse",
+    "UserLevelUpdate",
+    "UserResponse",
+    "UserRole",
+    "UserRoleCreate",
+    "UserRoleResponse",
+    "UserRoleUpdate",
+    "UserTopic",
+    "UserTopicCreate",
+    "UserTopicResponse",
+    "UserTopicUpdate",
+    "UserUpdate",
+]
