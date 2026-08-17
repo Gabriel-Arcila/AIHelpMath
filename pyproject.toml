@@ -74,6 +74,7 @@ exclude = [
 ]
 
 [tool.ruff.lint]
+#TODO: Pendiente poner FAST en select y investigar que SELECT pueden ser interesantes en RUFF.
 select = ["E", "F", "W", "I", "D", "N", "UP", "ANN", "B", "RUF","SIM","TCH","RET","PT"]
 ignore = ["B008", "N818", "D205"]
 
