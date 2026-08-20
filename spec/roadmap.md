@@ -20,4 +20,4 @@
 
 7. Mejorar el skills de TDD, mejorar el apartado de polyfactory, Especificar como se tiene que hacer el archivo de validaciones y revisar si el apartado de test de fasapi-app-creator con pytest-best-practices.
 
-8. GitHub Actions para la ejecución de pruebas.
+8. GitHub Actions para la ejecución de pruebas, revisar para realizar loggins en el proyecto.
